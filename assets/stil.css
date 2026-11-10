@@ -51,6 +51,21 @@ a { color: inherit; }
 .lejant span { display: inline-flex; align-items: center; gap: 7px; }
 .lejant i { width: 14px; height: 14px; border-radius: 4px; display: inline-block; }
 
+/* kategori sekmeleri */
+.sekmeler { display: flex; gap: 10px; flex-wrap: wrap; margin: 26px 0 0; }
+.sekme { font: 700 16px 'Poppins', sans-serif; display: inline-flex; align-items: center; gap: 8px; min-height: 52px; padding: 10px 18px;
+  border-radius: 14px; border: 3px solid transparent; background: var(--kart); color: var(--metin); cursor: pointer; box-shadow: var(--golge); }
+.sekme small { font-size: 13px; color: var(--soluk); background: var(--kart-2); border-radius: 999px; padding: 1px 8px; }
+.sekme-ikon { width: 30px; height: 30px; border-radius: 9px; display: grid; place-items: center; background: var(--k); color: #fff; }
+.sekme-ikon svg { width: 18px; height: 18px; }
+.sekme.aktif { border-color: var(--k, var(--metin)); }
+.sekme:focus-visible { outline: 4px solid var(--vurgu); outline-offset: 3px; }
+.icerik-kart .ikon-k { width: 40px; height: 40px; border-radius: 12px; display: grid; place-items: center; color: #fff; }
+.icerik-kart .ikon-k svg { width: 24px; height: 24px; }
+.icerik-kart .kucuk { font-size: 14px; color: var(--soluk); font-weight: 500; }
+.icerik-kart .ac { font-weight: 700; color: var(--u); }
+@media (max-width: 560px) { .sekme { flex: 1 1 calc(50% - 10px); justify-content: center; } }
+
 /* ay bölümleri */
 .ay { margin: 34px 0; }
 .ay h2 { font-size: 26px; margin: 0 0 14px; display: flex; align-items: baseline; gap: 12px; }

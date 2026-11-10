@@ -21,11 +21,12 @@
 <main class="sar">
   <section class="giris">
     <h1>Her hafta, <em>dört kapı</em>.</h1>
-    <p>Yıllık plandaki haftayı seçin; o haftanın kazanımına göre hazırlanmış dijital laboratuvara, animasyona, oyuna ve kazanım testine tek tıkla ulaşın. Akıllı tahtada açıp doğrudan derste kullanabilirsiniz.</p>
-    <ul class="dortlu" id="dortlu"></ul>
+    <p>Yıllık plandaki haftayı seçin; o haftanın kazanımına göre hazırlanmış dijital laboratuvara, animasyona, oyuna ve kazanım testine tek tıkla ulaşın. Akıllı tahtada açıp doğrudan derste kullanabilirsiniz. Aşağıdaki sekmelerle bütün laboratuvarlara, animasyonlara, oyunlara ya da kazanım testlerine tek listede de bakabilirsiniz.</p>
     <div class="lejant" id="lejant"></div>
   </section>
+  <nav class="sekmeler" id="sekmeler" aria-label="Görünüm"></nav>
   <div id="aylar"></div>
+  <div id="kategori" hidden></div>
 </main>
 
 <footer class="alt">
@@ -43,9 +44,6 @@
   var H = window.HAFTALAR, bh = buHafta();
   document.getElementById('buHaftaDugme').href = 'hafta.html?no=' + bh.no;
 
-  document.getElementById('dortlu').innerHTML = BOLUMLER.map(function (b) {
-    return '<li><span style="color:' + b.renk + '">' + IKON[b.anahtar] + '</span>' + b.ad + '</li>';
-  }).join('');
 
   document.getElementById('lejant').innerHTML = ['Kuvvet ve Hareket', 'Enerji', 'Elektrik', 'Dalgalar'].map(function (u) {
     return '<span><i style="background:' + UNITE_RENK[u] + '"></i>' + u + '</span>';
@@ -53,6 +51,36 @@
 
   var aylar = [], grup = {};
   H.forEach(function (h) { if (!grup[h.ay]) { grup[h.ay] = []; aylar.push(h.ay); } grup[h.ay].push(h); });
+
+  // Kategori sekmeleri: haftalara göre ya da tek bir içerik türüne göre
+  var sekmeler = [{ anahtar: 'hafta', ad: 'Haftalara göre' }].concat(BOLUMLER.map(function (b) {
+    return { anahtar: b.anahtar, ad: { lab: 'Laboratuvarlar', animasyon: 'Animasyonlar', oyun: 'Oyunlar', test: 'Kazanım Testleri' }[b.anahtar] || b.ad, b: b };
+  }));
+  document.getElementById('sekmeler').innerHTML = sekmeler.map(function (k) {
+    var n = k.b ? H.filter(function (h) { return h.icerik[k.anahtar]; }).length : 0;
+    return '<button class="sekme" data-k="' + k.anahtar + '"' + (k.b ? ' style="--k:' + k.b.renk + '"' : '') + '>' +
+      (k.b ? '<span class="sekme-ikon">' + IKON[k.anahtar] + '</span>' : '') + k.ad + (k.b ? ' <small>' + n + '</small>' : '') + '</button>';
+  }).join('');
+  function kategoriGoster(anahtar) {
+    var k = sekmeler.filter(function (x) { return x.anahtar === anahtar; })[0] || sekmeler[0];
+    document.querySelectorAll('.sekme').forEach(function (b) { b.classList.toggle('aktif', b.dataset.k === k.anahtar); b.setAttribute('aria-pressed', b.dataset.k === k.anahtar); });
+    var kat = document.getElementById('kategori');
+    document.getElementById('aylar').hidden = !!k.b; kat.hidden = !k.b;
+    if (!k.b) return;
+    var liste = H.filter(function (h) { return h.icerik[k.anahtar]; });
+    kat.innerHTML = '<section class="ay"><h2>' + k.ad + ' <small>' + liste.length + ' içerik hazır</small></h2>' +
+      (liste.length ? '<div class="izgara">' + liste.map(function (h) {
+        var v = h.icerik[k.anahtar];
+        return '<a class="hafta-kart icerik-kart" style="--u:' + UNITE_RENK[h.unite] + '" href="hafta.html?no=' + h.no + '&ac=' + k.anahtar + '">' +
+          '<div class="ust-satir"><span class="ikon-k" style="background:' + k.b.renk + '">' + IKON[k.anahtar] + '</span><span class="tarih">' + esc(haftaAdi(h)) + '</span></div>' +
+          '<div class="konu"><b>' + esc(v.baslik || k.b.ad) + '</b><br><span class="kucuk">' + esc(h.konu) + (v.sure ? ' · ' + esc(v.sure) : '') + '</span></div>' +
+          '<div class="alt-satir"><span class="plan-no">' + esc(h.unite) + ' · Plan: ' + h.no + '. hafta</span><span class="ac">Aç →</span></div></a>';
+      }).join('') + '</div>' : '<p class="bos-mesaj">Bu kategoride henüz içerik yok.</p>') + '</section>';
+  }
+  document.querySelectorAll('.sekme').forEach(function (b) {
+    b.onclick = function () { kategoriGoster(b.dataset.k); try { history.replaceState(null, '', b.dataset.k === 'hafta' ? location.pathname : '#kategori-' + b.dataset.k); } catch (e) {} };
+  });
+  var bas = (location.hash.match(/^#kategori-(\w+)/) || [])[1];
 
   document.getElementById('aylar').innerHTML = aylar.map(function (ay) {
     var hs = grup[ay];
@@ -70,6 +98,7 @@
           '</span></div></a>';
       }).join('') + '</div></section>';
   }).join('');
+  kategoriGoster(bas || 'hafta');
 })();
 </script>
 </body>

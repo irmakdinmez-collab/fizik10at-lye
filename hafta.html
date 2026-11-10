@@ -72,6 +72,7 @@
     sahne.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
   document.querySelectorAll('.kutucuk').forEach(function (k) { k.onclick = function () { ac(k.dataset.b); }; });
+  var istenen = new URLSearchParams(location.search).get('ac'); if (istenen && h.icerik[istenen]) ac(istenen);
   // İçerik sayfaları kendi yüksekliklerini bildirir; iframe içeriğe göre uzar
   window.addEventListener('message', function (e) {
     var fr = sahne.querySelector('iframe'); if (!fr || e.source !== fr.contentWindow || !e.data) return;

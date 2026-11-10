@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kavrama Testi · İş · 9. Hafta</title>
+<style>
+@font-face { font-family: 'Poppins'; src: url('../../assets/fonts/Poppins-Regular.ttf') format('truetype'); font-weight: 400; }
+@font-face { font-family: 'Poppins'; src: url('../../assets/fonts/Poppins-Medium.ttf') format('truetype'); font-weight: 500; }
+@font-face { font-family: 'Poppins'; src: url('../../assets/fonts/Poppins-Bold.ttf') format('truetype'); font-weight: 700; }
+:root {
+  --zemin-ust: #def0fe; --zemin-alt: #b6d8f4; --kart: #fff; --kart-2: #f0f7ff;
+  --metin: #16264a; --soluk: #54688e; --cizgi: #c9ddf1;
+  --vurgu: #cd7800; --mavi: #0070c4; --yesil: #168c48; --kirmizi: #cc2048;
+  --golge: 0 6px 22px rgba(22,38,74,.10); --r: 18px;
+}
+* { box-sizing: border-box; }
+html { background: var(--zemin-alt); -webkit-text-size-adjust: 100%; }
+body { margin: 0; font-family: 'Poppins', system-ui, sans-serif; color: var(--metin); line-height: 1.5; min-height: 100vh;
+  background: var(--zemin-alt) linear-gradient(180deg, var(--zemin-ust), var(--zemin-alt) 900px) no-repeat; }
+.sar { max-width: 900px; margin: 0 auto; padding: 0 16px; }
+[hidden] { display: none !important; }
+header { padding: 20px 0 6px; }
+header h1 { margin: 0; font-size: clamp(24px, 3.6vw, 36px); line-height: 1.2; }
+header p { margin: 4px 0 0; color: var(--soluk); font-weight: 500; }
+.bilgi-kart { background: var(--kart); border-radius: var(--r); box-shadow: var(--golge); padding: 14px 20px; margin: 14px 0; border-left: 7px solid var(--yesil); font-size: 16px; }
+.puan-bant { position: sticky; top: 0; z-index: 2; background: var(--zemin-ust); padding: 10px 0; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.puan-bant span { background: var(--kart); border-radius: 999px; padding: 6px 14px; font-weight: 700; box-shadow: var(--golge); font-size: 15px; }
+.soru { background: var(--kart); border-radius: var(--r); box-shadow: var(--golge); padding: 18px 20px; margin-bottom: 16px; }
+.soru h2 { margin: 0 0 6px; font-size: 15px; color: var(--yesil); text-transform: uppercase; letter-spacing: .5px; }
+.soru .metin { font-size: 19px; font-weight: 500; margin: 0 0 12px; }
+.soru svg { display: block; width: 100%; max-width: 500px; height: auto; margin: 0 auto 12px; }
+.secenekler { display: grid; gap: 10px; }
+.secenek { text-align: left; font: 500 18px 'Poppins', sans-serif; padding: 12px 16px; border-radius: 14px; border: 3px solid var(--cizgi);
+  background: var(--kart); color: var(--metin); cursor: pointer; min-height: 56px; display: flex; gap: 12px; align-items: center; }
+.secenek b { width: 32px; height: 32px; border-radius: 50%; background: var(--kart-2); display: grid; place-items: center; flex: none; }
+.secenek:disabled { cursor: default; }
+.secenek.dogru { border-color: var(--yesil); background: #e8f7ee; }
+.secenek.yanlis { border-color: var(--kirmizi); background: #fdebf0; }
+.aciklama { margin-top: 12px; padding: 12px 16px; border-radius: 12px; font-size: 16px; }
+.aciklama.iyi { background: #dff4e7; color: #0d6233; }
+.aciklama.kotu { background: #fde2e9; color: #8f1532; }
+.aciklama.notr { background: #e6f2fc; color: var(--metin); }
+.aciklama b { display: block; font-size: 17px; }
+.giris-satir { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; font-size: 18px; }
+.giris-satir input { font: 700 20px 'Poppins', sans-serif; width: 140px; padding: 10px; border-radius: 12px; border: 2px solid var(--cizgi); color: var(--metin); }
+textarea { width: 100%; font: 17px 'Poppins', sans-serif; padding: 12px; border-radius: 12px; border: 2px solid var(--cizgi); color: var(--metin); }
+.dugme { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; cursor: pointer;
+  font: 700 17px 'Poppins', sans-serif; padding: 12px 22px; border-radius: 14px; min-height: 54px; background: var(--metin); color: #fff; box-shadow: var(--golge); }
+.dugme.yesil { background: var(--yesil); } .dugme.ikincil { background: var(--kart-2); color: var(--metin); box-shadow: none; border: 2px solid var(--cizgi); }
+.dugme:disabled { opacity: .45; cursor: default; }
+.dugme:focus-visible, .secenek:focus-visible { outline: 4px solid var(--mavi); outline-offset: 3px; }
+.oz-deg { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+.sonuc { background: var(--kart); border-radius: var(--r); box-shadow: var(--golge); padding: 22px; text-align: center; border-top: 7px solid var(--yesil); }
+.sonuc .buyuk { font-size: 54px; font-weight: 700; line-height: 1.1; }
+.sonuc p { font-size: 17px; }
+.sira { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
+footer { margin-top: 30px; padding: 18px 0 30px; border-top: 1px solid var(--cizgi); color: var(--soluk); font-size: 14px; }
+footer b { color: var(--metin); }
+@media print { .puan-bant, .sira, footer p + p { display: none; } body { background: #fff; } .soru { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; } }
+</style>
+</head>
+<body>
+<header class="sar">
+  <h1>Kavrama Testi: İş</h1>
+  <p>10. Sınıf Fizik · Enerji · 9. Hafta · FİZ.10.2.1</p>
+</header>
+<main class="sar">
+  <div class="bilgi-kart">10 soru: 8 çoktan seçmeli, 1 grafik okuma (sayı yazarak), 1 açık uçlu. Her sorudan sonra doğru cevap ve kısa açıklama görünür. Açık uçlu soruyu örnek cevapla karşılaştırıp kendin değerlendirirsin.</div>
+  <div class="puan-bant"><span id="bantCevap">0 / 10 cevaplandı</span><span id="bantDogru">✓ 0 doğru</span></div>
+  <div id="sorular"></div>
+  <div class="sonuc" id="sonuc" hidden></div>
+</main>
+<footer class="sar">
+  <p><b>Hazırlayan: Irmak Dinmez</b></p>
+  <p>Sorular özgün olarak hazırlanmıştır.</p>
+</footer>
+<script>
+(function () {
+  'use strict';
+  function $(id) { return document.getElementById(id); }
+  function grafik(noktalar, xMax, fMax, adim) {
+    adim = adim || 10;
+    var W = 500, H = 250, L = 58, R = 16, T = 14, B = 44, gw = W - L - R, gh = H - T - B;
+    function X(x) { return L + x / xMax * gw; } function Y(f) { return T + gh - f / fMax * gh; }
+    var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Kuvvet–yol grafiği" font-family="Poppins, sans-serif">';
+    s += '<rect x="' + L + '" y="' + T + '" width="' + gw + '" height="' + gh + '" fill="#fbfdff"/>';
+    for (var x = 0; x <= xMax; x++) s += '<line x1="' + X(x) + '" y1="' + T + '" x2="' + X(x) + '" y2="' + (T + gh) + '" stroke="#c9ddf1"/><text x="' + X(x) + '" y="' + (T + gh + 19) + '" font-size="13" text-anchor="middle" fill="#16264a">' + x + '</text>';
+    for (var f = 0; f <= fMax; f += adim) s += '<line x1="' + L + '" y1="' + Y(f) + '" x2="' + (L + gw) + '" y2="' + Y(f) + '" stroke="#c9ddf1"/><text x="' + (L - 8) + '" y="' + (Y(f) + 5) + '" font-size="13" text-anchor="end" fill="#16264a">' + f + '</text>';
+    s += '<path d="M' + L + ' ' + (T - 6) + 'V' + (T + gh) + 'H' + (L + gw + 8) + '" fill="none" stroke="#16264a" stroke-width="2"/>';
+    var d = noktalar.map(function (n, i) { return (i ? 'L' : 'M') + X(n[0]) + ' ' + Y(n[1]); }).join('');
+    s += '<path d="' + d + '" fill="none" stroke="#168c48" stroke-width="4" stroke-linejoin="round"/>';
+    s += '<text x="' + (L + gw / 2) + '" y="' + (H - 6) + '" font-size="13" font-weight="700" text-anchor="middle" fill="#16264a">Yol x (m)</text>';
+    s += '<text transform="translate(15 ' + (T + gh / 2) + ') rotate(-90)" font-size="13" font-weight="700" text-anchor="middle" fill="#16264a">Kuvvet F (N)</text>';
+    return s + '</svg>';
+  }
+
+  // tur: 'cs' çoktan seçmeli (d = doğru seçeneğin sırası), 'sayi' sayısal, 'acik' açık uçlu
+  var S = [
+    { tur: 'cs', m: 'Aşağıdaki durumların hangisinde belirtilen kuvvet iş YAPMAZ?',
+      c: ['Asansörün kablosu kabini yukarı çekiyor, kabin yükseliyor.', 'Bir garson tepsiyi elinde tutarak düz zeminde yürüyor; elin tepsiye uyguladığı kuvvet.', 'Bir çocuk oyuncak arabayı ipiyle çekiyor, araba ilerliyor.', 'Rüzgâr yelkenliyi itiyor, yelkenli ilerliyor.', 'Bir öğrenci çantasını yerden masaya kaldırıyor.'], d: 1,
+      a: 'Elin kuvveti yukarı, tepsinin yer değiştirmesi yatay. Kuvvet yönünde yol olmadığı için iş sıfırdır.' },
+    { tur: 'cs', m: 'Grafikte bir cisme uygulanan kuvvetin yola göre değişimi verilmiştir. 0–8 m arasında yapılan iş kaç joule\'dür?', g: grafik([[0, 15], [8, 15]], 8, 30, 5),
+      c: ['23 J', '60 J', '120 J', '240 J', '15 J'], d: 2, a: 'Alan bir dikdörtgen: 15 N · 8 m = 120 J.' },
+    { tur: 'cs', m: 'Grafiğe göre 0–6 m arasında yapılan toplam iş kaç joule\'dür?', g: grafik([[0, 0], [2, 30], [6, 30]], 6, 40),
+      c: ['180 J', '150 J', '120 J', '90 J', '60 J'], d: 1, a: 'Üçgen: ½ · 2 · 30 = 30 J. Dikdörtgen: 4 · 30 = 120 J. Toplam 150 J.' },
+    { tur: 'cs', m: 'Grafikte 0–4 m arasında yapılan iş W₁, 4–8 m arasında yapılan iş W₂\'dir. W₁ / W₂ oranı kaçtır?', g: grafik([[0, 0], [4, 20], [8, 20]], 8, 30),
+      c: ['1/4', '1/2', '1', '2', '4'], d: 1, a: 'W₁ = ½ · 4 · 20 = 40 J, W₂ = 4 · 20 = 80 J. Oran 40 / 80 = 1/2.' },
+    { tur: 'cs', m: 'Bir yayı germek için gereken kuvvet, uzama ile düzgün artıyor. Yay 0,2 m gerildiğinde kuvvet 50 N oluyor. Yayı 0,2 m germek için yapılan iş kaç joule\'dür?',
+      c: ['2,5 J', '5 J', '10 J', '250 J', '500 J'], d: 1, a: 'Grafik orijinden geçen doğru: W = ½ · 50 N · 0,2 m = 5 J. (50 · 0,2 = 10 J, kuvvet hep 50 N olsaydı geçerli olurdu.)' },
+    { tur: 'cs', m: 'Bir işçi el arabasını yol boyunca önce 90 N\'luk kuvvetle 20 m, sonra 30 N\'luk kuvvetle 40 m itiyor. Kuvvet hep yol yönündedir. İşçinin yaptığı toplam iş kaç kJ\'dür?',
+      c: ['1,2 kJ', '1,8 kJ', '3 kJ', '3,6 kJ', '7,2 kJ'], d: 2, a: '90 · 20 = 1800 J, 30 · 40 = 1200 J. Toplam 3000 J = 3 kJ. Ortalama kuvvetle (60 N · 60 m = 3,6 kJ) hesaplamak yanlıştır.' },
+    { tur: 'cs', m: 'İş ile ilgili şu ifadeler veriliyor:<br>I. İş skaler bir büyüklüktür.<br>II. İşin birimi N · m\'dir ve buna joule denir.<br>III. Aynı kuvvetle aynı yol daha uzun sürede alınırsa yapılan iş artar.<br>Hangileri doğrudur?',
+      c: ['Yalnız I', 'Yalnız II', 'I ve II', 'II ve III', 'I, II ve III'], d: 2, a: 'İşin yönü yoktur (skaler) ve birimi N · m = J\'dür. İş süreye bağlı değildir; III yanlıştır.' },
+    { tur: 'cs', m: 'Bir kutu aynı 6 m\'lik yolda iki kez çekiliyor. 1. çekişte kuvvet sabit 20 N. 2. çekişte kuvvet 0\'dan başlayıp düzgün artıyor. İki çekişte yapılan işler eşitse, 2. çekişin sonunda kuvvet kaç newton olmuştur?',
+      c: ['10 N', '20 N', '30 N', '40 N', '60 N'], d: 3, a: '1. çekiş: 20 · 6 = 120 J. 2. çekiş: ½ · F · 6 = 120 → F = 40 N.' },
+    { tur: 'sayi', m: 'Grafiğe göre 0–6 m arasında yapılan işi hesapla ve joule cinsinden yaz.', g: grafik([[0, 40], [2, 40], [6, 0]], 6, 50),
+      cevap: 160, a: 'Dikdörtgen: 40 N · 2 m = 80 J. Üçgen: ½ · 4 m · 40 N = 80 J. Toplam 160 J.' },
+    { tur: 'acik', m: 'Bir arkadaşın "Kuvvet yol boyunca değişiyorsa iş hesaplanamaz, çünkü W = F · x formülüne hangi F\'yi koyacağımızı bilemeyiz." diyor. Kuvvet–yol grafiğini kullanarak ona nasıl açıklarsın?',
+      ornek: 'Kuvvet değişse de iş hesaplanabilir. Kuvvet–yol grafiğini çizeriz; grafik ile yol ekseni arasında kalan alan işe eşittir. Grafiği ince şeritlere bölersek her şeritte kuvvet neredeyse sabittir ve o şeridin işi F · Δx olur. Bütün şeritlerin toplamı alanı, yani toplam işi verir. Örneğin kuvvet 0\'dan 40 N\'a düzgün artıp yol 4 m ise alan bir üçgendir: W = ½ · 40 · 4 = 80 J.',
+      olcut: ['İşin grafiğin altındaki alana eşit olduğunu söylüyor', 'Grafiği parçalara/şeritlere bölme ya da geometrik şekil (üçgen, yamuk) fikrini kullanıyor', 'Bir örnek ya da birim (N · m = J) veriyor'] }
+  ];
+
+  var cevaplanan = 0, dogru = 0, acikPuan = null;
+  $('sorular').innerHTML = S.map(function (q, i) {
+    var h = '<section class="soru" id="s' + i + '"><h2>Soru ' + (i + 1) + (q.tur === 'sayi' ? ' · Grafik okuma' : q.tur === 'acik' ? ' · Açık uçlu' : '') + '</h2><p class="metin">' + q.m + '</p>' + (q.g || '');
+    if (q.tur === 'cs') h += '<div class="secenekler">' + q.c.map(function (c, j) { return '<button class="secenek" data-j="' + j + '"><b>' + 'ABCDE'[j] + '</b><span>' + c + '</span></button>'; }).join('') + '</div>';
+    if (q.tur === 'sayi') h += '<div class="giris-satir"><label for="g' + i + '">W =</label><input type="number" inputmode="decimal" id="g' + i + '"> J <button class="dugme" data-kontrol>Cevapla</button></div>';
+    if (q.tur === 'acik') h += '<textarea rows="4" id="g' + i + '" aria-label="Cevabın"></textarea><p><button class="dugme" data-ornek>Cevabımı bitirdim, örnek cevabı göster</button></p>';
+    return h + '<div class="aciklama-yer"></div></section>';
+  }).join('');
+
+  function guncelle() {
+    $('bantCevap').textContent = cevaplanan + ' / 10 cevaplandı';
+    $('bantDogru').textContent = '✓ ' + String(dogru).replace('.', ',') + ' doğru';
+    if (cevaplanan === S.length) sonuc();
+  }
+  function aciklama(sec, tur, baslik, metin) { sec.querySelector('.aciklama-yer').innerHTML = '<div class="aciklama ' + tur + '"><b>' + baslik + '</b>' + metin + '</div>'; }
+
+  S.forEach(function (q, i) {
+    var sec = $('s' + i);
+    if (q.tur === 'cs') sec.querySelectorAll('.secenek').forEach(function (b) {
+      b.onclick = function () {
+        var j = +b.dataset.j, ok = j === q.d;
+        sec.querySelectorAll('.secenek').forEach(function (x) { x.disabled = true; if (+x.dataset.j === q.d) x.classList.add('dogru'); });
+        if (!ok) b.classList.add('yanlis');
+        cevaplanan++; if (ok) dogru++;
+        aciklama(sec, ok ? 'iyi' : 'kotu', ok ? 'Doğru!' : 'Doğru cevap: ' + 'ABCDE'[q.d] + ') ' + q.c[q.d], q.a);
+        guncelle();
+      };
+    });
+    if (q.tur === 'sayi') sec.querySelector('[data-kontrol]').onclick = function () {
+      var inp = $('g' + i), v = parseFloat(String(inp.value).replace(',', '.'));
+      if (isNaN(v)) { aciklama(sec, 'notr', 'Önce bir sayı yaz.', ''); return; }
+      var ok = Math.abs(v - q.cevap) < 0.5;
+      inp.disabled = true; this.disabled = true; cevaplanan++; if (ok) dogru++;
+      aciklama(sec, ok ? 'iyi' : 'kotu', ok ? 'Doğru! W = ' + q.cevap + ' J' : 'Doğru cevap: ' + q.cevap + ' J', q.a);
+      guncelle();
+    };
+    if (q.tur === 'acik') sec.querySelector('[data-ornek]').onclick = function () {
+      var t = $('g' + i);
+      if (t.value.trim().length < 15) { aciklama(sec, 'notr', 'Önce kendi cevabını yaz.', 'Birkaç cümleyle açıklaman yeterli.'); return; }
+      t.readOnly = true; this.hidden = true;
+      sec.querySelector('.aciklama-yer').innerHTML = '<div class="aciklama notr"><b>Örnek cevap</b>' + q.ornek +
+        '<p style="margin:10px 0 4px"><b style="display:inline">Kendini değerlendir:</b> Cevabında bunlar var mı?</p><ul style="margin:0;padding-left:22px">' + q.olcut.map(function (o) { return '<li>' + o + '</li>'; }).join('') + '</ul>' +
+        '<div class="oz-deg"><button class="dugme yesil" data-p="1">Tamamen var</button><button class="dugme ikincil" data-p="0.5">Kısmen var</button><button class="dugme ikincil" data-p="0">Yok</button></div></div>';
+      sec.querySelectorAll('[data-p]').forEach(function (b) {
+        b.onclick = function () {
+          acikPuan = +b.dataset.p; cevaplanan++; dogru += acikPuan;
+          sec.querySelectorAll('[data-p]').forEach(function (x) { x.disabled = true; x.classList.toggle('yesil', x === b); x.classList.toggle('ikincil', x !== b); });
+          guncelle();
+        };
+      });
+    };
+  });
+
+  function sonuc() {
+    var yuzde = Math.round(dogru / S.length * 100), mesaj;
+    if (yuzde >= 85) mesaj = 'Harika! İşi kuvvet–yol grafiğinden bulmayı kavramışsın.';
+    else if (yuzde >= 60) mesaj = 'İyi gidiyorsun. Yanlış yaptığın soruların açıklamalarını yeniden oku.';
+    else mesaj = 'Laboratuvara dönüp 3. deneyi (yaylı araba) ve şerit yöntemini yeniden dene, sonra testi tekrar çöz.';
+    var s = $('sonuc');
+    s.innerHTML = '<div class="buyuk">' + String(dogru).replace('.', ',') + ' / ' + S.length + '</div><p><b>%' + yuzde + '</b> · ' + mesaj + '</p>' +
+      '<div class="sira"><button class="dugme" id="tekrarBtn">Testi yeniden çöz</button><button class="dugme ikincil" id="yazdirBtn">Yazdır</button></div>';
+    s.hidden = false; s.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    $('tekrarBtn').onclick = function () { location.reload(); };
+    $('yazdirBtn').onclick = function () { window.print(); };
+  }
+})();
+</script>
+</body>
+</html>

@@ -162,6 +162,10 @@ window.HAFTALAR = [
    "oyun": {
     "dosya": "hafta/09/oyun.html",
     "baslik": "İş Oyunu: 4 bölüm"
+   },
+   "test": {
+    "dosya": "hafta/09/test.html",
+    "baslik": "10 soru: grafikten iş bulma"
    }
   },
   "bas": "2026-11-09",

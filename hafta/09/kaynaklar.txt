@@ -1,0 +1,9 @@
+9. hafta (İş, FİZ.10.2.1) — kaynak ve telif notu
+Hazırlayan: Irmak Dinmez
+
+animasyon.mp4  Kod ile üretildi (kaynak/hafta09-animasyon/). Çizimler, müzik ve efektler kodla üretildi; dış görsel/ses yok.
+lab.html       Simülasyon, senaryo (maden arabası, çamurlu ray, yaylı araba) ve sorular özgün. Çizimler kodla (canvas) yapıldı.
+oyun.html      50 soru ve 2 okuma metni ("Paslı ray", "Okçunun yayı") özgün. Grafikler kodla (SVG) çizildi. Doğru/yanlış sesleri tarayıcıda kodla üretilir.
+test.html      10 soru özgün. Grafikler kodla (SVG) çizildi.
+Yazı tipi      Poppins (SIL Open Font License), assets/fonts/.
+Kazanım kodu ve başlığı MEB Fizik Dersi Öğretim Programı'ndan alındı.

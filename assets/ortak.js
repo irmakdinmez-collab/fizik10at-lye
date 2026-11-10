@@ -4,10 +4,10 @@ var UNITE_RENK = {
   'Elektrik': 'var(--u-elektrik)', 'Dalgalar': 'var(--u-dalgalar)', 'Yıl Sonu': 'var(--u-yilsonu)'
 };
 var BOLUMLER = [
-  { anahtar: 'animasyon', ad: 'Animasyon', aciklama: 'Kavramı keşfettiren kısa film', renk: 'var(--mavi)' },
   { anahtar: 'lab', ad: 'Dijital Laboratuvar', aciklama: 'Tahmin et, dene, ölç, sonuca ulaş', renk: 'var(--u-dalgalar)' },
+  { anahtar: 'animasyon', ad: 'Animasyon', aciklama: 'Kavramı keşfettiren kısa film', renk: 'var(--mavi)' },
   { anahtar: 'oyun', ad: 'Oyun', aciklama: '3 can, bölüm bölüm ilerleyen sorular', renk: 'var(--vurgu)' },
-  { anahtar: 'test', ad: 'Kavrama Testi', aciklama: 'Konuyu ne kadar kavradık?', renk: 'var(--yesil)' }
+  { anahtar: 'test', ad: 'Kazanım Testi', aciklama: 'Kazanımı ne kadar kavradık?', renk: 'var(--yesil)' }
 ];
 var IKON = {
   animasyon: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="3"/><path d="M10 9.5v5l4.5-2.5z" fill="currentColor"/></svg>',

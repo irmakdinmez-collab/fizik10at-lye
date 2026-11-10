@@ -1,6 +1,6 @@
 # Fizik Dijital Atölyesi · 10. Sınıf
 
-Yıllık plana göre her hafta için dört içerik: **Animasyon**, **Dijital Laboratuvar**, **Oyun**, **Kavrama Testi**.
+Yıllık plana göre her hafta için dört içerik: **Dijital Laboratuvar**, **Animasyon**, **Oyun**, **Kazanım Testi**.
 Hazırlayan: Irmak Dinmez
 
 ## Yapı

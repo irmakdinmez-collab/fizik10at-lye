@@ -1,13 +1,13 @@
 # Fizik Dijital Atölyesi — proje durumu ve standartlar
 
-**Amaç:** 10. sınıf fizik yıllık planına göre her hafta için 4 içerik: Animasyon, Dijital Laboratuvar, Oyun, Kavrama Testi. Site tüm öğretmenler için; öğretmen "Kasım · 2. Hafta"ya tıklar, dört içeriğe ulaşır.
+**Amaç:** 10. sınıf fizik yıllık planına göre her hafta için 4 içerik: Dijital Laboratuvar, Animasyon, Oyun, Kazanım Testi (sitede bu sırayla). Site tüm öğretmenler için; öğretmen "Kasım · 2. Hafta"ya tıklar, dört içeriğe ulaşır.
 **Hazırlayan:** Irmak Dinmez · **Depo:** github.com/irmakdinmez-collab/fizik10at-lye (main) · **Yayın:** Netlify, depoya bağlı (adres eklenecek)
 
 ## Durum (10 Kasım 2026)
 - [x] Site iskeleti: `index.html` (aylara göre hafta kartları, "Bu hafta" rozeti), `hafta.html?no=N` (tek şablon), `data/haftalar.js` + `.json` (37 hafta, plandan çıkarıldı).
 - [x] 9. hafta (9–13 Kasım, İş, FİZ.10.2.1): animasyon yayında (`hafta/09/animasyon.mp4`, 3:33). Kaynak: `kaynak/hafta09-animasyon/`.
 - [x] 9. hafta dijital laboratuvar (`hafta/09/lab.html`): maden arabası; 3 deney (sabit kuvvet, çamurlu ray = basamaklı, yaylı araba = doğrusal artan), ölçüm kaydı, veri tablosu, grafik altını boyama, alan otomatik boyanır (dikdörtgen, basamak, üçgen).
-- [x] 9. hafta oyun (`hafta/09/oyun.html`: 4 bölüm, 10+10+15+15 soru, okuma metinleri "Paslı ray" ve "Okçunun yayı") ve kavrama testi (`hafta/09/test.html`: 8 çoktan seçmeli + 1 grafik okuma + 1 açık uçlu, öz değerlendirmeli).
+- [x] 9. hafta oyun (`hafta/09/oyun.html`: 4 bölüm, 10+10+15+15 soru, okuma metinleri "Paslı ray" ve "Okçunun yayı") ve kazanım testi (`hafta/09/test.html`: 8 çoktan seçmeli + 1 grafik okuma + 1 açık uçlu, öz değerlendirmeli).
 - [ ] Pilot bitince: üretim standardını skill olarak yaz (önce denenmiş örnek, sonra skill).
 - [ ] Sonra sıradaki haftalar: 10. hafta (23–27 Kasım, FİZ.10.2.2 iş-enerji-güç), 11. hafta (enerji biçimleri)… Geçmiş haftalar (1–8) en sona.
 - [ ] Netlify adresi ve alt kısma lisans kararı (CC BY-NC-SA mı, "Tüm hakları saklıdır" mı) bekleniyor.

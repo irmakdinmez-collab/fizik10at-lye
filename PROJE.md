@@ -9,7 +9,8 @@
 - [x] 9. hafta dijital laboratuvar (`hafta/09/lab.html`): maden arabası; 3 deney (sabit kuvvet, çamurlu ray = basamaklı, yaylı araba = doğrusal artan), ölçüm kaydı, veri tablosu, grafik altını boyama, alan otomatik boyanır (dikdörtgen, basamak, üçgen).
 - [x] 9. hafta oyun (`hafta/09/oyun.html`: 4 bölüm, 10+10+15+15 soru, okuma metinleri "Paslı ray" ve "Okçunun yayı") ve kazanım testi (`hafta/09/test.html`: 8 çoktan seçmeli + 1 grafik okuma + 1 açık uçlu, öz değerlendirmeli).
 - [ ] Pilot bitince: üretim standardını skill olarak yaz (önce denenmiş örnek, sonra skill).
-- [ ] Sonra sıradaki haftalar: 10. hafta (23–27 Kasım, FİZ.10.2.2 iş-enerji-güç), 11. hafta (enerji biçimleri)… Geçmiş haftalar (1–8) en sona.
+- [x] 10. hafta (23–27 Kasım, FİZ.10.2.2 iş-enerji-güç): animasyon, lab, oyun, kazanım testi (`hafta/10/`, kaynak `kaynak/hafta10-animasyon/`).
+- [ ] Sonra sıradaki haftalar: 11. hafta (enerji biçimleri)… Geçmiş haftalar (1–8) en sona.
 - [ ] Netlify adresi ve alt kısma lisans kararı (CC BY-NC-SA mı, "Tüm hakları saklıdır" mı) bekleniyor.
 
 ## Yeni içerik ekleme

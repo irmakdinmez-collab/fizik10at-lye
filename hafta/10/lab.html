@@ -1,0 +1,768 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vinç Motorları: İş, Enerji ve Güç · Dijital Laboratuvar</title>
+<style>
+@font-face { font-family: 'Poppins'; src: url('../../assets/fonts/Poppins-Regular.ttf') format('truetype'); font-weight: 400; }
+@font-face { font-family: 'Poppins'; src: url('../../assets/fonts/Poppins-Medium.ttf') format('truetype'); font-weight: 500; }
+@font-face { font-family: 'Poppins'; src: url('../../assets/fonts/Poppins-Bold.ttf') format('truetype'); font-weight: 700; }
+:root {
+  --zemin-ust: #def0fe; --zemin-alt: #b6d8f4; --kart: #fff; --kart-2: #f0f7ff;
+  --metin: #16264a; --soluk: #54688e; --cizgi: #c9ddf1;
+  --vurgu: #cd7800; --mavi: #0070c4; --yesil: #168c48; --kirmizi: #cc2048; --enerji: #cd7800;
+  --golge: 0 6px 22px rgba(22,38,74,.10); --r: 18px;
+}
+* { box-sizing: border-box; }
+html { background: var(--zemin-alt); -webkit-text-size-adjust: 100%; }
+body { margin: 0; font-family: 'Poppins', system-ui, sans-serif; color: var(--metin); line-height: 1.5;
+  background: var(--zemin-alt) linear-gradient(180deg, var(--zemin-ust), var(--zemin-alt) 900px) no-repeat; min-height: 100vh; }
+.sar { max-width: 1180px; margin: 0 auto; padding: 0 16px; }
+header { padding: 18px 0 6px; }
+header h1 { margin: 0; font-size: clamp(22px, 3.2vw, 34px); line-height: 1.2; }
+header p { margin: 2px 0 0; color: var(--soluk); font-weight: 500; }
+.adimlar { display: flex; gap: 8px; flex-wrap: wrap; margin: 14px 0; padding: 0; list-style: none; }
+.adimlar button { font: 700 16px 'Poppins', sans-serif; border: 3px solid transparent; background: var(--kart); color: var(--metin);
+  border-radius: 14px; padding: 10px 16px; min-height: 52px; cursor: pointer; box-shadow: var(--golge); display: flex; align-items: center; gap: 8px; }
+.adimlar button i { font-style: normal; width: 30px; height: 30px; border-radius: 50%; background: var(--kart-2); display: grid; place-items: center; }
+.adimlar button.aktif { border-color: var(--enerji); }
+.adimlar button.aktif i { background: var(--enerji); color: #fff; }
+.adimlar button.tamam i { background: var(--yesil); color: #fff; }
+.kart { background: var(--kart); border-radius: var(--r); box-shadow: var(--golge); padding: 20px; margin-bottom: 16px; }
+.kart h2 { margin: 0 0 10px; font-size: 24px; }
+.kart h3 { margin: 4px 0 8px; font-size: 19px; }
+.kart p { margin: 6px 0; font-size: 17px; }
+.soru-kutu { border-left: 7px solid var(--enerji); background: #fff6ea; padding: 14px 18px; border-radius: 12px; font-size: 19px; font-weight: 500; margin: 12px 0; }
+.kazanim { border-left: 7px solid var(--enerji); background: var(--kart-2); padding: 12px 16px; border-radius: 12px; margin: 10px 0; }
+.kazanim b { color: var(--enerji); }
+.dugme { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; cursor: pointer;
+  font: 700 17px 'Poppins', sans-serif; padding: 12px 20px; border-radius: 14px; min-height: 54px; min-width: 54px;
+  background: var(--metin); color: #fff; box-shadow: var(--golge); }
+.dugme.ikincil { background: var(--kart-2); color: var(--metin); box-shadow: none; border: 2px solid var(--cizgi); }
+.dugme.turuncu { background: var(--enerji); }
+.dugme.yesil { background: var(--yesil); }
+.dugme:disabled { opacity: .45; cursor: default; }
+.dugme:focus-visible, .adimlar button:focus-visible, .secenek:focus-visible, .deney-sec button:focus-visible { outline: 4px solid var(--mavi); outline-offset: 3px; }
+.sira { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.secenekler { display: grid; gap: 10px; margin: 12px 0; }
+.secenek { text-align: left; font: 500 18px 'Poppins', sans-serif; padding: 14px 18px; border-radius: 14px; border: 3px solid var(--cizgi);
+  background: var(--kart); color: var(--metin); cursor: pointer; min-height: 56px; }
+.secenek.secili { border-color: var(--enerji); background: #fff6ea; }
+.secenek.dogru { border-color: var(--yesil); background: #e8f7ee; }
+.secenek.yanlis { border-color: var(--kirmizi); background: #fdebf0; }
+.deney-sec { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+.deney-sec button { font: 700 16px 'Poppins', sans-serif; padding: 10px 16px; border-radius: 12px; border: 3px solid var(--cizgi); background: var(--kart); color: var(--metin); cursor: pointer; min-height: 52px; }
+.deney-sec button.aktif { border-color: var(--mavi); background: #e6f2fc; }
+.secici { display: flex; gap: 8px; flex-wrap: wrap; margin: 6px 0 10px; }
+.secici button { font: 700 16px 'Poppins', sans-serif; padding: 10px 14px; border-radius: 12px; border: 3px solid var(--cizgi); background: var(--kart); color: var(--metin); cursor: pointer; min-height: 52px; display: flex; align-items: center; gap: 8px; }
+.secici button.aktif { border-color: var(--enerji); background: #fff6ea; }
+.secici button i { width: 14px; height: 14px; border-radius: 50%; display: inline-block; }
+.secici button small { font-weight: 500; color: var(--soluk); }
+.iki { display: grid; grid-template-columns: 1.25fr 1fr; gap: 16px; align-items: start; }
+@media (max-width: 900px) { .iki { grid-template-columns: 1fr; } }
+canvas { display: block; width: 100%; border-radius: 12px; background: #f7fbff; touch-action: none; }
+.olcum { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 12px 0; }
+.olcum div { background: var(--kart-2); border-radius: 12px; padding: 10px 12px; text-align: center; }
+.olcum small { display: block; color: var(--soluk); font-size: 13px; font-weight: 500; }
+.olcum b { font-size: 26px; }
+table { width: 100%; border-collapse: collapse; font-size: 16px; }
+th, td { padding: 8px 10px; border-bottom: 1px solid var(--cizgi); text-align: center; }
+th { background: var(--kart-2); font-weight: 700; }
+.tablo-kap { max-height: 320px; overflow: auto; border-radius: 12px; border: 1px solid var(--cizgi); }
+.bilgi { font-size: 15px; color: var(--soluk); }
+.not { background: #e6f2fc; border-radius: 12px; padding: 10px 14px; font-size: 16px; margin: 10px 0; }
+.giris-satir { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: 8px 0; font-size: 17px; }
+.giris-satir label { flex-basis: 100%; }
+.giris-satir input[type=number] { font: 700 20px 'Poppins', sans-serif; width: 130px; padding: 10px; border-radius: 12px; border: 2px solid var(--cizgi); color: var(--metin); }
+.geri-bildirim { font-weight: 700; min-height: 1.5em; }
+.geri-bildirim.iyi { color: var(--yesil); } .geri-bildirim.kotu { color: var(--kirmizi); }
+.cozum { border: 3px dashed var(--yesil); border-radius: var(--r); padding: 16px 20px; background: #f2fbf5; }
+.formul { font-size: 24px; font-weight: 700; text-align: center; margin: 10px 0; }
+.sonsorular .kart { border-left: 7px solid var(--mavi); }
+.lejant { display: flex; gap: 14px; flex-wrap: wrap; font-size: 15px; margin: 6px 0; }
+.lejant span { display: inline-flex; align-items: center; gap: 6px; }
+.lejant i { width: 22px; height: 5px; border-radius: 3px; display: inline-block; }
+.gezinti { display: flex; justify-content: space-between; gap: 10px; margin: 6px 0 18px; }
+footer { margin-top: 30px; padding: 18px 0 30px; border-top: 1px solid var(--cizgi); color: var(--soluk); font-size: 14px; }
+footer b { color: var(--metin); }
+[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<header class="sar">
+  <h1>Dijital Laboratuvar: Vinç Motorları ile İş, Enerji ve Güç</h1>
+  <p>10. Sınıf Fizik · Enerji · 10. Hafta</p>
+</header>
+
+<main class="sar">
+  <ol class="adimlar" id="adimlar">
+    <li><button data-a="0" class="aktif"><i>1</i>Amaç</button></li>
+    <li><button data-a="1"><i>2</i>Tahmin et</button></li>
+    <li><button data-a="2"><i>3</i>Deney</button></li>
+    <li><button data-a="3"><i>4</i>Veri ve grafik</button></li>
+    <li><button data-a="4"><i>5</i>Sonuca ulaş</button></li>
+  </ol>
+
+  <!-- 1. AMAÇ -->
+  <section class="bolum" id="b0">
+    <div class="kart">
+      <h2>1. Amaç</h2>
+      <div class="kazanim"><b>FİZ.10.2.2</b> İş, enerji ve güç kavramlarına ilişkin çıkarım yapabilme</div>
+      <p>Bir inşaatta tuğla kasaları çatıya elektrik motorlu vinçlerle çıkarılıyor. Şantiye şefi hangi motoru alacağına karar vermek istiyor. Motorların üzerindeki etiketler silinmiş; hangisinin ne kadar güçlü olduğunu ölçerek bulman gerekiyor.</p>
+      <div class="soru-kutu">Bir motorun yaptığı iş, kasaya aktardığı enerji ve motorun gücü arasında nasıl bir ilişki var?</div>
+      <p>Her deneyde kronometreyle süreyi, cetvelle kasanın yüksekliğini, <b>enerji sayacıyla</b> da motorun kasaya aktardığı enerjiyi ölçeceksin. Ölçümlerinden <b>iş–zaman</b> ve <b>güç–zaman</b> grafikleri çizip sonuca ulaşacaksın.</p>
+      <p class="bilgi">Kasa her deneyde sabit hızla yükseliyor. Bu yüzden motorun ipte uyguladığı kuvvet, kasanın ağırlığına eşittir.</p>
+    </div>
+  </section>
+
+  <!-- 2. TAHMİN -->
+  <section class="bolum" id="b1" hidden>
+    <div class="kart">
+      <h2>2. Tahmin et</h2>
+      <p>Ağırlığı <b>400 N</b> olan bir kasa iki farklı motorla <b>10 m</b> yükseğe çıkarılıyor. Motor X bu işi <b>10 saniyede</b>, Motor Y ise <b>20 saniyede</b> bitiriyor.</p>
+      <div class="soru-kutu">İki motoru karşılaştıran hangi ifade sence doğru?</div>
+      <div class="secenekler" id="tahminSec">
+        <button class="secenek" data-t="a">A) Motor X daha çok iş yapar, çünkü daha hızlı.</button>
+        <button class="secenek" data-t="b">B) İki motor eşit iş yapar, ama Motor X'in gücü Motor Y'ninkinin iki katıdır.</button>
+        <button class="secenek" data-t="c">C) Motor Y daha çok iş yapar, çünkü daha uzun süre çalışır.</button>
+        <button class="secenek" data-t="d">D) İki motor eşit iş yapar ve güçleri de eşittir.</button>
+      </div>
+      <div class="giris-satir"><label for="tahminNeden">Neden böyle düşündün?</label></div>
+      <textarea id="tahminNeden" rows="2" style="width:100%;font:16px 'Poppins',sans-serif;padding:10px;border-radius:12px;border:2px solid var(--cizgi)"></textarea>
+      <p class="geri-bildirim" id="tahminMesaj"></p>
+      <p class="bilgi">Tahminin şimdi doğru ya da yanlış diye işaretlenmeyecek. Deneyden sonra 5. bölümde tahminine geri döneceğiz.</p>
+    </div>
+  </section>
+
+  <!-- 3. DENEY -->
+  <section class="bolum" id="b2" hidden>
+    <div class="kart">
+      <h2>3. Deney</h2>
+      <div class="deney-sec" id="deneySec">
+        <button data-d="0" class="aktif">Deney 1: Üç motor</button>
+        <button data-d="1">Deney 2: Farklı yükler</button>
+        <button data-d="2">Deney 3: Güç değişirse</button>
+      </div>
+      <p id="deneyAciklama"></p>
+      <div class="iki">
+        <div>
+          <canvas id="sahne" width="700" height="420" aria-label="Vinç deney düzeneği"></canvas>
+          <div class="olcum">
+            <div><small>Kronometre</small><b id="okT">0,0</b> s</div>
+            <div><small>Cetvel (yükseklik)</small><b id="okH">0,0</b> m</div>
+            <div><small>Enerji sayacı</small><b id="okE">0</b> J</div>
+          </div>
+          <p style="margin:10px 0 4px;font-weight:700" id="miniBaslik"></p>
+          <canvas id="miniGrafik" width="460" height="250" aria-label="Deney grafiği"></canvas>
+          <div class="lejant" id="miniLejant"></div>
+          <p class="bilgi" id="miniBilgi"></p>
+        </div>
+        <div>
+          <p style="margin:0;font-weight:700" id="seciciBaslik"></p>
+          <div class="secici" id="secici"></div>
+          <div class="sira">
+            <button class="dugme turuncu" id="calistirBtn">▶ Motoru çalıştır</button>
+            <button class="dugme ikincil" id="basaBtn">↺ Kasayı indir</button>
+          </div>
+          <div class="sira" style="margin-top:10px">
+            <button class="dugme ikincil" id="kaydetBtn">● Ölçümü kaydet</button>
+            <button class="dugme ikincil" id="silBtn">Bu deneyin ölçümlerini sil</button>
+          </div>
+          <p class="geri-bildirim" id="kayitMesaj"></p>
+          <div class="not" id="gorev"></div>
+          <p class="bilgi">Kronometre her saniyede bir ölçümü kendiliğinden kaydeder. İstersen motoru durdurup "Ölçümü kaydet" ile ara bir ölçüm de ekleyebilirsin. Simülasyon gerçek zamandan 2 kat hızlı akar.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4. VERİ VE GRAFİK -->
+  <section class="bolum" id="b3" hidden>
+    <div class="kart">
+      <h2>4. Veri tablosu ve grafik</h2>
+      <div class="deney-sec" id="veriSec">
+        <button data-d="0" class="aktif">Deney 1</button>
+        <button data-d="1">Deney 2</button>
+        <button data-d="2">Deney 3</button>
+      </div>
+      <div class="iki">
+        <div>
+          <p style="margin:0 0 6px;font-weight:700" id="grafikBaslik"></p>
+          <canvas id="grafik" width="700" height="420" aria-label="Deney grafiği"></canvas>
+          <div class="lejant" id="lejant"></div>
+          <div class="sira" style="margin-top:8px" id="alanSira" hidden>
+            <button class="dugme ikincil" id="alanBtn">Boyamayı kaldır</button>
+            <span class="bilgi">Her kare: 1 s × 100 W = 100 J</span>
+          </div>
+          <p class="not" id="grafikBilgi"></p>
+        </div>
+        <div>
+          <h3 id="veriBaslik">Deney 1 ölçümleri</h3>
+          <div class="tablo-kap"><table><thead id="veriBas"></thead><tbody id="veriTablo"></tbody></table></div>
+          <p class="bilgi" id="veriBos"></p>
+          <button class="dugme turuncu" id="otoVeriBtn" hidden>Ölçümleri otomatik al</button>
+          <div id="hesapKap"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. SONUCA ULAŞ -->
+  <section class="bolum" id="b4" hidden>
+    <div class="sonsorular">
+      <div class="kart">
+        <h2>5. Sonuca ulaş</h2>
+        <p>Ölçümlerine ve grafiklerine bakarak soruları cevapla. Takılırsan 4. bölüme dönüp grafikleri yeniden incele.</p>
+      </div>
+      <div class="kart">
+        <h3>Soru 1</h3>
+        <p>Deney 1'de üç motor da 400 N'luk kasayı 10 m yükseğe çıkardı. Motorların kasaya yaptığı işler için ne söylersin?</p>
+        <div class="secenekler" data-dogru="b">
+          <button class="secenek" data-c="a">a) En hızlı motor (C) en çok işi yaptı.</button>
+          <button class="secenek" data-c="b">b) Üçü de eşit iş yaptı: 400 N · 10 m = 4000 J.</button>
+          <button class="secenek" data-c="c">c) En uzun çalışan motor (A) en çok işi yaptı.</button>
+        </div>
+        <p class="geri-bildirim"></p>
+      </div>
+      <div class="kart">
+        <h3>Soru 2</h3>
+        <p>Deney 1'in iş–zaman grafiğinde doğruların dikliği farklıydı. Daha dik bir doğru neyi gösterir?</p>
+        <div class="secenekler" data-dogru="a">
+          <button class="secenek" data-c="a">a) Motorun her saniyede daha çok iş yaptığını, yani gücünün daha büyük olduğunu</button>
+          <button class="secenek" data-c="b">b) Motorun toplamda daha çok iş yaptığını</button>
+          <button class="secenek" data-c="c">c) Kasanın daha ağır olduğunu</button>
+        </div>
+        <p class="geri-bildirim"></p>
+      </div>
+      <div class="kart">
+        <h3>Soru 3</h3>
+        <p>Deney 2'de aynı motor (B) farklı ağırlıktaki kasaları 10 m yükseğe çıkardı. Kasa ağırlaştıkça ne oldu?</p>
+        <div class="secenekler" data-dogru="c">
+          <button class="secenek" data-c="a">a) Yapılan iş de, motorun gücü de arttı.</button>
+          <button class="secenek" data-c="b">b) Yapılan iş değişmedi, süre arttı.</button>
+          <button class="secenek" data-c="c">c) Yapılan iş ve süre aynı oranda arttı; W / t, yani motorun gücü değişmedi.</button>
+        </div>
+        <p class="geri-bildirim"></p>
+      </div>
+      <div class="kart">
+        <h3>Soru 4</h3>
+        <p>Her deneyin sonunda enerji sayacının gösterdiği değeri F · h ile karşılaştırdın. Ne buldun?</p>
+        <div class="secenekler" data-dogru="a">
+          <button class="secenek" data-c="a">a) İkisi eşit: motorun kasaya yaptığı iş, kasaya aktarılan enerjiye eşit.</button>
+          <button class="secenek" data-c="b">b) Sayaç her zaman F · h'den büyük.</button>
+          <button class="secenek" data-c="c">c) Aralarında bir ilişki yok.</button>
+        </div>
+        <p class="geri-bildirim"></p>
+      </div>
+      <div class="kart">
+        <h3>Soru 5</h3>
+        <p>Deney 3'te motorun gücü 0–4 s arasında 600 W, 4–10 s arasında 300 W idi. Güç–zaman grafiğinin altındaki alanı hesaplayarak 10 saniyede kasaya aktarılan toplam enerjiyi bul.</p>
+        <div class="giris-satir"><label for="s5">E =</label><input type="number" id="s5" inputmode="decimal"> J <button class="dugme ikincil" id="s5Btn">Kontrol et</button></div>
+        <p class="geri-bildirim" id="s5Mesaj"></p>
+      </div>
+      <div class="kart">
+        <h3>Soru 6</h3>
+        <p>Tahmin bölümündeki Motor X'e dön: 400 N'luk kasayı 10 m yükseğe 10 saniyede çıkarıyordu. Motor X'in gücü kaç watt'tır?</p>
+        <div class="giris-satir"><label for="s6">P =</label><input type="number" id="s6" inputmode="decimal"> W <button class="dugme ikincil" id="s6Btn">Kontrol et</button></div>
+        <p class="geri-bildirim" id="s6Mesaj"></p>
+        <p class="bilgi" id="tahminHatirlat"></p>
+      </div>
+      <div class="kart">
+        <h3>Soru 7: Genelle</h3>
+        <p>Bütün deneylerden yola çıkarak iş, enerji ve güç arasındaki ilişkiyi kendi cümlelerinle yaz.</p>
+        <textarea id="kural" rows="3" style="width:100%;font:17px 'Poppins',sans-serif;padding:10px;border-radius:12px;border:2px solid var(--cizgi)"></textarea>
+      </div>
+      <div class="kart">
+        <button class="dugme yesil" id="cozumBtn">Çözümü göster</button>
+        <div class="cozum" id="cozum" hidden style="margin-top:14px">
+          <h3>Çözüm</h3>
+          <div class="formul">Yapılan iş = aktarılan enerji &nbsp;·&nbsp; Güç = iş / süre (P = W / t)</div>
+          <p><b>Deney 1:</b> Üç motor da aynı kasayı aynı yüksekliğe çıkardığı için yapılan iş eşittir: W = 400 N · 10 m = 4000 J. Enerji sayacı da üçünde 4000 J gösterir. Motorları ayıran şey süredir: A 20 s, B 10 s, C 5 s. Güçleri P = W / t ile A: 200 W, B: 400 W, C: 800 W olur. İş–zaman grafiğinde doğrunun eğimi (birim zamandaki iş) gücü verir; en dik doğru en güçlü motorundur.</p>
+          <p><b>Deney 2:</b> Aynı motor (B) 200 N'luk kasayı 5 s'de, 400 N'luk kasayı 10 s'de, 800 N'luk kasayı 20 s'de çıkarır. İşler 2000 J, 4000 J, 8000 J'dür; iş ile süre aynı oranda artar, W / t = 400 W hep aynı kalır. Güç, motorun özelliğidir: ağır yükü daha yavaş kaldırır.</p>
+          <p><b>Deney 3:</b> Güç–zaman grafiğinin altındaki alan aktarılan enerjiyi (yapılan işi) verir. 0–4 s: 600 W · 4 s = 2400 J. 4–10 s: 300 W · 6 s = 1800 J. Toplam <b>4200 J</b>. Kasa 7 m yükselmiştir: F · h = 600 N · 7 m = 4200 J. İki yol aynı sonucu verir.</p>
+          <p><b>Tahmin sorusu:</b> İki motorun işi eşittir (4000 J). Motor X: P = 4000 J / 10 s = <b>400 W</b>, Motor Y: 4000 J / 20 s = 200 W. Doğru seçenek B'dir. "Daha hızlı olan daha çok iş yapar" ya da "daha uzun çalışan daha çok iş yapar" düşünceleri yanlıştır: iş, kuvvete ve yola bağlıdır, süreye bağlı değildir. Süre gücü belirler.</p>
+          <p class="bilgi">Birim kontrolü: güç–zaman grafiğinde alan W · s = (J / s) · s = J olur. İş–zaman grafiğinde eğim J / s = W olur.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <nav class="gezinti">
+    <button class="dugme ikincil" id="oncekiBtn">← Önceki</button>
+    <button class="dugme" id="sonrakiBtn">Sonraki →</button>
+  </nav>
+</main>
+
+<footer class="sar">
+  <p><b>Hazırlayan: Irmak Dinmez</b></p>
+  <p>Simülasyon, senaryo ve sorular özgün olarak hazırlanmıştır.</p>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  function $(id) { return document.getElementById(id); }
+  function sayi(v, b) { return (b === undefined ? (Math.round(v * 10) / 10) : v.toFixed(b)).toString().replace('.', ','); }
+  var RENK = { metin: '#16264a', soluk: '#54688e', cizgi: '#c9ddf1', vurgu: '#cd7800', mavi: '#0070c4', yesil: '#168c48', kirmizi: '#cc2048', mor: '#7b4fc9' };
+  var FONT = "'Poppins', system-ui, sans-serif";
+  var HIZ = 2; // simülasyon zamanı / gerçek zaman
+
+  // ---------- Deney tanımları ----------
+  // Her koşu: anahtar -> { ad, renk, F (N), P(t) (W) }. Kasa sabit hızla yükselir: v = P / F.
+  var D = [
+    { ad: 'Deney 1', hMax: 10, tMax: 20, eMax: 5000, eAdim: 1000, grafik: 'is',
+      aciklama: 'Ağırlığı 400 N olan tuğla kasası 10 m yüksekliğindeki çatıya çıkarılıyor. Etiketleri silinmiş üç motoru (A, B, C) sırayla dene.',
+      gorev: 'Görev: Bir motor seç ve "Motoru çalıştır"a bas. Kasa çatıya varınca motor kendiliğinden durur. Üç motoru da dene; her biri grafikte ayrı bir doğru çizer.',
+      seciciBaslik: 'Motor seç (güçleri bilinmiyor):',
+      kosular: { A: { ad: 'Motor A', renk: RENK.vurgu, F: 400, P: function () { return 200; } },
+                 B: { ad: 'Motor B', renk: RENK.mavi, F: 400, P: function () { return 400; } },
+                 C: { ad: 'Motor C', renk: RENK.yesil, F: 400, P: function () { return 800; } } } },
+    { ad: 'Deney 2', hMax: 10, tMax: 20, eMax: 8000, eAdim: 1000, grafik: 'is',
+      aciklama: 'Bu kez hep aynı motor (Motor B) kullanılıyor. Kasaya farklı sayıda tuğla koyarak ağırlığını değiştir.',
+      gorev: 'Görev: Bir kasa ağırlığı seç ve motoru çalıştır. Üç ağırlığı da dene. Süre ve enerji sayacı nasıl değişiyor?',
+      seciciBaslik: 'Kasanın ağırlığı (motor hep B):',
+      kosular: { k200: { ad: '200 N', renk: RENK.yesil, F: 200, P: function () { return 400; } },
+                 k400: { ad: '400 N', renk: RENK.mavi, F: 400, P: function () { return 400; } },
+                 k800: { ad: '800 N', renk: RENK.kirmizi, F: 800, P: function () { return 400; } } } },
+    { ad: 'Deney 3', hMax: 10, tMax: 10, pMax: 800, grafik: 'guc',
+      aciklama: 'Ağırlığı 600 N olan kasa, jeneratöre bağlı bir motorla çıkarılıyor. Jeneratör 4. saniyede yarı güce düşüyor ve 10. saniyede tamamen duruyor. Bu deneyde motorun üzerinde bir wattmetre (güç göstergesi) var.',
+      gorev: 'Görev: Motoru çalıştır ve wattmetreyi izle. Güç–zaman grafiğinin altı boyanarak çizilir. Boyalı alan ile enerji sayacını karşılaştır.',
+      seciciBaslik: 'Kasa: 600 N · motor: jeneratörlü',
+      kosular: { g: { ad: 'Jeneratörlü motor', renk: RENK.mor, F: 600, P: function (t) { return t < 4 ? 600 : 300; } } } }
+  ];
+  function yukseklik(k, t) { // sabit hızlı parça parça hareket: h = ∫ P/F dt
+    if (k.F === 600) return t < 4 ? t * 1 : 4 + (t - 4) * 0.5;
+    return k.P(t) / k.F * t;
+  }
+  function bitisSuresi(d, k) { return d === 2 ? 10 : D[d].hMax * k.F / k.P(0); }
+
+  var durum = { adim: 0, deney: 0, veri: 0, secim: ['A', 'k400', 'g'], t: 0, calisiyor: false,
+    olcumler: [{}, {}, {}], alan: true, tahmin: null };
+
+  // ---------- Adımlar ----------
+  var adimBtn = document.querySelectorAll('#adimlar button'), ilkAdimGecti = false;
+  function adimaGit(n) {
+    durum.adim = Math.max(0, Math.min(4, n));
+    for (var i = 0; i < 5; i++) $('b' + i).hidden = i !== durum.adim;
+    adimBtn.forEach(function (b, i) { b.classList.toggle('aktif', i === durum.adim); if (i < durum.adim) b.classList.add('tamam'); });
+    $('oncekiBtn').disabled = durum.adim === 0;
+    $('sonrakiBtn').hidden = durum.adim === 4;
+    if (durum.adim !== 2) durdur();
+    if (durum.adim === 2) { boyutla(); ciz(); }
+    if (durum.adim === 3) { durum.veri = durum.deney; veriGuncelle(); }
+    if (durum.adim === 4) tahminHatirlat();
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (window.parent !== window && ilkAdimGecti) window.parent.postMessage({ tip: 'fizik-basa' }, '*');
+    ilkAdimGecti = true;
+  }
+  adimBtn.forEach(function (b) { b.onclick = function () { adimaGit(+b.dataset.a); }; });
+  $('oncekiBtn').onclick = function () { adimaGit(durum.adim - 1); };
+  $('sonrakiBtn').onclick = function () { adimaGit(durum.adim + 1); };
+
+  // ---------- Tahmin ----------
+  document.querySelectorAll('#tahminSec .secenek').forEach(function (b) {
+    b.onclick = function () {
+      document.querySelectorAll('#tahminSec .secenek').forEach(function (x) { x.classList.remove('secili'); });
+      b.classList.add('secili'); durum.tahmin = b.dataset.t;
+      $('tahminMesaj').textContent = 'Tahminin kaydedildi. Şimdi deneye geç ve ölçerek sına.';
+      $('tahminMesaj').className = 'geri-bildirim iyi';
+    };
+  });
+
+  // ---------- Tuval yardımcıları ----------
+  var sahne = $('sahne'), sc = sahne.getContext('2d');
+  var mini = $('miniGrafik'), mc = mini.getContext('2d');
+  var graf = $('grafik'), gc = graf.getContext('2d');
+  function hazirla(cv, ctx, oran) {
+    var w = cv.clientWidth || cv.width, h = Math.round(w * oran), dpr = window.devicePixelRatio || 1;
+    cv.style.height = h + 'px'; cv.width = Math.round(w * dpr); cv.height = Math.round(h * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0); return { w: w, h: h };
+  }
+  var olc = {};
+  function boyutla() {
+    olc.s = hazirla(sahne, sc, 0.6); olc.m = hazirla(mini, mc, 0.54);
+    if (!$('b3').hidden) olc.g = hazirla(graf, gc, 0.62);
+  }
+  window.addEventListener('resize', function () { boyutla(); ciz(); if (!$('b3').hidden) veriCiz(); });
+  function roundRect(c, x, y, w, h, r) { c.beginPath(); c.moveTo(x + r, y); c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r); c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath(); }
+
+  function aktifKosu() { return D[durum.deney].kosular[durum.secim[durum.deney]]; }
+  function anlik() {
+    var d = durum.deney, k = aktifKosu(), t = durum.t;
+    var h = yukseklik(k, t);
+    return { t: t, h: h, E: k.F * h, P: t < bitisSuresi(d, k) ? k.P(t) : 0 };
+  }
+
+  // ---------- Deney sahnesi ----------
+  function cizSahne() {
+    var Wd = olc.s.w, s = Wd / 700, d = durum.deney, k = aktifKosu(), a = anlik();
+    sc.clearRect(0, 0, Wd, olc.s.h);
+    sc.save(); sc.scale(s, s);
+    var zemin = 385, mPx = 31.5;
+    sc.fillStyle = '#eaf4fd'; sc.fillRect(0, 0, 700, 420);
+    // bulutlar
+    sc.fillStyle = '#d7e6f5'; [[80, 60], [190, 40], [610, 70]].forEach(function (b) { sc.beginPath(); sc.ellipse(b[0], b[1], 46, 16, 0, 0, 7); sc.fill(); });
+    // zemin
+    sc.fillStyle = '#c9b79c'; sc.fillRect(0, zemin, 700, 40);
+    // bina
+    var bx0 = 250, bx1 = 470, by0 = zemin - 10 * mPx;
+    sc.fillStyle = '#c8d3e3'; sc.fillRect(bx0, by0, bx1 - bx0, zemin - by0);
+    sc.strokeStyle = '#7d8aa3'; sc.lineWidth = 2; sc.strokeRect(bx0, by0, bx1 - bx0, zemin - by0);
+    sc.fillStyle = '#9fb6d3';
+    for (var r = 0; r < 5; r++) for (var c = 0; c < 4; c++) sc.fillRect(bx0 + 22 + c * 50, by0 + 20 + r * 60, 26, 30);
+    // çatıdaki motor ve kol
+    sc.fillStyle = '#5b6d8f'; roundRect(sc, 330, by0 - 44, 86, 44, 8); sc.fill();
+    sc.fillStyle = '#fff'; sc.font = '700 15px ' + FONT; sc.textAlign = 'center';
+    sc.fillText(d === 2 ? 'Motor' : (d === 0 ? k.ad : 'Motor B'), 373, by0 - 17);
+    // tambur
+    var ang = (durum.t * 3) % (Math.PI * 2);
+    sc.strokeStyle = RENK.metin; sc.lineWidth = 2; sc.beginPath(); sc.arc(436, by0 - 22, 14, 0, 7); sc.stroke();
+    sc.beginPath(); sc.moveTo(436, by0 - 22); sc.lineTo(436 + 14 * Math.cos(ang), by0 - 22 + 14 * Math.sin(ang)); sc.stroke();
+    // kol (bom)
+    sc.strokeStyle = '#4b5873'; sc.lineWidth = 7; sc.beginPath(); sc.moveTo(430, by0 - 40); sc.lineTo(585, by0 - 40); sc.stroke();
+    sc.lineWidth = 3; sc.beginPath(); sc.moveTo(470, by0); sc.lineTo(560, by0 - 40); sc.stroke();
+    // makara
+    var px = 578, py = by0 - 32;
+    sc.fillStyle = '#fff'; sc.strokeStyle = RENK.metin; sc.lineWidth = 3; sc.beginPath(); sc.arc(px, py, 10, 0, 7); sc.fill(); sc.stroke();
+    // ip
+    var kasaAlt = zemin - a.h * mPx, kasaH = 40, kasaW = 58, kx = px + 10;
+    sc.strokeStyle = '#8a6a44'; sc.lineWidth = 2.5; sc.beginPath(); sc.moveTo(436, by0 - 36); sc.lineTo(px, py - 10); sc.stroke();
+    sc.beginPath(); sc.moveTo(kx, py); sc.lineTo(kx, kasaAlt - kasaH - 12); sc.stroke();
+    // kasa
+    sc.beginPath(); sc.moveTo(kx, kasaAlt - kasaH - 12); sc.lineTo(kx - 20, kasaAlt - kasaH); sc.moveTo(kx, kasaAlt - kasaH - 12); sc.lineTo(kx + 20, kasaAlt - kasaH); sc.stroke();
+    sc.fillStyle = '#c48c5a'; sc.strokeStyle = '#8c5f3c'; sc.lineWidth = 2.5;
+    sc.fillRect(kx - kasaW / 2, kasaAlt - kasaH, kasaW, kasaH); sc.strokeRect(kx - kasaW / 2, kasaAlt - kasaH, kasaW, kasaH);
+    sc.fillStyle = '#b2442c'; var tug = Math.min(4, Math.max(1, Math.round(k.F / 200)));
+    for (var i = 0; i < tug; i++) sc.fillRect(kx - kasaW / 2 + 5 + (i % 2) * 25, kasaAlt - 12 - Math.floor(i / 2) * 12, 22, 9);
+    sc.fillStyle = RENK.metin; sc.font = '700 13px ' + FONT; sc.fillText(k.F + ' N', kx, kasaAlt - kasaH - 18 - 4 > py + 14 ? kasaAlt - kasaH + 15 : kasaAlt - kasaH + 15);
+    // kuvvet oku
+    if (a.P > 0) {
+      sc.strokeStyle = RENK.kirmizi; sc.fillStyle = RENK.kirmizi; sc.lineWidth = 4;
+      var oy = kasaAlt - kasaH - 16; sc.beginPath(); sc.moveTo(kx + 40, oy + 30); sc.lineTo(kx + 40, oy - 10); sc.stroke();
+      sc.beginPath(); sc.moveTo(kx + 40, oy - 22); sc.lineTo(kx + 32, oy - 8); sc.lineTo(kx + 48, oy - 8); sc.fill();
+      sc.font = '700 15px ' + FONT; sc.textAlign = 'left'; sc.fillText('F', kx + 50, oy);
+    }
+    // cetvel
+    var cx = 660;
+    sc.fillStyle = '#fff4c8'; sc.fillRect(cx - 14, by0 - 6, 28, zemin - by0 + 6);
+    sc.strokeStyle = RENK.metin; sc.lineWidth = 1.5; sc.strokeRect(cx - 14, by0 - 6, 28, zemin - by0 + 6);
+    sc.fillStyle = RENK.metin; sc.font = '500 12px ' + FONT; sc.textAlign = 'right';
+    for (var m = 0; m <= 10; m++) { var ty = zemin - m * mPx; sc.beginPath(); sc.moveTo(cx - 14, ty); sc.lineTo(cx - 2, ty); sc.stroke(); sc.fillText(m + ' m', cx - 18, ty + 4); }
+    sc.strokeStyle = RENK.vurgu; sc.setLineDash([5, 4]); sc.lineWidth = 2; sc.beginPath(); sc.moveTo(kx + kasaW / 2, kasaAlt); sc.lineTo(cx - 14, kasaAlt); sc.stroke(); sc.setLineDash([]);
+    sc.fillStyle = RENK.vurgu; sc.beginPath(); sc.moveTo(cx - 24, kasaAlt - 7); sc.lineTo(cx - 14, kasaAlt); sc.lineTo(cx - 24, kasaAlt + 7); sc.fill();
+    // göstergeler (sol)
+    sc.textAlign = 'left';
+    gosterge(sc, 20, 110, 'Enerji sayacı', Math.round(a.E) + ' J', RENK.vurgu);
+    if (d === 2) gosterge(sc, 20, 190, 'Wattmetre', Math.round(a.P) + ' W', RENK.mor);
+    else gosterge(sc, 20, 190, 'Motor gücü', '? W', RENK.soluk);
+    gosterge(sc, 20, 270, 'Kronometre', sayi(a.t, 1) + ' s', RENK.metin);
+    sc.restore();
+  }
+  function gosterge(c, x, y, ad, deger, renk) {
+    c.fillStyle = '#fff'; c.strokeStyle = RENK.cizgi; c.lineWidth = 2; roundRect(c, x, y, 190, 64, 12); c.fill(); c.stroke();
+    c.fillStyle = RENK.soluk; c.font = '500 13px ' + FONT; c.fillText(ad, x + 12, y + 20);
+    c.fillStyle = renk; c.font = '700 26px ' + FONT; c.fillText(deger, x + 12, y + 52);
+  }
+
+  // ---------- Grafik çizimi (ortak) ----------
+  // ayar: { xMax, xAdim, yMax, yAdim, yEtiketAdim, xAd, yAd }
+  function eksenler(ctx, W, H, a, buyuk) {
+    var p = { l: buyuk ? 74 : 58, r: 30, t: 30, b: buyuk ? 54 : 42 };
+    var gw = W - p.l - p.r, gh = H - p.t - p.b;
+    var o = { p: p, gw: gw, gh: gh, X: function (x) { return p.l + x / a.xMax * gw; }, Y: function (y) { return p.t + gh - y / a.yMax * gh; } };
+    ctx.clearRect(0, 0, W, H);
+    ctx.fillStyle = '#fbfdff'; ctx.fillRect(p.l, p.t, gw, gh);
+    ctx.strokeStyle = RENK.cizgi; ctx.lineWidth = 1;
+    for (var x = 0; x <= a.xMax + 1e-9; x += a.xAdim) { ctx.beginPath(); ctx.moveTo(o.X(x), p.t); ctx.lineTo(o.X(x), p.t + gh); ctx.stroke(); }
+    for (var y = 0; y <= a.yMax + 1e-9; y += a.yAdim) { ctx.beginPath(); ctx.moveTo(p.l, o.Y(y)); ctx.lineTo(p.l + gw, o.Y(y)); ctx.stroke(); }
+    ctx.strokeStyle = RENK.metin; ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(p.l, p.t - 14); ctx.lineTo(p.l, p.t + gh); ctx.lineTo(p.l + gw + 16, p.t + gh); ctx.stroke();
+    ctx.fillStyle = RENK.metin; ctx.beginPath(); ctx.moveTo(p.l - 7, p.t - 8); ctx.lineTo(p.l, p.t - 22); ctx.lineTo(p.l + 7, p.t - 8); ctx.closePath(); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(p.l + gw + 10, p.t + gh - 7); ctx.lineTo(p.l + gw + 24, p.t + gh); ctx.lineTo(p.l + gw + 10, p.t + gh + 7); ctx.closePath(); ctx.fill();
+    ctx.font = (buyuk ? '500 14px ' : '500 11px ') + FONT; ctx.textAlign = 'center';
+    var xe = a.xEtiketAdim || a.xAdim;
+    for (x = 0; x <= a.xMax + 1e-9; x += xe) ctx.fillText(sayi(x), o.X(x), p.t + gh + (buyuk ? 20 : 15));
+    ctx.textAlign = 'right';
+    for (y = 0; y <= a.yMax + 1e-9; y += a.yEtiketAdim) ctx.fillText(y, p.l - 6, o.Y(y) + 4);
+    ctx.font = (buyuk ? '700 15px ' : '700 12px ') + FONT; ctx.textAlign = 'center';
+    ctx.fillText(a.xAd, p.l + gw / 2, H - (buyuk ? 10 : 6));
+    ctx.save(); ctx.translate(buyuk ? 16 : 11, p.t + gh / 2); ctx.rotate(-Math.PI / 2); ctx.fillText(a.yAd, 0, 0); ctx.restore();
+    return o;
+  }
+  function grafikAyar(d, buyuk) {
+    if (D[d].grafik === 'guc') return { xMax: 10, xAdim: 1, yMax: 800, yAdim: 100, yEtiketAdim: buyuk ? 100 : 200, xAd: 'Zaman t (s)', yAd: 'Güç P (W)' };
+    return { xMax: D[d].tMax, xAdim: buyuk ? 1 : 2, xEtiketAdim: 2, yMax: D[d].eMax, yAdim: buyuk ? 500 : 1000, yEtiketAdim: 1000, xAd: 'Zaman t (s)', yAd: 'İş (aktarılan enerji) W (J)' };
+  }
+  // seri: [{t, h, E, P}] sıralı
+  function cizIsSerisi(ctx, o, seri, renk, r) {
+    if (!seri.length) return;
+    ctx.strokeStyle = renk; ctx.lineWidth = 3; ctx.beginPath();
+    seri.forEach(function (n, i) { if (i) ctx.lineTo(o.X(n.t), o.Y(n.E)); else ctx.moveTo(o.X(n.t), o.Y(n.E)); }); ctx.stroke();
+    ctx.fillStyle = renk; seri.forEach(function (n) { ctx.beginPath(); ctx.arc(o.X(n.t), o.Y(n.E), r, 0, 7); ctx.fill(); });
+  }
+  function cizGucSerisi(ctx, o, k, tSon, alan, r, seri) {
+    if (tSon <= 0) return;
+    // güç basamaklı: P(t) motorun tanımından; noktalar ölçümler
+    var pts = [[0, k.P(0)]];
+    if (tSon > 4) { pts.push([4, k.P(0)], [4, k.P(4)]); }
+    pts.push([tSon, k.P(Math.min(tSon, 9.999))]);
+    if (alan) {
+      ctx.fillStyle = 'rgba(123,79,201,.25)'; ctx.beginPath(); ctx.moveTo(o.X(0), o.Y(0));
+      pts.forEach(function (n) { ctx.lineTo(o.X(n[0]), o.Y(n[1])); }); ctx.lineTo(o.X(tSon), o.Y(0)); ctx.closePath(); ctx.fill();
+    }
+    ctx.strokeStyle = RENK.mor; ctx.lineWidth = 3.5; ctx.beginPath();
+    pts.forEach(function (n, i) { if (i) ctx.lineTo(o.X(n[0]), o.Y(n[1])); else ctx.moveTo(o.X(n[0]), o.Y(n[1])); }); ctx.stroke();
+    ctx.fillStyle = RENK.mor; (seri || []).forEach(function (n) { if (n.t <= tSon + 1e-9) { ctx.beginPath(); ctx.arc(o.X(n.t), o.Y(k.P(Math.min(n.t, 9.999))), r, 0, 7); ctx.fill(); } });
+  }
+  function lejantHTML(d) {
+    if (D[d].grafik === 'guc') return '<span><i style="background:' + RENK.mor + '"></i>Güç (boyalı alan = aktarılan enerji)</span>';
+    var K = D[d].kosular;
+    return Object.keys(K).map(function (key) { var var_ = durum.olcumler[d][key]; return '<span style="opacity:' + (var_ && var_.length ? 1 : .45) + '"><i style="background:' + K[key].renk + '"></i>' + K[key].ad + '</span>'; }).join('');
+  }
+
+  function cizMini() {
+    var Wd = olc.m.w, Hd = olc.m.h, d = durum.deney, a = grafikAyar(d, false);
+    var o = eksenler(mc, Wd, Hd, a, false);
+    if (D[d].grafik === 'guc') {
+      var k = aktifKosu();
+      cizGucSerisi(mc, o, k, durum.t, true, 4, siraliSeri(d, 'g'));
+      $('miniBaslik').textContent = 'Güç–zaman grafiği (motor çalıştıkça çizilir)';
+      $('miniBilgi').textContent = durum.t > 0 ? 'Boyalı bölge: ' + Math.round(alanHesap(k, durum.t)) + ' J (her kare 1 s × 100 W = 100 J). Enerji sayacıyla karşılaştır!' : 'Motoru çalıştırınca grafik çizilecek ve altı boyanacak.';
+    } else {
+      var K = D[d].kosular;
+      Object.keys(K).forEach(function (key) { cizIsSerisi(mc, o, siraliSeri(d, key), K[key].renk, 3.5); });
+      // çalışan koşunun canlı ucu
+      var ak = aktifKosu(), an = anlik();
+      if (durum.t > 0) { mc.strokeStyle = ak.renk; mc.setLineDash([4, 4]); mc.lineWidth = 2; mc.beginPath(); mc.moveTo(o.X(0), o.Y(0)); mc.lineTo(o.X(an.t), o.Y(an.E)); mc.stroke(); mc.setLineDash([]); }
+      $('miniBaslik').textContent = 'İş–zaman grafiği (enerji sayacı – kronometre)';
+      $('miniBilgi').textContent = 'Her motor ayrı bir doğru çizer. Doğruların dikliği neden farklı? 4. bölümde inceleyeceğiz.';
+    }
+    $('miniLejant').innerHTML = lejantHTML(d);
+  }
+  function alanHesap(k, t) { return k.P(0) * Math.min(t, 4) + (t > 4 ? k.P(4) * (t - 4) : 0); }
+
+  function ciz() { if ($('b2').hidden) return; cizSahne(); cizMini(); okumalar(); }
+  function okumalar() {
+    var a = anlik();
+    $('okT').textContent = sayi(a.t, 1); $('okH').textContent = sayi(a.h, 1); $('okE').textContent = Math.round(a.E);
+  }
+
+  // ---------- Seçici ----------
+  function seciciCiz() {
+    var d = durum.deney, K = D[d].kosular;
+    $('seciciBaslik').textContent = D[d].seciciBaslik;
+    $('secici').innerHTML = Object.keys(K).map(function (key) {
+      var n = (durum.olcumler[d][key] || []).length;
+      return '<button data-k="' + key + '" class="' + (durum.secim[d] === key ? 'aktif' : '') + '"><i style="background:' + K[key].renk + '"></i>' + K[key].ad + (n ? ' <small>✓ ölçüldü</small>' : '') + '</button>';
+    }).join('');
+    $('secici').querySelectorAll('button').forEach(function (b) {
+      b.onclick = function () { durdur(); durum.secim[d] = b.dataset.k; durum.t = 0; seciciCiz(); ciz(); $('kayitMesaj').textContent = ''; };
+    });
+  }
+
+  // ---------- Çalıştırma ----------
+  var anim = null, sonZaman = 0;
+  function durdur() { durum.calisiyor = false; cancelAnimationFrame(anim); $('calistirBtn').textContent = durum.t > 0 && durum.t < bitisSuresi(durum.deney, aktifKosu()) ? '▶ Devam et' : '▶ Motoru çalıştır'; }
+  $('calistirBtn').onclick = function () {
+    if (durum.calisiyor) return durdur();
+    var d = durum.deney, k = aktifKosu(), key = durum.secim[d], tb = bitisSuresi(d, k);
+    if (durum.t >= tb - 1e-9) durum.t = 0;
+    if (durum.t === 0) { durum.olcumler[d][key] = []; kaydet(true); seciciCiz(); }
+    durum.calisiyor = true; this.textContent = '⏸ Durdur'; sonZaman = performance.now();
+    (function adim(now) {
+      if (!durum.calisiyor) return;
+      var dt = Math.min(0.1, (now - sonZaman) / 1000) * HIZ; sonZaman = now;
+      var once = durum.t;
+      durum.t = Math.min(tb, durum.t + dt);
+      // her tam saniyede otomatik kayıt
+      for (var s = Math.floor(once) + 1; s <= Math.floor(durum.t + 1e-9); s++) kayitEkle(d, key, s);
+      if (durum.t >= tb - 1e-9) { kayitEkle(d, key, tb); durdur(); bittiMesaj(d, k, tb); }
+      ciz();
+      if (durum.calisiyor) anim = requestAnimationFrame(adim);
+    })(sonZaman);
+  };
+  function bittiMesaj(d, k, tb) {
+    var m = $('kayitMesaj');
+    m.textContent = (d === 2 ? 'Jeneratör durdu. ' : 'Kasa çatıya ulaştı. ') + 't = ' + sayi(tb, 1) + ' s, h = ' + sayi(yukseklik(k, tb), 1) + ' m, enerji sayacı = ' + Math.round(k.F * yukseklik(k, tb)) + ' J';
+    m.className = 'geri-bildirim iyi'; seciciCiz();
+  }
+  function kayitEkle(d, key, t) {
+    var k = D[d].kosular[key], liste = durum.olcumler[d][key] || (durum.olcumler[d][key] = []);
+    t = Math.round(t * 10) / 10;
+    if (liste.some(function (n) { return Math.abs(n.t - t) < 1e-6; })) return false;
+    var h = yukseklik(k, t);
+    liste.push({ t: t, h: Math.round(h * 100) / 100, E: Math.round(k.F * h), P: k.P(Math.min(t, 9.999)) });
+    return true;
+  }
+  function kaydet(sessiz) {
+    var d = durum.deney, key = durum.secim[d], m = $('kayitMesaj');
+    var yeni = kayitEkle(d, key, durum.t);
+    if (sessiz) return;
+    var a = anlik();
+    if (!yeni) { m.textContent = 'Bu ölçüm zaten kayıtlı. Motoru biraz daha çalıştır.'; m.className = 'geri-bildirim kotu'; return; }
+    m.textContent = 'Kaydedildi: t = ' + sayi(a.t, 1) + ' s, h = ' + sayi(a.h, 1) + ' m, E = ' + Math.round(a.E) + ' J'; m.className = 'geri-bildirim iyi';
+    ciz();
+  }
+  $('kaydetBtn').onclick = function () { durdur(); kaydet(false); seciciCiz(); };
+  $('basaBtn').onclick = function () { durdur(); durum.t = 0; $('calistirBtn').textContent = '▶ Motoru çalıştır'; ciz(); };
+  $('silBtn').onclick = function () { durdur(); durum.olcumler[durum.deney] = {}; durum.t = 0; $('kayitMesaj').textContent = 'Bu deneyin ölçümleri silindi.'; $('kayitMesaj').className = 'geri-bildirim'; seciciCiz(); ciz(); };
+
+  function deneySec(d) {
+    durdur(); durum.deney = d; durum.t = 0;
+    document.querySelectorAll('#deneySec button').forEach(function (b) { b.classList.toggle('aktif', +b.dataset.d === d); });
+    $('deneyAciklama').textContent = D[d].aciklama; $('gorev').textContent = D[d].gorev; $('kayitMesaj').textContent = '';
+    $('calistirBtn').textContent = '▶ Motoru çalıştır';
+    seciciCiz(); ciz();
+  }
+  document.querySelectorAll('#deneySec button').forEach(function (b) { b.onclick = function () { deneySec(+b.dataset.d); }; });
+
+  // ---------- Veri ve grafik ----------
+  function siraliSeri(d, key) { return (durum.olcumler[d][key] || []).slice().sort(function (a, b) { return a.t - b.t; }); }
+  function tamamlanan(d) { // sonuna kadar ölçülmüş koşular
+    var K = D[d].kosular;
+    return Object.keys(K).filter(function (key) { var s = siraliSeri(d, key), tb = bitisSuresi(d, K[key]); return s.length >= 2 && s[0].t === 0 && Math.abs(s[s.length - 1].t - tb) < 1e-6; });
+  }
+  function veriGuncelle() {
+    var d = durum.veri, K = D[d].kosular;
+    document.querySelectorAll('#veriSec button').forEach(function (b) { b.classList.toggle('aktif', +b.dataset.d === d); });
+    $('veriBaslik').textContent = D[d].ad + ' ölçümleri';
+    var bitti = tamamlanan(d);
+    if (D[d].grafik === 'is') {
+      $('veriBas').innerHTML = '<tr><th>' + (d === 0 ? 'Motor' : 'Kasa') + '</th><th>F (N)</th><th>h (m)</th><th>t (s)</th><th>Enerji sayacı (J)</th></tr>';
+      $('veriTablo').innerHTML = bitti.map(function (key) { var s = siraliSeri(d, key), son = s[s.length - 1];
+        return '<tr><td><b style="color:' + K[key].renk + '">' + K[key].ad + '</b></td><td>' + K[key].F + '</td><td>' + sayi(son.h, 1) + '</td><td>' + sayi(son.t, 1) + '</td><td>' + son.E + '</td></tr>'; }).join('');
+      $('grafikBaslik').textContent = 'İş–zaman grafiği (her saniyedeki ölçümler)';
+      $('alanSira').hidden = true;
+    } else {
+      $('veriBas').innerHTML = '<tr><th>t (s)</th><th>Wattmetre P (W)</th><th>h (m)</th><th>Enerji sayacı (J)</th></tr>';
+      $('veriTablo').innerHTML = siraliSeri(d, 'g').map(function (n) { return '<tr><td>' + sayi(n.t, 1) + '</td><td>' + (n.t >= 10 ? '300 → 0' : n.P) + '</td><td>' + sayi(n.h, 1) + '</td><td>' + n.E + '</td></tr>'; }).join('');
+      $('grafikBaslik').textContent = 'Güç–zaman grafiği';
+      $('alanSira').hidden = false;
+    }
+    var eksik = Object.keys(K).length - bitti.length;
+    $('veriBos').textContent = eksik ? (D[d].grafik === 'is' ? 'Henüz sonuna kadar ölçülmemiş ' + eksik + ' koşu var. ' : 'Deney henüz sonuna kadar yapılmadı. ') + '3. bölüme dönebilir ya da ölçümleri buradan otomatik alabilirsin.' : '';
+    $('otoVeriBtn').hidden = !eksik;
+    hesapKutusu(d, bitti);
+    olc.g = hazirla(graf, gc, 0.62);
+    veriCiz();
+  }
+  $('otoVeriBtn').onclick = function () {
+    var d = durum.veri, K = D[d].kosular;
+    Object.keys(K).forEach(function (key) {
+      if (tamamlanan(d).indexOf(key) >= 0) return;
+      durum.olcumler[d][key] = []; var tb = bitisSuresi(d, K[key]);
+      for (var t = 0; t < tb - 1e-9; t += 1) kayitEkle(d, key, t);
+      kayitEkle(d, key, tb);
+    });
+    veriGuncelle();
+  };
+  document.querySelectorAll('#veriSec button').forEach(function (b) { b.onclick = function () { durum.veri = +b.dataset.d; veriGuncelle(); }; });
+  $('alanBtn').onclick = function () { durum.alan = !durum.alan; this.textContent = durum.alan ? 'Boyamayı kaldır' : 'Grafiğin altını boya'; veriCiz(); };
+
+  function veriCiz() {
+    var d = durum.veri, Wd = olc.g.w, Hd = olc.g.h, a = grafikAyar(d, true), K = D[d].kosular;
+    var o = eksenler(gc, Wd, Hd, a, true), bilgi = '';
+    if (D[d].grafik === 'guc') {
+      var s = siraliSeri(d, 'g'), tSon = s.length ? s[s.length - 1].t : 0;
+      cizGucSerisi(gc, o, K.g, tSon, durum.alan, 6, s);
+      if (tSon > 0) bilgi = durum.alan ? 'Boyalı bölgenin alanı, motorun kasaya aktardığı enerjiyi verir. Kareleri say: her kare 1 s × 100 W = 100 J.' : 'Boyamayı yeniden açmak için düğmeye bas.';
+      if (!s.length) bosYaz(o);
+    } else {
+      var var_ = false;
+      Object.keys(K).forEach(function (key) { var s2 = siraliSeri(d, key); if (s2.length) var_ = true; cizIsSerisi(gc, o, s2, K[key].renk, 5); });
+      if (!var_) bosYaz(o);
+      else bilgi = 'Her doğrunun eğimi = iş / süre. Hangi doğru daha dik? Eğimi hesaplamak için doğru üzerinde iki nokta seç.';
+    }
+    $('lejant').innerHTML = lejantHTML(d);
+    $('grafikBilgi').textContent = bilgi; $('grafikBilgi').hidden = !bilgi;
+  }
+  function bosYaz(o) { gc.fillStyle = RENK.soluk; gc.font = '500 17px ' + FONT; gc.textAlign = 'center'; gc.fillText('Henüz ölçüm yok', o.p.l + o.gw / 2, o.p.t + o.gh / 2); }
+
+  // Öğrencinin kendi hesap kutusu
+  function hesapKutusu(d, bitti) {
+    var kap = $('hesapKap'), K = D[d].kosular, h = '';
+    if (!bitti.length) { kap.innerHTML = '<p class="not">Hesap için en az bir koşuyu baştan sona ölçmelisin.</p>'; return; }
+    if (d < 2) {
+      h = '<h3>Hesapla</h3><p>Her koşu için önce işi (W = F · h), sonra gücü (P = W / t) bul. İşi enerji sayacıyla karşılaştır.</p>';
+      bitti.forEach(function (key) {
+        var k = K[key], tb = bitisSuresi(d, k), W = k.F * 10;
+        h += '<p style="margin-top:12px"><b style="color:' + k.renk + '">' + k.ad + '</b>: F = ' + k.F + ' N, h = 10 m, t = ' + sayi(tb, 1) + ' s</p>' +
+          sor(key + 'w', 'W = F · h =', W, 'J') + sor(key + 'p', 'P = W / t =', W / tb, 'W');
+      });
+    } else {
+      h = '<h3>Hesapla</h3><p>Güç–zaman grafiğindeki boyalı bölgeyi iki dikdörtgene ayır.</p>' +
+        sor('g1', '0–4 s: 600 W · 4 s =', 2400, 'J') + sor('g2', '4–10 s: 300 W · 6 s =', 1800, 'J') +
+        sor('g3', 'Toplam aktarılan enerji =', 4200, 'J') +
+        '<p>Kasa 10 saniyede 7 m yükseldi. Kasaya yapılan işi bul:</p>' + sor('g4', 'W = F · h = 600 N · 7 m =', 4200, 'J') +
+        '<p class="bilgi">İki sonucu ve enerji sayacının son değerini karşılaştır.</p>';
+    }
+    kap.innerHTML = h;
+    kap.querySelectorAll('[data-cevap]').forEach(function (btn) {
+      btn.onclick = function () {
+        var inp = $(btn.dataset.id), m = $(btn.dataset.id + 'm'), v = parseFloat(String(inp.value).replace(',', '.'));
+        if (isNaN(v)) { m.textContent = 'Bir sayı yaz.'; m.className = 'geri-bildirim kotu'; return; }
+        var c = parseFloat(btn.dataset.cevap), ok = Math.abs(v - c) <= Math.max(0.5, Math.abs(c) * 0.01);
+        m.textContent = ok ? 'Doğru!' : 'Tekrar dene: birimlere ve tabloya bir daha bak.'; m.className = 'geri-bildirim ' + (ok ? 'iyi' : 'kotu');
+      };
+    });
+  }
+  function sor(id, etiket, cevap, birim) {
+    return '<div class="giris-satir"><label for="' + id + '">' + etiket + '</label><input type="number" id="' + id + '" inputmode="decimal"> ' + birim +
+      ' <button class="dugme ikincil" data-id="' + id + '" data-cevap="' + cevap + '">Kontrol</button></div><p class="geri-bildirim" id="' + id + 'm"></p>';
+  }
+
+  // ---------- Sonuca ulaş ----------
+  document.querySelectorAll('.sonsorular .secenekler').forEach(function (grup) {
+    var mesaj = grup.nextElementSibling;
+    grup.querySelectorAll('.secenek').forEach(function (b) {
+      b.onclick = function () {
+        grup.querySelectorAll('.secenek').forEach(function (x) { x.classList.remove('dogru', 'yanlis'); });
+        var ok = b.dataset.c === grup.dataset.dogru;
+        b.classList.add(ok ? 'dogru' : 'yanlis');
+        mesaj.textContent = ok ? 'Evet! Ölçümlerin bunu gösteriyor.' : 'Bir daha düşün. 4. bölümdeki tabloya ve grafiğe dönüp bakabilirsin.';
+        mesaj.className = 'geri-bildirim ' + (ok ? 'iyi' : 'kotu');
+      };
+    });
+  });
+  function sayiKontrol(inpId, mesajId, dogru, iyi, ozel) {
+    var v = parseFloat(String($(inpId).value).replace(',', '.')), m = $(mesajId);
+    if (isNaN(v)) { m.textContent = 'Bir sayı yaz.'; m.className = 'geri-bildirim kotu'; return; }
+    if (Math.abs(v - dogru) < 0.5) { m.textContent = iyi; m.className = 'geri-bildirim iyi'; return; }
+    for (var i = 0; i < ozel.length; i++) if (Math.abs(v - ozel[i][0]) < 0.5) { m.textContent = ozel[i][1]; m.className = 'geri-bildirim kotu'; return; }
+    m.textContent = ozel.varsayilan; m.className = 'geri-bildirim kotu';
+  }
+  $('s5Btn').onclick = function () {
+    var oz = [[6000, '6000 J, motor 10 saniye boyunca hep 600 W ile çalışmış gibi sayar. Oysa 4. saniyeden sonra güç 300 W\'a düştü.'],
+              [4500, '4500 J, iki gücün ortalamasını (450 W) 10 s ile çarpmak olur. Ama iki parçanın süreleri farklı: 4 s ve 6 s.'],
+              [3000, '3000 J, motor hep 300 W ile çalışmış gibi sayar. İlk 4 saniyeyi unutma.']];
+    oz.varsayilan = 'Henüz değil. Grafiği iki dikdörtgene ayır: 0–4 s ve 4–10 s.';
+    sayiKontrol('s5', 's5Mesaj', 4200, 'Doğru! 600 · 4 + 300 · 6 = 2400 + 1800 = 4200 J. Bu, 600 N · 7 m ile de aynı.', oz);
+  };
+  $('s6Btn').onclick = function () {
+    var oz = [[4000, '4000 J, Motor X\'in yaptığı iştir. Güç için işi süreye böl.'], [40, '40, 400 N\'u 10 s\'ye bölmek olur. Önce işi bul: W = F · h.']];
+    oz.varsayilan = 'Henüz değil. Önce işi bul (W = F · h), sonra süreye böl (P = W / t).';
+    sayiKontrol('s6', 's6Mesaj', 400, 'Doğru! W = 400 N · 10 m = 4000 J, P = 4000 J / 10 s = 400 W. Motor Y\'nin gücü ise 200 W.', oz);
+  };
+  function tahminHatirlat() {
+    var t = { a: 'A) X daha çok iş yapar', b: 'B) İş eşit, X\'in gücü iki katı', c: 'C) Y daha çok iş yapar', d: 'D) İş de güç de eşit' }[durum.tahmin];
+    $('tahminHatirlat').textContent = t ? 'Deneyden önceki tahminin: ' + t + '. Ölçümlerin tahminini doğruladı mı?' : 'Tahmin bölümünde bir seçenek işaretlemedin.';
+  }
+  $('cozumBtn').onclick = function () { $('cozum').hidden = false; this.hidden = true; $('cozum').scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+
+  // başlangıç
+  deneySec(0);
+  adimaGit(0);
+})();
+</script>
+<script>
+// Sitede iframe içinde açılınca yüksekliği hafta sayfasına bildir (kaydırma çubuğu olmasın)
+(function () {
+  if (window.parent === window) return;
+  var son = 0;
+  function bildir() { var ft = document.querySelector('footer'), h = Math.ceil(ft.getBoundingClientRect().bottom + window.scrollY + 8); if (Math.abs(h - son) > 2) { son = h; window.parent.postMessage({ tip: 'fizik-yukseklik', h: h }, '*'); } }
+  if (window.ResizeObserver) new ResizeObserver(bildir).observe(document.body);
+  window.addEventListener('load', bildir); setInterval(bildir, 1000);
+})();
+</script>
+</body>
+</html>

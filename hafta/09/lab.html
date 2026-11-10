@@ -148,6 +148,9 @@ footer b { color: var(--metin); }
             <div><small>Cetvel (yol)</small><b id="okX">0,0</b> m</div>
             <div><small>Kayıtlı ölçüm</small><b id="okN">0</b></div>
           </div>
+          <p style="margin:10px 0 4px;font-weight:700">Kuvvet–yol grafiği (araba ilerledikçe çizilir)</p>
+          <canvas id="miniGrafik" width="460" height="230" aria-label="Kuvvet–yol grafiği"></canvas>
+          <p class="bilgi" id="canliAlan"></p>
         </div>
         <div>
           <div class="kaydirac" id="kayYukKap">
@@ -167,12 +170,12 @@ footer b { color: var(--metin); }
             <button class="dugme" id="cekBtn">Çek 0,5 m ▶</button>
           </div>
           <div class="sira" style="margin-top:10px">
-            <button class="dugme turuncu" id="kaydetBtn">● Ölçümü kaydet</button>
+            <button class="dugme turuncu" id="otoBtn">▶ Baştan sona çek</button>
+            <button class="dugme ikincil" id="kaydetBtn">● Ölçümü kaydet</button>
             <button class="dugme ikincil" id="silBtn">Ölçümleri sil</button>
           </div>
           <p class="geri-bildirim" id="kayitMesaj"></p>
           <div class="not" id="gorev"></div>
-          <canvas id="miniGrafik" width="460" height="230" aria-label="Kaydedilen ölçümlerin kuvvet–yol grafiği"></canvas>
         </div>
       </div>
     </div>
@@ -209,6 +212,7 @@ footer b { color: var(--metin); }
           <h3 id="veriBaslik">Deney 1 ölçümleri</h3>
           <div class="tablo-kap"><table><thead><tr><th>#</th><th>Yol x (m)</th><th>Kuvvet F (N)</th></tr></thead><tbody id="veriTablo"></tbody></table></div>
           <p class="bilgi" id="veriBos"></p>
+          <button class="dugme turuncu" id="otoVeriBtn" hidden>Ölçümleri otomatik al</button>
           <div id="hesapKap"></div>
         </div>
       </div>
@@ -306,19 +310,19 @@ footer b { color: var(--metin); }
   var D = [
     { ad: 'Deney 1', xMax: 5, kuvvet: function (x) { return YUKLER[ayar.yuk]; },
       aciklama: 'Araba düz ve temiz raylarda yavaşça çekiliyor. Arabadaki kömür arttıkça onu çekmek için gereken kuvvet de artar.',
-      gorev: 'Görev: Bir kömür miktarı seç. Arabayı 0,5 m adımlarla 5 m\'ye kadar çek ve her adımda ölçümü kaydet. İstersen kömürü değiştirip tekrarla.' },
+      gorev: 'Görev: Bir kömür miktarı seç. "Çek 0,5 m" ile arabayı 5 m\'ye kadar adım adım çek ya da "Baştan sona çek"e bas. Her adımda ölçüm kendiliğinden kaydedilir. İstersen kömürü değiştirip tekrarla.' },
     { ad: 'Deney 2', xMax: 5, kuvvet: function (x) { return x < 2 ? 40 : 20; },
       aciklama: 'Rayın ilk 2 metresi çamurlu. Çamurlu kısımda arabayı çekmek daha zor, sonra temiz ray başlıyor.',
-      gorev: 'Görev: Arabayı 0\'dan 5 m\'ye kadar 0,5 m adımlarla çek, her adımda ölçümü kaydet. Kuvvetölçere dikkat et!' },
+      gorev: 'Görev: Arabayı 0\'dan 5 m\'ye kadar çek (adım adım ya da "Baştan sona çek"). Ölçümler kendiliğinden kaydedilir. Kuvvetölçere dikkat et!' },
     { ad: 'Deney 3', xMax: 4, kuvvet: function (x) { return KLER[ayar.k] * x; },
       aciklama: 'Araba duvara bir yayla bağlı. Arabayı duvardan uzaklaştırdıkça yay gerilir ve arabayı çekmek için gereken kuvvet artar.',
-      gorev: 'Görev: Arabayı 0\'dan 4 m\'ye kadar 0,5 m adımlarla çek, her adımda ölçümü kaydet. Kuvvet nasıl değişiyor?' }
+      gorev: 'Görev: Arabayı 0\'dan 4 m\'ye kadar çek (adım adım ya da "Baştan sona çek"). Ölçümler kendiliğinden kaydedilir. Kuvvet nasıl değişiyor?' }
   ];
   var ayar = { yuk: 3, k: 2 };
   var durum = { adim: 0, deney: 0, veri: 0, x: 0, xGoster: 0, olcumler: [[], [], []], alan: false, serit: 0, seritUst: true, tahmin: null };
 
   // ---------- Adımlar ----------
-  var adimBtn = document.querySelectorAll('#adimlar button');
+  var adimBtn = document.querySelectorAll('#adimlar button'), ilkAdimGecti = false;
   function adimaGit(n) {
     durum.adim = Math.max(0, Math.min(4, n));
     for (var i = 0; i < 5; i++) $('b' + i).hidden = i !== durum.adim;
@@ -329,6 +333,8 @@ footer b { color: var(--metin); }
     if (durum.adim === 3) { durum.veri = durum.deney; veriGuncelle(); }
     if (durum.adim === 4) tahminHatirlat();
     window.scrollTo({ top: 0, behavior: 'smooth' });
+    if (window.parent !== window && ilkAdimGecti) window.parent.postMessage({ tip: 'fizik-basa' }, '*');
+    ilkAdimGecti = true;
   }
   adimBtn.forEach(function (b) { b.onclick = function () { adimaGit(+b.dataset.a); }; });
   $('oncekiBtn').onclick = function () { adimaGit(durum.adim - 1); };
@@ -469,6 +475,16 @@ footer b { color: var(--metin); }
   function cizMini() {
     var W = olc.m.w, H = olc.m.h, d = durum.deney;
     var o = eksenler(mc, W, H, D[d].xMax, 60, false);
+    var xg = durum.xGoster, adimSay = Math.max(1, Math.round(xg * 40)), iz = [];
+    for (var i = 0; i <= adimSay; i++) { var xx = xg * i / adimSay; iz.push([xx, D[d].kuvvet(xx)]); }
+    if (xg > 0.001) {
+      mc.fillStyle = 'rgba(205,120,0,.25)'; mc.beginPath(); mc.moveTo(o.X(0), o.Y(0));
+      iz.forEach(function (n) { mc.lineTo(o.X(n[0]), o.Y(n[1])); }); mc.lineTo(o.X(xg), o.Y(0)); mc.closePath(); mc.fill();
+      mc.strokeStyle = RENK.vurgu; mc.lineWidth = 3; mc.beginPath();
+      iz.forEach(function (n, j) { if (j) mc.lineTo(o.X(n[0]), o.Y(n[1])); else mc.moveTo(o.X(n[0]), o.Y(n[1])); }); mc.stroke();
+      var alan = 0; for (i = 1; i < iz.length; i++) alan += (iz[i][1] + iz[i - 1][1]) / 2 * (iz[i][0] - iz[i - 1][0]);
+      $('canliAlan').textContent = 'Boyalı bölge: yaklaşık ' + sayi(alan / 10, 1) + ' kare (her kare 1 m × 10 N). Bu sayı sana ne anlatıyor? 4. bölümde inceleyeceğiz.';
+    } else $('canliAlan').textContent = 'Arabayı çektikçe grafik çizilecek ve altı boyanacak.';
     noktalar(mc, o, durum.olcumler[d], 4.5);
     // anlık konum
     mc.strokeStyle = RENK.vurgu; mc.setLineDash([4, 4]); mc.lineWidth = 1.5;
@@ -487,7 +503,7 @@ footer b { color: var(--metin); }
 
   // animasyonlu hareket
   var anim = null;
-  function konumaGit(hedef) {
+  function konumaGit(hedef, bitince) {
     hedef = Math.max(0, Math.min(D[durum.deney].xMax, hedef));
     durum.x = hedef; $('kayX').value = hedef;
     cancelAnimationFrame(anim);
@@ -495,30 +511,43 @@ footer b { color: var(--metin); }
     (function adim(t) {
       var k = Math.min(1, (t - t0) / sure); k = k < .5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
       durum.xGoster = bas + (hedef - bas) * k; cizSahne(); cizMini(); okumalar();
-      if (k < 1) anim = requestAnimationFrame(adim);
+      if (k < 1) anim = requestAnimationFrame(adim); else if (bitince) bitince();
     })(t0);
   }
-  $('cekBtn').onclick = function () { konumaGit(durum.x + 0.5); };
-  $('geriBtn').onclick = function () { konumaGit(durum.x - 0.5); };
-  $('kayX').oninput = function () { konumaGit(+this.value); };
+  var otoZaman = null;
+  function otoDurdur() { clearTimeout(otoZaman); otoZaman = null; $('otoBtn').textContent = '▶ Baştan sona çek'; }
+  $('cekBtn').onclick = function () { otoDurdur(); konumaGit(durum.x + 0.5, function () { kaydet(true); }); };
+  $('otoBtn').onclick = function () {
+    if (otoZaman) { cancelAnimationFrame(anim); return otoDurdur(); }
+    var d = durum.deney; durum.olcumler[d] = []; durum.x = 0; durum.xGoster = 0; $('kayX').value = 0; kaydet(true);
+    this.textContent = '■ Durdur';
+    (function sonraki() {
+      if (durum.deney !== d || durum.x >= D[d].xMax) return otoDurdur();
+      otoZaman = setTimeout(function () { konumaGit(durum.x + 0.5, function () { kaydet(true); sonraki(); }); }, 250);
+    })();
+  };
+  $('geriBtn').onclick = function () { otoDurdur(); konumaGit(durum.x - 0.5); };
+  $('kayX').oninput = function () { otoDurdur(); konumaGit(+this.value); };
   $('kayYuk').oninput = function () { ayar.yuk = +this.value; ciz(); };
   $('kayK').oninput = function () { ayar.k = +this.value; ciz(); };
 
-  $('kaydetBtn').onclick = function () {
+  $('kaydetBtn').onclick = function () { kaydet(false); };
+  function kaydet(sessiz) {
     var d = durum.deney, liste = durum.olcumler[d], F = Math.round(kuvvet() * 10) / 10, x = durum.x;
     var esi = liste.filter(function (n) { return n.x === x; })[0];
     var m = $('kayitMesaj');
-    if (esi && esi.F === F) { m.textContent = 'Bu ölçüm zaten kayıtlı. Arabayı biraz daha çek.'; m.className = 'geri-bildirim kotu'; return; }
+    if (esi && esi.F === F) { if (!sessiz) { m.textContent = 'Bu ölçüm zaten kayıtlı. Arabayı biraz daha çek.'; m.className = 'geri-bildirim kotu'; } return; }
     if (esi) { esi.F = F; m.textContent = 'x = ' + sayi(x, 1) + ' m ölçümü yenilendi: F = ' + sayi(F) + ' N'; }
     else { liste.push({ x: x, F: F }); m.textContent = 'Kaydedildi: x = ' + sayi(x, 1) + ' m, F = ' + sayi(F) + ' N'; }
     m.className = 'geri-bildirim iyi';
     if (d === 0) durum.d1F = F;
     if (d === 2) durum.d3k = KLER[ayar.k];
     ciz();
-  };
+  }
   $('silBtn').onclick = function () { durum.olcumler[durum.deney] = []; $('kayitMesaj').textContent = 'Bu deneyin ölçümleri silindi.'; $('kayitMesaj').className = 'geri-bildirim'; ciz(); };
 
   function deneySec(d) {
+    otoDurdur(); cancelAnimationFrame(anim);
     durum.deney = d; durum.x = 0; durum.xGoster = 0;
     document.querySelectorAll('#deneySec button').forEach(function (b) { b.classList.toggle('aktif', +b.dataset.d === d); });
     $('kayX').max = D[d].xMax; $('kayX').value = 0;
@@ -540,12 +569,18 @@ footer b { color: var(--metin); }
     $('veriBaslik').textContent = D[d].ad + ' ölçümleri';
     var s = siraliOlcum(d);
     $('veriTablo').innerHTML = s.map(function (n, i) { return '<tr><td>' + (i + 1) + '</td><td>' + sayi(n.x, 1) + '</td><td>' + sayi(n.F) + '</td></tr>'; }).join('');
-    $('veriBos').textContent = s.length ? '' : 'Bu deney için henüz ölçüm kaydetmedin. 3. bölüme dönüp arabayı çek ve "Ölçümü kaydet" düğmesine bas.';
+    $('veriBos').textContent = s.length >= 2 ? '' : 'Bu deney için yeterli ölçüm yok. 3. bölümde arabayı çekebilir ya da ölçümleri buradan otomatik alabilirsin.';
+    $('otoVeriBtn').hidden = s.length >= 2;
     $('seritKap').hidden = d !== 2;
     hesapKutusu(d, s);
     olc.g = hazirla(graf, gc, 0.6);
     veriCiz();
   }
+  $('otoVeriBtn').onclick = function () {
+    var d = durum.veri, l = [];
+    for (var x = 0; x <= D[d].xMax + 1e-9; x += 0.5) l.push({ x: x, F: Math.round(D[d].kuvvet(x) * 10) / 10 });
+    durum.olcumler[d] = l; veriGuncelle();
+  };
   document.querySelectorAll('#veriSec button').forEach(function (b) { b.onclick = function () { durum.veri = +b.dataset.d; durum.alan = false; $('alanBtn').textContent = 'Grafiğin altını boya'; veriGuncelle(); }; });
   $('alanBtn').onclick = function () { durum.alan = !durum.alan; this.textContent = durum.alan ? 'Boyamayı kaldır' : 'Grafiğin altını boya'; veriCiz(); };
   $('kaySerit').oninput = function () { durum.serit = +this.value; veriCiz(); };
@@ -666,6 +701,16 @@ footer b { color: var(--metin); }
   // başlangıç
   deneySec(0);
   adimaGit(0);
+})();
+</script>
+<script>
+// Sitede iframe içinde açılınca yüksekliği hafta sayfasına bildir (kaydırma çubuğu olmasın)
+(function () {
+  if (window.parent === window) return;
+  var son = 0;
+  function bildir() { var ft = document.querySelector('footer'), h = Math.ceil(ft.getBoundingClientRect().bottom + window.scrollY + 8); if (Math.abs(h - son) > 2) { son = h; window.parent.postMessage({ tip: 'fizik-yukseklik', h: h }, '*'); } }
+  if (window.ResizeObserver) new ResizeObserver(bildir).observe(document.body);
+  window.addEventListener('load', bildir); setInterval(bildir, 1000);
 })();
 </script>
 </body>

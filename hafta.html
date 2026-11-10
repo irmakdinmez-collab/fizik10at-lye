@@ -72,6 +72,12 @@
     sahne.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
   document.querySelectorAll('.kutucuk').forEach(function (k) { k.onclick = function () { ac(k.dataset.b); }; });
+  // İçerik sayfaları kendi yüksekliklerini bildirir; iframe içeriğe göre uzar
+  window.addEventListener('message', function (e) {
+    var fr = sahne.querySelector('iframe'); if (!fr || e.source !== fr.contentWindow || !e.data) return;
+    if (e.data.tip === 'fizik-yukseklik' && e.data.h > 200 && !document.fullscreenElement) fr.style.height = e.data.h + 'px';
+    if (e.data.tip === 'fizik-basa') sahne.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
 })();
 </script>
 </body>

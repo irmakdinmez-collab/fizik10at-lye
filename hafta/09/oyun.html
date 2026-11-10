@@ -384,5 +384,15 @@ footer b { color: var(--metin); }
   haritaCiz();
 })();
 </script>
+<script>
+// Sitede iframe içinde açılınca yüksekliği hafta sayfasına bildir (kaydırma çubuğu olmasın)
+(function () {
+  if (window.parent === window) return;
+  var son = 0;
+  function bildir() { var ft = document.querySelector('footer'), h = Math.ceil(ft.getBoundingClientRect().bottom + window.scrollY + 8); if (Math.abs(h - son) > 2) { son = h; window.parent.postMessage({ tip: 'fizik-yukseklik', h: h }, '*'); } }
+  if (window.ResizeObserver) new ResizeObserver(bildir).observe(document.body);
+  window.addEventListener('load', bildir); setInterval(bildir, 1000);
+})();
+</script>
 </body>
 </html>

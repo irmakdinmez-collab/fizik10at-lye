@@ -1,0 +1,388 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>İş Oyunu · 9. Hafta</title>
+<style>
+@font-face { font-family: 'Poppins'; src: url('../../assets/fonts/Poppins-Regular.ttf') format('truetype'); font-weight: 400; }
+@font-face { font-family: 'Poppins'; src: url('../../assets/fonts/Poppins-Medium.ttf') format('truetype'); font-weight: 500; }
+@font-face { font-family: 'Poppins'; src: url('../../assets/fonts/Poppins-Bold.ttf') format('truetype'); font-weight: 700; }
+:root {
+  --zemin-ust: #def0fe; --zemin-alt: #b6d8f4; --kart: #fff; --kart-2: #f0f7ff;
+  --metin: #16264a; --soluk: #54688e; --cizgi: #c9ddf1;
+  --vurgu: #cd7800; --mavi: #0070c4; --yesil: #168c48; --kirmizi: #cc2048;
+  --golge: 0 6px 22px rgba(22,38,74,.10); --r: 18px;
+}
+* { box-sizing: border-box; }
+html { background: var(--zemin-alt); -webkit-text-size-adjust: 100%; }
+body { margin: 0; font-family: 'Poppins', system-ui, sans-serif; color: var(--metin); line-height: 1.5; min-height: 100vh;
+  background: var(--zemin-alt) linear-gradient(180deg, var(--zemin-ust), var(--zemin-alt) 900px) no-repeat; }
+.sar { max-width: 860px; margin: 0 auto; padding: 0 16px; }
+[hidden] { display: none !important; }
+.dugme { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; cursor: pointer;
+  font: 700 18px 'Poppins', sans-serif; padding: 14px 26px; border-radius: 16px; min-height: 58px;
+  background: var(--vurgu); color: #fff; box-shadow: 0 5px 0 #9c5b00; letter-spacing: .3px; }
+.dugme:active { transform: translateY(3px); box-shadow: 0 2px 0 #9c5b00; }
+.dugme:disabled { background: #c3d0e0; box-shadow: 0 5px 0 #a3b3c8; cursor: default; color: #fff; }
+.dugme.mavi { background: var(--mavi); box-shadow: 0 5px 0 #004f8a; }
+.dugme.yesil { background: var(--yesil); box-shadow: 0 5px 0 #0d6233; }
+.dugme.kirmizi { background: var(--kirmizi); box-shadow: 0 5px 0 #8f1532; }
+.dugme.ikincil { background: var(--kart); color: var(--metin); box-shadow: 0 5px 0 var(--cizgi); }
+.dugme:focus-visible, .secenek:focus-visible, .dugum:focus-visible { outline: 4px solid var(--mavi); outline-offset: 3px; }
+
+/* Harita */
+.ust { padding: 22px 0 6px; text-align: center; }
+.ust h1 { margin: 0; font-size: clamp(26px, 4vw, 38px); line-height: 1.15; }
+.ust p { margin: 4px 0 0; color: var(--soluk); font-weight: 500; }
+.ozet { display: flex; justify-content: center; gap: 12px; margin: 14px 0 6px; flex-wrap: wrap; }
+.ozet span { background: var(--kart); border-radius: 999px; padding: 8px 16px; font-weight: 700; box-shadow: var(--golge); }
+.harita { display: flex; flex-direction: column; align-items: center; gap: 8px; padding: 20px 0 10px; }
+.dugum-sira { display: flex; align-items: center; gap: 18px; width: 100%; max-width: 560px; }
+.dugum-sira:nth-child(odd) { justify-content: flex-start; padding-left: 8%; }
+.dugum-sira:nth-child(even) { justify-content: flex-end; padding-right: 8%; }
+.dugum { width: 104px; height: 96px; border-radius: 50%; border: 0; cursor: pointer; flex: none;
+  background: var(--vurgu); color: #fff; box-shadow: 0 8px 0 #9c5b00; display: grid; place-items: center; font: 700 34px 'Poppins', sans-serif; }
+.dugum.bitti { background: var(--yesil); box-shadow: 0 8px 0 #0d6233; }
+.dugum:active { transform: translateY(4px); box-shadow: 0 4px 0 #9c5b00; }
+.dugum-yazi { background: var(--kart); border-radius: 16px; padding: 10px 16px; box-shadow: var(--golge); max-width: 300px; }
+.dugum-yazi b { display: block; font-size: 18px; }
+.dugum-yazi small { color: var(--soluk); font-size: 14px; }
+.kural { background: var(--kart); border-radius: var(--r); padding: 14px 20px; box-shadow: var(--golge); margin: 18px 0; font-size: 16px; }
+.kural ul { margin: 6px 0; padding-left: 22px; }
+
+/* Oyun ekranı */
+.oyun-ust { display: flex; align-items: center; gap: 14px; padding: 20px 0 10px; }
+.kapat { background: none; border: 0; font-size: 30px; color: var(--soluk); cursor: pointer; width: 52px; height: 52px; border-radius: 12px; }
+.ilerleme { flex: 1; height: 20px; background: #fff; border-radius: 999px; overflow: hidden; box-shadow: inset 0 2px 4px rgba(0,0,0,.08); }
+.ilerleme i { display: block; height: 100%; width: 0; background: var(--yesil); border-radius: 999px; transition: width .35s; }
+.canlar { font-size: 26px; letter-spacing: 2px; white-space: nowrap; }
+.canlar .yok { filter: grayscale(1); opacity: .35; }
+.etiket { color: var(--vurgu); font-weight: 700; font-size: 15px; text-transform: uppercase; letter-spacing: .6px; margin: 8px 0 2px; }
+.soru { font-size: clamp(20px, 2.6vw, 26px); font-weight: 700; margin: 4px 0 14px; line-height: 1.35; }
+.gorsel { background: var(--kart); border-radius: var(--r); padding: 10px; margin-bottom: 14px; box-shadow: var(--golge); }
+.gorsel svg { display: block; width: 100%; max-width: 520px; margin: 0 auto; height: auto; }
+.secenekler { display: grid; gap: 12px; }
+.secenek { text-align: left; font: 500 19px 'Poppins', sans-serif; padding: 14px 18px; border-radius: 16px; border: 3px solid var(--cizgi);
+  background: var(--kart); color: var(--metin); cursor: pointer; min-height: 62px; box-shadow: 0 4px 0 var(--cizgi); display: flex; gap: 14px; align-items: center; }
+.secenek kbd { font: 700 15px 'Poppins', sans-serif; border: 2px solid var(--cizgi); border-radius: 8px; width: 32px; height: 32px; display: grid; place-items: center; flex: none; color: var(--soluk); }
+.secenek.secili { border-color: var(--mavi); background: #e6f2fc; box-shadow: 0 4px 0 #8fc1ea; }
+.secenek.dogru { border-color: var(--yesil); background: #e8f7ee; box-shadow: 0 4px 0 #9ad6b2; }
+.secenek.yanlis { border-color: var(--kirmizi); background: #fdebf0; box-shadow: 0 4px 0 #efa2b5; }
+.secenek:disabled { cursor: default; }
+.alt-bant { margin-top: 22px; padding: 4px 0 10px; }
+.geri { border-radius: var(--r); padding: 14px 18px; margin-bottom: 12px; font-size: 17px; }
+.geri.iyi { background: #dff4e7; color: #0d6233; }
+.geri.kotu { background: #fde2e9; color: #8f1532; }
+.geri b { display: block; font-size: 20px; }
+.alt-bant .dugme { width: 100%; }
+.okuma { background: var(--kart); border-radius: var(--r); padding: 20px 22px; box-shadow: var(--golge); border-left: 7px solid var(--vurgu); font-size: 18px; }
+.okuma h2 { margin: 0 0 8px; font-size: 24px; }
+.okuma p { margin: 8px 0; }
+.okuma-kucuk { background: var(--kart-2); border-radius: 14px; padding: 10px 14px; font-size: 15px; margin-bottom: 12px; color: var(--soluk); }
+.okuma-kucuk summary { cursor: pointer; font-weight: 700; color: var(--metin); }
+
+/* Sonuç */
+.sonuc { text-align: center; padding: 40px 0; }
+.sonuc .buyuk { font-size: 72px; line-height: 1; }
+.sonuc h2 { font-size: 32px; margin: 10px 0; }
+.sonuc p { font-size: 18px; color: var(--soluk); }
+.sonuc .sira { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 18px; }
+footer { margin-top: 30px; padding: 18px 0 30px; border-top: 1px solid var(--cizgi); color: var(--soluk); font-size: 14px; text-align: center; }
+footer b { color: var(--metin); }
+</style>
+</head>
+<body>
+
+<!-- HARİTA -->
+<div id="ekranHarita">
+  <header class="ust sar">
+    <h1>İş Oyunu</h1>
+    <p>10. Sınıf Fizik · Enerji · 9. Hafta</p>
+    <div class="ozet"><span id="ozetBolum">0 / 4 bölüm</span><span id="ozetPuan">⭐ 0 puan</span></div>
+  </header>
+  <main class="sar">
+    <div class="harita" id="harita"></div>
+    <div class="kural">
+      <b>Nasıl oynanır?</b>
+      <ul>
+        <li>Her bölümde 10 soru var. 3. ve 4. bölümde bir okuma metni ve 5 ek soru daha var.</li>
+        <li>3 canın var. Her yanlışta bir can gider. Canlar biterse bölüm baştan başlar.</li>
+        <li>Yanlış cevapta doğru cevap ve kısa bir açıklama gösterilir.</li>
+        <li>Klavyeyle de oynayabilirsin: 1–5 seçer, Enter onaylar.</li>
+      </ul>
+    </div>
+  </main>
+</div>
+
+<!-- SORU -->
+<div id="ekranOyun" hidden>
+  <div class="sar">
+    <div class="oyun-ust">
+      <button class="kapat" id="kapatBtn" aria-label="Bölümden çık">✕</button>
+      <div class="ilerleme" role="progressbar" aria-label="İlerleme"><i id="ilerlemeCubuk"></i></div>
+      <div class="canlar" id="canlar" aria-label="Canlar"></div>
+    </div>
+    <div id="soruAlan"></div>
+    <div class="alt-bant">
+      <div id="geriBildirim"></div>
+      <button class="dugme" id="anaBtn" disabled>KONTROL ET</button>
+    </div>
+  </div>
+</div>
+
+<!-- SONUÇ -->
+<div id="ekranSonuc" hidden>
+  <div class="sar sonuc" id="sonucAlan"></div>
+</div>
+
+<footer class="sar">
+  <p><b>Hazırlayan: Irmak Dinmez</b></p>
+  <p>Sorular ve okuma metinleri özgün olarak hazırlanmıştır.</p>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+  function $(id) { return document.getElementById(id); }
+
+  // Kuvvet–yol grafiği (SVG). noktalar: [[x, F], ...], xMax, fMax, adim (F ızgarası)
+  function grafik(noktalar, xMax, fMax, adim) {
+    adim = adim || 10;
+    var W = 520, H = 260, L = 60, R = 18, T = 16, B = 46, gw = W - L - R, gh = H - T - B;
+    function X(x) { return L + x / xMax * gw; } function Y(f) { return T + gh - f / fMax * gh; }
+    var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Kuvvet–yol grafiği" font-family="Poppins, sans-serif">';
+    s += '<rect x="' + L + '" y="' + T + '" width="' + gw + '" height="' + gh + '" fill="#fbfdff"/>';
+    for (var x = 0; x <= xMax; x++) s += '<line x1="' + X(x) + '" y1="' + T + '" x2="' + X(x) + '" y2="' + (T + gh) + '" stroke="#c9ddf1"/>' +
+      '<text x="' + X(x) + '" y="' + (T + gh + 20) + '" font-size="14" text-anchor="middle" fill="#16264a">' + x + '</text>';
+    for (var f = 0; f <= fMax; f += adim) s += '<line x1="' + L + '" y1="' + Y(f) + '" x2="' + (L + gw) + '" y2="' + Y(f) + '" stroke="#c9ddf1"/>' +
+      '<text x="' + (L - 8) + '" y="' + (Y(f) + 5) + '" font-size="14" text-anchor="end" fill="#16264a">' + f + '</text>';
+    s += '<path d="M' + L + ' ' + (T - 6) + 'V' + (T + gh) + 'H' + (L + gw + 8) + '" fill="none" stroke="#16264a" stroke-width="2"/>';
+    var d = noktalar.map(function (n, i) { return (i ? 'L' : 'M') + X(n[0]) + ' ' + Y(n[1]); }).join('');
+    s += '<path d="' + d + 'L' + X(noktalar[noktalar.length - 1][0]) + ' ' + Y(0) + 'L' + X(noktalar[0][0]) + ' ' + Y(0) + 'Z" fill="rgba(205,120,0,.16)"/>';
+    s += '<path d="' + d + '" fill="none" stroke="#cd7800" stroke-width="4" stroke-linejoin="round"/>';
+    s += '<text x="' + (L + gw / 2) + '" y="' + (H - 6) + '" font-size="14" font-weight="700" text-anchor="middle" fill="#16264a">Yol x (m)</text>';
+    s += '<text transform="translate(16 ' + (T + gh / 2) + ') rotate(-90)" font-size="14" font-weight="700" text-anchor="middle" fill="#16264a">Kuvvet F (N)</text>';
+    return s + '</svg>';
+  }
+
+  // ---------------- SORULAR (özgün) ----------------
+  // s: soru, g: grafik, c: seçenekler (ilki DOĞRU, ekranda karıştırılır), a: açıklama
+  var BOLUMLER = [
+    { ad: '1. Bölüm', konu: 'İş nedir?', ikon: '1', sorular: [
+      { s: 'Fizikte bir kuvvetin iş yapması için ne gerekir?', c: ['Kuvvet uygulanması ve cismin kuvvet yönünde yol alması', 'Yalnızca kuvvet uygulanması', 'Yalnızca cismin hareket etmesi', 'Kuvveti uygulayanın yorulması', 'Kuvvetin uzun süre uygulanması'], a: 'İş için iki şart birlikte gerekir: kuvvet ve kuvvet yönünde alınan yol.' },
+      { s: 'Elif bir duvarı 10 dakika boyunca var gücüyle itiyor ama duvar hiç kımıldamıyor. Elif\'in duvar üzerinde yaptığı iş nedir?', c: ['Sıfır', 'Çok büyük', 'Süreyle orantılıdır', 'Elif yorulduğu için pozitiftir', 'Kuvvetin iki katıdır'], a: 'Duvar yol almadığı için x = 0 ve W = F · 0 = 0 olur. Yorulmak fizikteki işle aynı şey değildir.' },
+      { s: 'İşin SI birimi hangisidir?', c: ['joule (J)', 'newton (N)', 'watt (W)', 'kilogram (kg)', 'metre/saniye (m/s)'], a: 'İş = kuvvet × yol olduğundan birimi N · m\'dir. Buna joule (J) denir.' },
+      { s: '1 joule nedir?', c: ['1 N\'luk kuvvetin, cismi kuvvet yönünde 1 m götürürken yaptığı iş', '1 N\'luk kuvvetin 1 saniye boyunca uygulanması', '1 kg\'lık cismin 1 m yükseğe konması', '1 m/s hızla giden cismin hızı', '1 N\'luk kuvvetin 1 m\'lik cisme uygulanması'], a: '1 J = 1 N · 1 m.' },
+      { s: 'Kerem bir kovayı elinde tutarak düz yolda sabit hızla yürüyor. Eli kovaya yukarı doğru kuvvet uyguluyor. Elin kovaya yaptığı iş nedir?', c: ['Sıfır, çünkü kuvvet yukarı, yol yatay', 'Kovanın ağırlığı × yürünen yol', 'Pozitif, çünkü kova hareket ediyor', 'Kerem\'in hızına bağlıdır', 'Kova ağır olduğu için çok büyük'], a: 'Kuvvet yönünde yol yok: kova yükselmiyor. Bu yüzden elin kovaya yaptığı iş sıfırdır.' },
+      { s: 'Aşağıdakilerin hangisinde bir kuvvet iş yapar?', c: ['Bir vinç yükü yukarı kaldırıyor', 'Masadaki kitap duruyor', 'Tavandan bir lamba asılı duruyor', 'Bir öğrenci sırt çantasını omzunda tutarak bekliyor', 'Bir kişi duvarı itiyor, duvar kımıldamıyor'], a: 'Yalnızca vinç örneğinde cisim kuvvet yönünde (yukarı) yol alıyor.' },
+      { s: 'İşin simgesi neden W\'dir?', c: ['İngilizcede iş anlamına gelen "work" kelimesinden', 'James Watt\'ın adından', 'Ağırlık anlamındaki "weight" kelimesinden', 'Birimi watt olduğu için', 'Rastgele seçilmiştir'], a: 'Animasyonda gördüğümüz gibi W, "work" (iş) kelimesinden gelir.' },
+      { s: 'Aynı kuvvetle bir kutu önce 2 m, sonra 6 m itiliyor. İkinci durumda yapılan iş, birincinin kaç katıdır?', c: ['3', '2', '4', '6', '1'], a: 'Kuvvet aynıysa iş yol ile doğru orantılıdır: 6 m / 2 m = 3 kat.' },
+      { s: 'Bir cisme uygulanan kuvvet iki katına çıkarılıyor, kuvvet yönünde alınan yol ise yarıya iniyor. İş nasıl değişir?', c: ['Değişmez', 'İki katına çıkar', 'Yarıya iner', 'Dört katına çıkar', 'Sıfır olur'], a: 'W = F · x → (2F) · (x/2) = F · x. İş aynı kalır.' },
+      { s: 'Bir kitabı yerden alıp rafa kaldıran Zeynep\'in kitaba yaptığı iş hangisine bağlı DEĞİLDİR?', c: ['Kitabı kaldırırken ne kadar süre harcadığına', 'Kitabın ağırlığına', 'Rafın yerden yüksekliğine', 'Kitabı yukarı doğru çeken kuvvete', 'Kitabın kuvvet yönündeki yer değiştirmesine'], a: 'İş = kuvvet × kuvvet yönünde yol. Süre işi değiştirmez (süre, ileride göreceğimiz gücü etkiler).' }
+    ] },
+    { ad: '2. Bölüm', konu: 'İşi hesapla', ikon: '2', sorular: [
+      { s: 'Bir kutuya 50 N\'luk kuvvet uygulanıyor ve kutu kuvvet yönünde 4 m gidiyor. Yapılan iş kaç joule\'dür?', c: ['200 J', '12,5 J', '54 J', '46 J', '400 J'], a: 'W = F · x = 50 N · 4 m = 200 J.' },
+      { s: 'Bir vinç, ağırlığı 800 N olan bir yükü sabit hızla 3 m yukarı kaldırıyor. Vincin yaptığı iş kaç joule\'dür?', c: ['2400 J', '803 J', '267 J', '800 J', '1600 J'], a: 'Sabit hızla kaldırırken vinç ağırlık kadar kuvvet uygular: W = 800 N · 3 m = 2400 J.' },
+      { s: 'Bir öğrenci 300 J iş yaparak bir kutuyu sabit kuvvetle, kuvvet yönünde 6 m itiyor. Uyguladığı kuvvet kaç newton\'dur?', c: ['50 N', '1800 N', '306 N', '294 N', '20 N'], a: 'F = W / x = 300 J / 6 m = 50 N.' },
+      { s: '25 N\'luk sabit bir kuvvetle 400 J iş yapmak için cisim kuvvet yönünde kaç metre götürülmelidir?', c: ['16 m', '10 000 m', '375 m', '425 m', '8 m'], a: 'x = W / F = 400 J / 25 N = 16 m.' },
+      { s: 'Bir at, kanaldaki mavnayı kıyıdan iple çekiyor. İpteki kuvvetin kanal yönündeki bileşeni 600 N\'dur. Mavna kanal boyunca 50 m ilerliyor. Atın mavna üzerinde yaptığı iş kaç joule\'dür?', c: ['30 000 J', '650 J', '12 J', '3000 J', '550 J'], a: 'Yalnızca yol yönündeki bileşen iş yapar: W = 600 N · 50 m = 30 000 J.' },
+      { s: '2 kJ kaç joule\'dür?', c: ['2000 J', '200 J', '20 J', '0,002 J', '20 000 J'], a: 'k (kilo) = 1000. 2 kJ = 2 · 1000 J = 2000 J.' },
+      { s: 'Bir kutu önce 40 N\'luk kuvvetle 3 m, sonra 20 N\'luk kuvvetle 5 m itiliyor. Kuvvet hep yol yönündedir. Toplam iş kaç joule\'dür?', c: ['220 J', '480 J', '60 J', '240 J', '100 J'], a: 'W = 40 · 3 + 20 · 5 = 120 J + 100 J = 220 J.' },
+      { s: 'Ağırlığı 600 N olan Mert, 4 m yüksekliğe merdivenle çıkıyor. Mert\'in kendini yukarı taşımak için yaptığı iş en az kaç joule\'dür?', c: ['2400 J', '150 J', '604 J', '596 J', '24 000 J'], a: 'W = ağırlık × yükseklik = 600 N · 4 m = 2400 J.' },
+      { s: 'Ağırlığı 120 N olan bir kova önce elde tutularak 10 m yatay taşınıyor, sonra sabit hızla 2 m yukarı kaldırılıyor. Elin kovaya yaptığı toplam iş kaç joule\'dür?', c: ['240 J', '1440 J', '1200 J', '2640 J', '0 J'], a: 'Yatay yolda kuvvet (yukarı) yönünde yol yok: 0 J. Yukarı kaldırırken 120 N · 2 m = 240 J. Toplam 240 J.' },
+      { s: 'Bir kızağa uygulanan kuvvetin yol yönündeki bileşeni 30 N, yola dik bileşeni 40 N\'dur. Kızak 5 m gidiyor. Kuvvetin yaptığı iş kaç joule\'dür?', c: ['150 J', '200 J', '350 J', '250 J', '50 J'], a: 'Yalnızca yol yönündeki bileşen iş yapar: W = 30 N · 5 m = 150 J. Dik bileşen iş yapmaz.' }
+    ] },
+    { ad: '3. Bölüm', konu: 'Kuvvet–yol grafiği', ikon: '3', sorular: [
+      { s: 'Grafikte bir cisme uygulanan kuvvetin yola göre değişimi verilmiştir. 0–6 m arasında yapılan iş kaç joule\'dür?', g: grafik([[0, 20], [6, 20]], 6, 40), c: ['120 J', '26 J', '20 J', '60 J', '240 J'], a: 'Grafiğin altı bir dikdörtgendir: 20 N · 6 m = 120 J.' },
+      { s: 'Kuvvet–yol grafiğinde yapılan iş neye eşittir?', c: ['Grafik ile yol ekseni arasında kalan alana', 'Grafiğin eğimine', 'Grafikteki en büyük kuvvete', 'Son noktadaki kuvvet değerine', 'Grafik çizgisinin uzunluğuna'], a: 'Laboratuvarda bulduğumuz gibi: iş = grafiğin altında kalan alan.' },
+      { s: 'Grafiğe göre 0–6 m arasında yapılan toplam iş kaç joule\'dür?', g: grafik([[0, 30], [2, 30], [2, 10], [6, 10]], 6, 40), c: ['100 J', '240 J', '120 J', '40 J', '160 J'], a: 'İki dikdörtgen: 30 N · 2 m = 60 J ve 10 N · 4 m = 40 J. Toplam 100 J.' },
+      { s: 'Kuvvet, grafikteki gibi düzgün artıyor. 0–4 m arasında yapılan iş kaç joule\'dür?', g: grafik([[0, 0], [4, 50]], 4, 60), c: ['100 J', '200 J', '50 J', '54 J', '25 J'], a: 'Grafiğin altı bir üçgendir: ½ · 4 m · 50 N = 100 J.' },
+      { s: 'Grafiğe göre 0–4 m arasında yapılan iş kaç joule\'dür?', g: grafik([[0, 10], [4, 30]], 4, 40), c: ['80 J', '120 J', '40 J', '160 J', '60 J'], a: 'Alan bir yamuktur: (10 + 30) / 2 · 4 = 80 J. İstersen dikdörtgen (40 J) + üçgen (40 J) diye de bölebilirsin.' },
+      { s: 'Kuvvet–yol grafiği yol eksenine paralel bir doğruysa ne söyleyebiliriz?', c: ['Kuvvet sabittir', 'Kuvvet düzgün artıyordur', 'Kuvvet sıfırdır', 'Cisim duruyordur', 'İş sıfırdır'], a: 'Yatay doğru, kuvvetin değeri her konumda aynı demektir.' },
+      { s: 'Grafiğe göre 0–4 m arasında yapılan iş kaç joule\'dür?', g: grafik([[0, 20], [2, 20], [4, 0]], 4, 40), c: ['60 J', '80 J', '40 J', '20 J', '100 J'], a: 'Dikdörtgen: 20 · 2 = 40 J. Üçgen: ½ · 2 · 20 = 20 J. Toplam 60 J.' },
+      { s: 'Bir kuvvet–yol grafiğinde her kare 1 m × 10 N\'u gösteriyor. Grafiğin altında 7 kare var. Yapılan iş kaç joule\'dür?', c: ['70 J', '7 J', '17 J', '700 J', '10 J'], a: 'Her kare 1 m · 10 N = 10 J. 7 kare → 70 J.' },
+      { s: 'Grafiğe göre cismin ilk 2 metresinde yapılan iş kaç joule\'dür?', g: grafik([[0, 0], [4, 40]], 4, 40), c: ['20 J', '40 J', '80 J', '10 J', '60 J'], a: 'x = 2 m\'de kuvvet 20 N. İlk 2 m\'nin altı küçük bir üçgen: ½ · 2 · 20 = 20 J. (Tüm yol 80 J; ilk yarıda işin yalnızca dörtte biri yapılır.)' },
+      { s: 'Kuvvet 0\'dan 40 N\'a düzgün artarken cisim 4 m gidiyor. Bir öğrenci "W = F · x = 40 · 4 = 160 J" diyor. Hatası nedir?', c: ['Kuvvet baştan sona 40 N değil; alan üçgendir, iş 80 J\'dür', 'Hata yok, iş 160 J\'dür', 'Kuvveti 2 ile çarpmalıydı, iş 320 J\'dür', 'Kuvvet değiştiği için iş hesaplanamaz', 'Yolu kuvvete bölmeliydi'], a: '160 J, kuvvet hep 40 N olsaydı (dikdörtgen) yapılacak iştir. Gerçek grafik eğik, alan ½ · 40 · 4 = 80 J.' }
+    ], okuma: {
+      baslik: 'Paslı ray',
+      metin: [
+        'Bir maden ocağında Deniz, boş bir vagonu raylar boyunca iterek yükleme noktasına götürüyor. Vagonu hep raylar doğrultusunda ve yavaşça, sabit hızla itiyor.',
+        'Rayların ilk 10 metresi paslı. Burada vagon zor ilerliyor ve Deniz 60 N\'luk kuvvet uygulamak zorunda kalıyor. Sonraki 20 metrede raylar yeni ve temiz; vagonu sabit hızla itmek için 30 N yetiyor.',
+        'Yükleme noktasına varınca Deniz, yük gelene kadar vagonu düz rayda yerinde tutuyor. Vagon bir dakika boyunca hiç kımıldamıyor.'
+      ],
+      sorular: [
+        { s: 'Paslı kısımda (ilk 10 m) Deniz\'in yaptığı iş kaç joule\'dür?', c: ['600 J', '300 J', '70 J', '6 J', '1800 J'], a: 'W = 60 N · 10 m = 600 J.' },
+        { s: 'Temiz raylarda (sonraki 20 m) Deniz\'in yaptığı iş kaç joule\'dür?', c: ['600 J', '1200 J', '50 J', '30 J', '150 J'], a: 'W = 30 N · 20 m = 600 J. Kuvvet yarıya indi ama yol iki katına çıktı.' },
+        { s: 'Deniz\'in 30 m boyunca yaptığı toplam iş kaç joule\'dür?', c: ['1200 J', '2700 J', '1350 J', '900 J', '600 J'], a: '600 J + 600 J = 1200 J. Ortalama kuvvetle (45 N · 30 m = 1350 J) hesaplamak yanlış olur, çünkü iki parçanın yolları farklıdır.' },
+        { s: 'Deniz\'in kuvvet–yol grafiği nasıl görünür?', c: ['İki basamak: önce 60 N\'da yatay, 10 m\'den sonra 30 N\'da yatay', 'Orijinden geçen eğik bir doğru', 'Tek bir yatay doğru', '60 N\'dan 30 N\'a düzgün azalan eğik doğru', 'Yol eksenine dik bir doğru'], a: 'Kuvvet her parçada sabit, 10 m\'de birden değişiyor: basamaklı grafik.' },
+        { s: 'Deniz vagonu bir dakika yerinde tutarken vagona ne kadar iş yapar?', c: ['0 J', '1200 J', '60 J', '1800 J', 'Kuvveti bilmeden söylenemez'], a: 'Vagon yol almıyor (x = 0), bu yüzden iş sıfırdır.' }
+      ] } },
+    { ad: '4. Bölüm', konu: 'Karşılaştır ve yorumla', ikon: '4', sorular: [
+      { s: 'Ali bir kutuyu 200 N\'luk kuvvetle 5 m, Banu ise başka bir kutuyu 100 N\'luk kuvvetle 12 m itiyor. Kim daha çok iş yapar?', c: ['Banu', 'Ali', 'İkisi eşit iş yapar', 'Daha hızlı olan', 'Kutuların ağırlığı bilinmeden söylenemez'], a: 'Ali: 200 · 5 = 1000 J. Banu: 100 · 12 = 1200 J. Banu daha çok iş yapar.' },
+      { s: 'Bir kızak 3 m boyunca 40 N\'luk kuvvetle itiliyor. Sonra bırakılıyor ve 2 m daha kayıyor. İten kişinin yaptığı iş kaç joule\'dür?', g: grafik([[0, 40], [3, 40], [3, 0], [5, 0]], 5, 50), c: ['120 J', '200 J', '80 J', '40 J', '0 J'], a: 'Kuvvet yalnızca ilk 3 m\'de var. Son 2 m\'de kişi kuvvet uygulamıyor: W = 40 · 3 = 120 J.' },
+      { s: 'Sertliği 200 N/m olan bir yay 0,3 m geriliyor (F = 200 · x). Yayı germek için yapılan iş kaç joule\'dür?', c: ['9 J', '18 J', '60 J', '30 J', '600 J'], a: '0,3 m\'de kuvvet 200 · 0,3 = 60 N. Grafik orijinden geçen doğru: W = ½ · 60 N · 0,3 m = 9 J.' },
+      { s: 'Aynı 4 m\'lik yolda üç farklı kuvvet uygulanıyor. I: sabit 30 N. II: 0\'dan 50 N\'a düzgün artan. III: 20 N\'dan 40 N\'a düzgün artan. İşleri sıralayın.', c: ['I = III > II', 'II > I > III', 'I > II > III', 'II > III > I', 'I = II = III'], a: 'I: 30 · 4 = 120 J. II: ½ · 50 · 4 = 100 J. III: (20 + 40)/2 · 4 = 120 J.' },
+      { s: 'Bir cisme uygulanan kuvvet de, kuvvet yönünde alınan yol da iki katına çıkarılıyor. İş nasıl değişir?', c: ['4 katına çıkar', '2 katına çıkar', 'Değişmez', 'Yarıya iner', '8 katına çıkar'], a: '(2F) · (2x) = 4 F · x.' },
+      { s: 'Grafiğe göre 0–5 m arasında yapılan iş kaç joule\'dür?', g: grafik([[0, 0], [3, 60], [5, 60]], 5, 80, 20), c: ['210 J', '300 J', '180 J', '120 J', '90 J'], a: 'Üçgen: ½ · 3 · 60 = 90 J. Dikdörtgen: 2 · 60 = 120 J. Toplam 210 J.' },
+      { s: 'Ağırlığı 50 N olan bir çanta, yerden 1,2 m yükseklikteki rafa sabit hızla kaldırılıyor. Yapılan iş kaç joule\'dür?', c: ['60 J', '6 J', '600 J', '51,2 J', '41,7 J'], a: 'W = 50 N · 1,2 m = 60 J.' },
+      { s: 'Bir kişi kutuyu 80 N\'luk kuvvetle iterek 320 J iş yapıyor. Kutu toplam 10 m yol alıyor, ama kişi bir süre sonra itmeyi bırakıyor. Kişi kutuyu kaç metre boyunca itmiştir?', c: ['4 m', '10 m', '6 m', '25 m', '8 m'], a: 'Kuvvet yönünde yol: x = W / F = 320 / 80 = 4 m. Kalan 6 m\'de kişi kuvvet uygulamadı.' },
+      { s: 'Kuvvet–yol grafiğinde düşey eksen newton (N), yatay eksen metre (m) ise grafiğin altındaki alanın birimi nedir?', c: ['N · m, yani joule', 'N / m', 'm / N', 'newton', 'watt'], a: 'Alan = düşey × yatay → N · m = J. Bu yüzden alan işi verir.' },
+      { s: 'Ayşe bir kitabı rafa kaldırırken 15 J iş yapıyor. Sonra kitabı aynı yükseklikte tutarak 3 m yürüyor. Ayşe\'nin elinin kitaba yaptığı toplam iş kaç joule\'dür?', c: ['15 J', '45 J', '18 J', '5 J', '0 J'], a: 'Yatay yürürken kitap yükselmiyor, el yukarı kuvvet uyguluyor: iş yok. Toplam 15 J.' }
+    ], okuma: {
+      baslik: 'Okçunun yayı',
+      metin: [
+        'Okçuluk kulübüne yeni katılan Can, yayının ne kadar sert olduğunu merak ediyor. Antrenörü ona bir kuvvetölçer veriyor. Can, kirişi kuvvetölçerle yavaşça geri çekiyor ve her 10 santimetrede kuvveti not ediyor.',
+        'Ölçümleri şöyle: 0 cm\'de 0 N, 10 cm\'de 40 N, 20 cm\'de 80 N, 40 cm\'de 160 N, 50 cm\'de 200 N. Kiriş geri çekildikçe kuvvet düzgün biçimde artıyor.',
+        'Can, yayı 50 cm gerdikten sonra nişan alırken kirişi 5 saniye boyunca aynı yerde tutuyor, sonra oku bırakıyor.'
+      ],
+      sorular: [
+        { s: 'Can\'ın ölçümlerine göre kiriş 30 cm çekildiğinde kuvvet kaç newton olur?', c: ['120 N', '100 N', '140 N', '90 N', '150 N'], a: 'Kuvvet her 10 cm\'de 40 N artıyor: 30 cm → 120 N.' },
+        { s: 'Can\'ın ölçümleriyle çizilen kuvvet–yol grafiği nasıl bir şekildedir?', c: ['Orijinden geçen eğik bir doğru', 'Yatay bir doğru', 'Basamaklı bir çizgi', 'Düzgün azalan bir doğru', 'Yol eksenine dik bir doğru'], a: 'Kuvvet 0\'dan başlayıp düzgün artıyor: orijinden geçen doğru.' },
+        { s: 'Can\'ın yayı 50 cm germek için yaptığı iş kaç joule\'dür? (50 cm = 0,5 m)', c: ['50 J', '100 J', '10 000 J', '5000 J', '25 J'], a: 'Üçgenin alanı: ½ · 200 N · 0,5 m = 50 J. Birimi metreye çevirmeyi unutma!' },
+        { s: 'Can\'ın arkadaşı "W = 200 N · 0,5 m = 100 J" diyor. Neden yanlış?', c: ['Kuvvet çekme boyunca hep 200 N değildi; 200 N yalnızca son noktadaki kuvvet', 'Santimetre kullanmalıydı', 'Kuvveti 0,5 ile bölmeliydi', 'Yay iş yapmaz', 'Hesap doğru, iş 100 J'], a: '100 J, kuvvet baştan sona 200 N olsaydı geçerli olurdu. Gerçek kuvvet 0\'dan artıyor; alan üçgen, 50 J.' },
+        { s: 'Can kirişi 5 saniye boyunca aynı yerde tutarken yaya ne kadar iş yapar?', c: ['0 J', '50 J', '200 J', '1000 J', '250 J'], a: 'Kiriş yer değiştirmiyor: x = 0, iş sıfırdır. Can\'ın kolları yorulsa da fizikteki iş yapılmaz.' }
+      ] } }
+  ];
+
+  // ---------------- Kayıt (yalnızca bu tarayıcıda) ----------------
+  var ANAHTAR = 'fizik10-h09-oyun';
+  var kayit = { bitti: [false, false, false, false], puan: 0 };
+  try { var k = JSON.parse(localStorage.getItem(ANAHTAR)); if (k && k.bitti) kayit = k; } catch (e) {}
+  function sakla() { try { localStorage.setItem(ANAHTAR, JSON.stringify(kayit)); } catch (e) {} }
+
+  // ---------------- Harita ----------------
+  function haritaCiz() {
+    $('harita').innerHTML = BOLUMLER.map(function (b, i) {
+      var n = b.sorular.length + (b.okuma ? b.okuma.sorular.length : 0);
+      return '<div class="dugum-sira"><button class="dugum' + (kayit.bitti[i] ? ' bitti' : '') + '" data-b="' + i + '" aria-label="' + b.ad + ': ' + b.konu + '">' + (kayit.bitti[i] ? '✓' : b.ikon) + '</button>' +
+        '<div class="dugum-yazi"><b>' + b.ad + '</b>' + b.konu + '<br><small>' + n + ' soru' + (b.okuma ? ' · okuma metni' : '') + '</small></div></div>';
+    }).join('');
+    $('harita').querySelectorAll('.dugum').forEach(function (d) { d.onclick = function () { basla(+d.dataset.b); }; });
+    $('ozetBolum').textContent = kayit.bitti.filter(Boolean).length + ' / 4 bölüm';
+    $('ozetPuan').textContent = '⭐ ' + kayit.puan + ' puan';
+  }
+  function ekran(ad) { ['Harita', 'Oyun', 'Sonuc'].forEach(function (e) { $('ekran' + e).hidden = e !== ad; }); window.scrollTo(0, 0); }
+
+  // ---------------- Oyun akışı ----------------
+  var o = null;
+  function karistir(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function basla(bi) {
+    var b = BOLUMLER[bi], adimlar = b.sorular.map(function (s) { return { tur: 'soru', s: s }; });
+    if (b.okuma) {
+      adimlar.push({ tur: 'okuma' });
+      b.okuma.sorular.forEach(function (s) { adimlar.push({ tur: 'soru', s: s, okuma: true }); });
+    }
+    o = { bi: bi, adimlar: adimlar, i: 0, can: 3, dogru: 0, secim: null, durum: 'sec' };
+    ekran('Oyun'); goster();
+  }
+  function soruSayisi() { return o.adimlar.filter(function (a) { return a.tur === 'soru'; }).length; }
+  function canCiz() {
+    var h = ''; for (var i = 0; i < 3; i++) h += '<span class="' + (i < o.can ? '' : 'yok') + '">❤️</span>';
+    $('canlar').innerHTML = h; $('canlar').setAttribute('aria-label', o.can + ' can kaldı');
+  }
+  function goster() {
+    var a = o.adimlar[o.i], b = BOLUMLER[o.bi];
+    $('ilerlemeCubuk').style.width = (o.i / o.adimlar.length * 100) + '%';
+    canCiz(); $('geriBildirim').innerHTML = '';
+    var btn = $('anaBtn'); btn.className = 'dugme';
+    if (a.tur === 'okuma') {
+      $('soruAlan').innerHTML = '<p class="etiket">Okuma metni</p><div class="okuma"><h2>' + b.okuma.baslik + '</h2>' +
+        b.okuma.metin.map(function (p) { return '<p>' + p + '</p>'; }).join('') + '</div><p style="color:var(--soluk)">Metni dikkatle oku. Sonraki 5 soru bu metinle ilgili. Soruları cevaplarken metni yeniden açabilirsin.</p>';
+      btn.textContent = 'OKUDUM, DEVAM'; btn.disabled = false; o.durum = 'okuma'; btn.focus(); return;
+    }
+    var s = a.s; o.secenekler = karistir(s.c); o.secim = null; o.durum = 'sec';
+    var no = o.adimlar.slice(0, o.i + 1).filter(function (x) { return x.tur === 'soru'; }).length;
+    $('soruAlan').innerHTML =
+      '<p class="etiket">' + b.ad + ' · Soru ' + no + ' / ' + soruSayisi() + '</p>' +
+      (a.okuma ? '<details class="okuma-kucuk"><summary>Metni yeniden oku: ' + b.okuma.baslik + '</summary>' + b.okuma.metin.map(function (p) { return '<p>' + p + '</p>'; }).join('') + '</details>' : '') +
+      '<div class="soru">' + s.s + '</div>' +
+      (s.g ? '<div class="gorsel">' + s.g + '</div>' : '') +
+      '<div class="secenekler">' + o.secenekler.map(function (c, i) { return '<button class="secenek" data-i="' + i + '"><kbd>' + (i + 1) + '</kbd><span>' + c + '</span></button>'; }).join('') + '</div>';
+    $('soruAlan').querySelectorAll('.secenek').forEach(function (el) { el.onclick = function () { sec(+el.dataset.i); }; });
+    btn.textContent = 'KONTROL ET'; btn.disabled = true;
+  }
+  function sec(i) {
+    if (o.durum !== 'sec') return;
+    o.secim = i;
+    $('soruAlan').querySelectorAll('.secenek').forEach(function (el) { el.classList.toggle('secili', +el.dataset.i === i); });
+    $('anaBtn').disabled = false;
+  }
+  function kontrol() {
+    var a = o.adimlar[o.i], dogruMetin = a.s.c[0], ok = o.secenekler[o.secim] === dogruMetin;
+    o.durum = 'cevap';
+    var els = $('soruAlan').querySelectorAll('.secenek');
+    els.forEach(function (el) {
+      el.disabled = true;
+      var c = o.secenekler[+el.dataset.i];
+      if (c === dogruMetin) el.classList.add('dogru');
+      else if (+el.dataset.i === o.secim) el.classList.add('yanlis');
+    });
+    if (ok) { o.dogru++; ses(true); }
+    else { o.can--; ses(false); canCiz(); }
+    $('geriBildirim').innerHTML = '<div class="geri ' + (ok ? 'iyi' : 'kotu') + '"><b>' + (ok ? 'Harika!' : 'Doğru cevap: ' + dogruMetin) + '</b>' + a.s.a + '</div>';
+    var btn = $('anaBtn'); btn.disabled = false;
+    if (!ok && o.can <= 0) { btn.textContent = 'CANLAR BİTTİ'; btn.className = 'dugme kirmizi'; o.durum = 'bitti-can'; }
+    else { btn.textContent = 'DEVAM'; btn.className = 'dugme ' + (ok ? 'yesil' : 'kirmizi'); }
+    btn.focus({ preventScroll: true });
+    $('anaBtn').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  }
+  function ilerle() {
+    if (o.durum === 'bitti-can') return sonuc(false);
+    o.i++;
+    if (o.i >= o.adimlar.length) return sonuc(true);
+    goster();
+  }
+  $('anaBtn').onclick = function () {
+    if (o.durum === 'sec' && o.secim !== null) kontrol();
+    else if (o.durum === 'okuma' || o.durum === 'cevap' || o.durum === 'bitti-can') ilerle();
+  };
+  $('kapatBtn').onclick = function () { if (confirm('Bölümden çıkmak istiyor musun? İlerlemen kaydedilmez.')) { ekran('Harita'); haritaCiz(); } };
+  document.addEventListener('keydown', function (e) {
+    if ($('ekranOyun').hidden || !o) return;
+    if (o.durum === 'sec' && e.key >= '1' && e.key <= '5') { sec(+e.key - 1); e.preventDefault(); }
+    else if (e.key === 'Enter' && !$('anaBtn').disabled && document.activeElement !== $('anaBtn')) { $('anaBtn').click(); e.preventDefault(); }
+  });
+
+  function sonuc(basarili) {
+    var b = BOLUMLER[o.bi], n = soruSayisi(), h;
+    if (basarili) {
+      var yeni = !kayit.bitti[o.bi], puan = o.dogru * 10 + o.can * 5;
+      kayit.bitti[o.bi] = true; kayit.puan += puan; sakla();
+      h = '<div class="buyuk">' + (o.can === 3 ? '🏆' : '🎉') + '</div><h2>' + b.ad + ' tamamlandı!</h2>' +
+        '<p>' + n + ' sorudan ' + o.dogru + ' doğru · kalan can: ' + o.can + ' · +' + puan + ' puan</p>' +
+        (o.can === 3 ? '<p><b>Hiç can kaybetmeden bitirdin!</b></p>' : '') +
+        '<div class="sira">' + (o.bi < 3 ? '<button class="dugme" id="sonrakiB">' + BOLUMLER[o.bi + 1].ad.toUpperCase() + ' →</button>' : '') +
+        '<button class="dugme ikincil" id="haritaB">BÖLÜMLER</button></div>';
+    } else {
+      h = '<div class="buyuk">💔</div><h2>Canların bitti</h2><p>Sorun değil! Açıklamaları hatırlayarak bölümü baştan dene.</p>' +
+        '<div class="sira"><button class="dugme" id="tekrarB">BAŞTAN DENE</button><button class="dugme ikincil" id="haritaB">BÖLÜMLER</button></div>';
+    }
+    $('sonucAlan').innerHTML = h; ekran('Sonuc');
+    var bi = o.bi;
+    if ($('sonrakiB')) $('sonrakiB').onclick = function () { basla(bi + 1); };
+    if ($('tekrarB')) $('tekrarB').onclick = function () { basla(bi); };
+    $('haritaB').onclick = function () { ekran('Harita'); haritaCiz(); };
+  }
+
+  // Kısa ses efektleri (kodla üretilir, dış dosya yok)
+  var AC = null;
+  function ses(iyi) {
+    try {
+      AC = AC || new (window.AudioContext || window.webkitAudioContext)();
+      var t = AC.currentTime, notalar = iyi ? [660, 880] : [300, 220];
+      notalar.forEach(function (f, i) {
+        var os = AC.createOscillator(), g = AC.createGain();
+        os.type = iyi ? 'triangle' : 'sine'; os.frequency.value = f;
+        g.gain.setValueAtTime(0.0001, t + i * 0.11); g.gain.exponentialRampToValueAtTime(0.18, t + i * 0.11 + 0.02);
+        g.gain.exponentialRampToValueAtTime(0.0001, t + i * 0.11 + 0.18);
+        os.connect(g); g.connect(AC.destination); os.start(t + i * 0.11); os.stop(t + i * 0.11 + 0.2);
+      });
+    } catch (e) {}
+  }
+
+  haritaCiz();
+})();
+</script>
+</body>
+</html>

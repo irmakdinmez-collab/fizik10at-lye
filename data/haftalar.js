@@ -154,6 +154,14 @@ window.HAFTALAR = [
     "baslik": "İŞ nedir? — Bir kavram nasıl doğar?",
     "sure": "3:33",
     "kapak": "hafta/09/kapak.jpg"
+   },
+   "lab": {
+    "dosya": "hafta/09/lab.html",
+    "baslik": "Kuvvet–yol grafiği ve iş"
+   },
+   "oyun": {
+    "dosya": "hafta/09/oyun.html",
+    "baslik": "İş Oyunu: 4 bölüm"
    }
   },
   "bas": "2026-11-09",

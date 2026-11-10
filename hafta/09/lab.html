@@ -207,19 +207,10 @@ footer b { color: var(--metin); }
         <div>
           <canvas id="grafik" width="700" height="420" aria-label="Kuvvet–yol grafiği"></canvas>
           <div class="sira" style="margin-top:10px">
-            <button class="dugme ikincil" id="alanBtn">Grafiğin altını boya</button>
+            <button class="dugme ikincil" id="alanBtn">Boyamayı kaldır</button>
             <span class="bilgi" id="kareBilgi">Her kare: 1 m × 10 N</span>
           </div>
-          <div id="seritKap" hidden>
-            <div class="kaydirac">
-              <label for="kaySerit"><span>Grafiği şeritlere böl</span><span id="seritYazi">1 şerit</span></label>
-              <input type="range" id="kaySerit" min="0" max="5" step="1" value="0">
-            </div>
-            <div class="sira">
-              <button class="dugme ikincil" id="seritTur" aria-pressed="false">Şeritler: üstten</button>
-            </div>
-            <p class="not" id="seritToplam"></p>
-          </div>
+          <p class="not" id="alanBilgi"></p>
         </div>
         <div>
           <h3 id="veriBaslik">Deney 1 ölçümleri</h3>
@@ -261,11 +252,11 @@ footer b { color: var(--metin); }
       </div>
       <div class="kart">
         <h3>Soru 3</h3>
-        <p>Deney 3'te grafiği şeritlere böldün. Şerit sayısı arttıkça "üstten" ve "alttan" toplamlar ne oldu?</p>
+        <p>Deney 3'te kuvvet düzgün arttı. Bu durumda yapılan iş neye eşittir?</p>
         <div class="secenekler" data-soru="3" data-dogru="a">
-          <button class="secenek" data-c="a">a) İkisi de aynı değere yaklaştı: grafiğin altındaki üçgenin alanına</button>
-          <button class="secenek" data-c="b">b) İkisi de sürekli büyüdü</button>
-          <button class="secenek" data-c="c">c) Hiç değişmedi</button>
+          <button class="secenek" data-c="a">a) Grafiğin altındaki üçgenin alanına: ½ · F · x</button>
+          <button class="secenek" data-c="b">b) Son kuvvetle yolun çarpımına: F · x</button>
+          <button class="secenek" data-c="c">c) Hesaplanamaz, çünkü kuvvet değişiyor</button>
         </div>
         <p class="geri-bildirim"></p>
       </div>
@@ -288,8 +279,8 @@ footer b { color: var(--metin); }
           <div class="formul">İş = kuvvet–yol grafiğinin altında kalan alan</div>
           <p><b>Deney 1:</b> Kuvvet sabitse grafik yatay bir doğrudur. Altındaki alan bir dikdörtgendir: alan = F · x. Bu, animasyonda bulduğumuz W = F · x ile aynıdır.</p>
           <p><b>Deney 2:</b> Kuvvet parça parça sabitse her parça bir dikdörtgendir. Çamurlu kısım: 40 N · 2 m = 80 J. Temiz ray: 20 N · 3 m = 60 J. Toplam iş = 140 J. Kuvvetlerin ortalamasını almak (30 N · 5 m = 150 J) yanlış sonuç verir, çünkü iki parçanın yolları farklıdır.</p>
-          <p><b>Deney 3:</b> Kuvvet düzgün artıyorsa grafik eğik bir doğrudur. Grafiği ince şeritlere bölünce her şerit neredeyse sabit kuvvetli küçük bir dikdörtgen olur. Şeritler inceldikçe toplam, üçgenin alanına yaklaşır: W = ½ · F · x.</p>
-          <p><b>Tahmin sorusu:</b> W = ½ · 40 N · 4 m = <b>80 J</b>. "40 N × 4 m = 160 J" demek, arabayı baştan sona hep 40 N ile çekmişiz gibi saymaktır; oysa kuvvet başta 0 N idi. 160 J, tek şeritli "üstten" toplamdır.</p>
+          <p><b>Deney 3:</b> Kuvvet düzgün artıyorsa grafik eğik bir doğrudur. Altında kalan şekil bir üçgendir: W = ½ · F · x. Son kuvvetle çarpmak (F · x), kuvvet baştan beri o değerdeymiş gibi saymak olur; bu da üçgenin iki katı olan dikdörtgenin alanıdır.</p>
+          <p><b>Tahmin sorusu:</b> W = ½ · 40 N · 4 m = <b>80 J</b>. "40 N × 4 m = 160 J" demek, arabayı baştan sona hep 40 N ile çekmişiz gibi saymaktır; oysa kuvvet başta 0 N idi. 160 J, üçgenin değil dikdörtgenin alanıdır.</p>
           <p class="bilgi">Birim kontrolü: grafikte yatay eksen metre, düşey eksen newton olduğu için alanın birimi N · m = joule (J) olur.</p>
         </div>
       </div>
@@ -332,7 +323,7 @@ footer b { color: var(--metin); }
       gorev: 'Görev: Arabayı 0\'dan 4 m\'ye kadar çek (adım adım ya da "Baştan sona çek"). Ölçümler kendiliğinden kaydedilir. Kuvvet nasıl değişiyor?' }
   ];
   var ayar = { yuk: 3, k: 2 };
-  var durum = { adim: 0, deney: 0, veri: 0, x: 0, xGoster: 0, olcumler: [[], [], []], alan: false, serit: 0, seritUst: true, tahmin: null };
+  var durum = { adim: 0, deney: 0, veri: 0, x: 0, xGoster: 0, olcumler: [[], [], []], alan: true, tahmin: null };
 
   // ---------- Adımlar ----------
   var adimBtn = document.querySelectorAll('#adimlar button'), ilkAdimGecti = false;
@@ -575,8 +566,7 @@ footer b { color: var(--metin); }
   document.querySelectorAll('#deneySec button').forEach(function (b) { b.onclick = function () { deneySec(+b.dataset.d); }; });
 
   // ---------- Veri ve grafik ----------
-  var SERITLER = [1, 2, 4, 8, 16, 32];
-  function siraliOlcum(d) { return durum.olcumler[d].slice().sort(function (a, b) { return a.x - b.x; }); }
+    function siraliOlcum(d) { return durum.olcumler[d].slice().sort(function (a, b) { return a.x - b.x; }); }
   function veriGuncelle() {
     var d = durum.veri;
     document.querySelectorAll('#veriSec button').forEach(function (b) { b.classList.toggle('aktif', +b.dataset.d === d); });
@@ -585,7 +575,6 @@ footer b { color: var(--metin); }
     $('veriTablo').innerHTML = s.map(function (n, i) { return '<tr><td>' + (i + 1) + '</td><td>' + sayi(n.x, 1) + '</td><td>' + sayi(n.F) + '</td></tr>'; }).join('');
     $('veriBos').textContent = s.length >= 2 ? '' : 'Bu deney için yeterli ölçüm yok. 3. bölümde arabayı çekebilir ya da ölçümleri buradan otomatik alabilirsin.';
     $('otoVeriBtn').hidden = s.length >= 2;
-    $('seritKap').hidden = d !== 2;
     hesapKutusu(d, s);
     olc.g = hazirla(graf, gc, 0.6);
     veriCiz();
@@ -595,10 +584,8 @@ footer b { color: var(--metin); }
     for (var x = 0; x <= D[d].xMax + 1e-9; x += 0.5) l.push({ x: x, F: Math.round(D[d].kuvvet(x) * 10) / 10 });
     durum.olcumler[d] = l; veriGuncelle();
   };
-  document.querySelectorAll('#veriSec button').forEach(function (b) { b.onclick = function () { durum.veri = +b.dataset.d; durum.alan = false; $('alanBtn').textContent = 'Grafiğin altını boya'; veriGuncelle(); }; });
+  document.querySelectorAll('#veriSec button').forEach(function (b) { b.onclick = function () { durum.veri = +b.dataset.d; veriGuncelle(); }; });
   $('alanBtn').onclick = function () { durum.alan = !durum.alan; this.textContent = durum.alan ? 'Boyamayı kaldır' : 'Grafiğin altını boya'; veriCiz(); };
-  $('kaySerit').oninput = function () { durum.serit = +this.value; veriCiz(); };
-  $('seritTur').onclick = function () { durum.seritUst = !durum.seritUst; this.textContent = 'Şeritler: ' + (durum.seritUst ? 'üstten' : 'alttan'); this.setAttribute('aria-pressed', String(!durum.seritUst)); veriCiz(); };
 
   function veriCiz() {
     var d = durum.veri, W = olc.g.w, H = olc.g.h, s = siraliOlcum(d);
@@ -612,26 +599,18 @@ footer b { color: var(--metin); }
       for (i = 0; i < s.length - 1; i++) if (x >= s[i].x && x <= s[i + 1].x) { var k = (x - s[i].x) / (s[i + 1].x - s[i].x || 1); return s[i].F + k * (s[i + 1].F - s[i].F); }
       return s[s.length - 1].F;
     }
-    if (tamam && durum.alan && !(d === 2 && durum.serit > 0)) {
+    if (tamam && durum.alan) {
       gc.fillStyle = 'rgba(205,120,0,.28)'; gc.beginPath(); gc.moveTo(o.X(s[0].x), o.Y(0));
       if (d === 1) { for (var i = 0; i < s.length; i++) { gc.lineTo(o.X(s[i].x), o.Y(s[i].F)); if (i < s.length - 1) gc.lineTo(o.X(s[i + 1].x), o.Y(s[i].F)); } }
       else s.forEach(function (n) { gc.lineTo(o.X(n.x), o.Y(n.F)); });
       gc.lineTo(o.X(xSon), o.Y(0)); gc.closePath(); gc.fill();
     }
     var bilgi = '';
-    if (d === 2 && tamam) {
-      var n = SERITLER[durum.serit]; $('seritYazi').textContent = n + ' şerit';
-      if (durum.serit > 0 || durum.alan) {
-        var x0 = s[0].x, dx = (xSon - x0) / n, top = 0;
-        for (i = 0; i < n; i++) {
-          var xa = x0 + i * dx, h = fAt(durum.seritUst ? xa + dx : xa); top += h * dx;
-          gc.fillStyle = i % 2 ? 'rgba(0,112,196,.22)' : 'rgba(0,112,196,.34)'; gc.fillRect(o.X(xa), o.Y(h), o.X(xa + dx) - o.X(xa), o.Y(0) - o.Y(h));
-          gc.strokeStyle = RENK.mavi; gc.lineWidth = 1.2; gc.strokeRect(o.X(xa), o.Y(h), o.X(xa + dx) - o.X(xa), o.Y(0) - o.Y(h));
-        }
-        bilgi = n + ' şeridin alanları toplamı (' + (durum.seritUst ? 'üstten' : 'alttan') + '): <b>' + sayi(top, 1) + ' J</b>. Şerit sayısını artır, "üstten" ve "alttan" toplamları karşılaştır.';
-      } else bilgi = 'Kaydırıcıyla grafiği şeritlere böl. Her şerit, kuvvetin neredeyse sabit kaldığı küçük bir dikdörtgendir.';
-    } else if (d === 2) { bilgi = 'Şerit yöntemi için en az iki ölçüm gerekli.'; $('seritYazi').textContent = SERITLER[durum.serit] + ' şerit'; }
-    $('seritToplam').innerHTML = bilgi;
+    if (tamam) {
+      bilgi = durum.alan ? 'Boyalı bölgedeki kareleri say. Her kare 1 m × 10 N = 10 J.' : 'Boyamayı yeniden açmak için düğmeye bas.';
+      if (d === 2 && durum.alan) bilgi += ' Boyalı şekil bir üçgen.';
+    }
+    $('alanBilgi').innerHTML = bilgi;
     // çizgi
     if (tamam) {
       gc.strokeStyle = RENK.vurgu; gc.lineWidth = 3.5; gc.beginPath();
@@ -653,7 +632,7 @@ footer b { color: var(--metin); }
       h = '<h3>Hesapla ve karşılaştır</h3>' +
         '<p>Kuvvet sabit: F = ' + sayi(F) + ' N, yol x = ' + x + ' m.</p>' +
         sor('h1', 'Animasyondaki tanımla: W = F · x =', F * x, 'J') +
-        '<p>Şimdi "Grafiğin altını boya" düğmesine bas. Boyalı bölgede kaç kare var? (Her kare 1 m × 10 N = 10 J)</p>' +
+        '<p>Grafikteki boyalı bölgede kaç kare var? (Her kare 1 m × 10 N = 10 J)</p>' +
         sor('h2', 'Kare sayısı =', F * x / 10, 'kare') +
         sor('h3', 'Boyalı alan = kare sayısı × 10 J =', F * x, 'J');
     } else if (d === 1) {
@@ -661,14 +640,14 @@ footer b { color: var(--metin); }
         sor('h1', 'Çamurlu kısım (0–2 m): W₁ =', 80, 'J') +
         sor('h2', 'Temiz ray (2–5 m): W₂ =', 60, 'J') +
         sor('h3', 'Toplam iş W = W₁ + W₂ =', 140, 'J') +
-        '<p class="bilgi">Grafiğin altını boyayıp iki dikdörtgenin alanlarıyla karşılaştır.</p>';
+        '<p class="bilgi">Bulduklarını grafikteki iki boyalı dikdörtgenin alanlarıyla karşılaştır.</p>';
     } else {
       var Fs = s[s.length - 1].F, xs = D[2].xMax;
       h = '<h3>Hesapla</h3><p>Son ölçüm: x = ' + xs + ' m\'de F = ' + sayi(Fs) + ' N.</p>' +
-        '<p>Bir öğrenci "W = F · x = ' + sayi(Fs) + ' · ' + xs + ' = ' + sayi(Fs * xs) + ' J" diyor. Bu değer grafikte neye karşılık gelir? Şeritleri 1\'e getirip "üstten" seç ve bak.</p>' +
-        sor('h1', '32 şerit, üstten toplam ≈', null, 'J', true) +
-        sor('h2', '32 şerit, alttan toplam ≈', null, 'J', true) +
-        sor('h3', 'Grafiğin altındaki üçgenin alanı =', Fs * xs / 2, 'J');
+        '<p>Kuvvet 0\'dan ' + sayi(Fs) + ' N\'a düzgün arttı. Grafiğin altındaki boyalı şekil bir üçgen.</p>' +
+        sor('h1', 'Üçgenin alanı = ½ · taban · yükseklik =', Fs * xs / 2, 'J') +
+        sor('h2', 'Bir öğrenci kuvveti hep ' + sayi(Fs) + ' N saymış: F · x =', Fs * xs, 'J') +
+        '<p class="bilgi">Öğrencinin bulduğu değer grafikte hangi şeklin alanı olurdu? İkisini karşılaştır.</p>';
     }
     k.innerHTML = h;
     k.querySelectorAll('[data-cevap]').forEach(function (btn) {

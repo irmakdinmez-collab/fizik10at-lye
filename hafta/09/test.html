@@ -117,8 +117,8 @@ footer b { color: var(--metin); }
     { tur: 'sayi', m: 'Grafiğe göre 0–6 m arasında yapılan işi hesapla ve joule cinsinden yaz.', g: grafik([[0, 40], [2, 40], [6, 0]], 6, 50),
       cevap: 160, a: 'Dikdörtgen: 40 N · 2 m = 80 J. Üçgen: ½ · 4 m · 40 N = 80 J. Toplam 160 J.' },
     { tur: 'acik', m: 'Bir arkadaşın "Kuvvet yol boyunca değişiyorsa iş hesaplanamaz, çünkü W = F · x formülüne hangi F\'yi koyacağımızı bilemeyiz." diyor. Kuvvet–yol grafiğini kullanarak ona nasıl açıklarsın?',
-      ornek: 'Kuvvet değişse de iş hesaplanabilir. Kuvvet–yol grafiğini çizeriz; grafik ile yol ekseni arasında kalan alan işe eşittir. Grafiği ince şeritlere bölersek her şeritte kuvvet neredeyse sabittir ve o şeridin işi F · Δx olur. Bütün şeritlerin toplamı alanı, yani toplam işi verir. Örneğin kuvvet 0\'dan 40 N\'a düzgün artıp yol 4 m ise alan bir üçgendir: W = ½ · 40 · 4 = 80 J.',
-      olcut: ['İşin grafiğin altındaki alana eşit olduğunu söylüyor', 'Grafiği parçalara/şeritlere bölme ya da geometrik şekil (üçgen, yamuk) fikrini kullanıyor', 'Bir örnek ya da birim (N · m = J) veriyor'] }
+      ornek: 'Kuvvet değişse de iş hesaplanabilir. Kuvvet–yol grafiğini çizeriz; grafik ile yol ekseni arasında kalan alan işe eşittir. Alanı dikdörtgen, üçgen ya da yamuk gibi şekillere bölüp her birinin alanını bulur, toplarız. Örneğin kuvvet 0\'dan 40 N\'a düzgün artıp yol 4 m ise alan bir üçgendir: W = ½ · 40 · 4 = 80 J.',
+      olcut: ['İşin grafiğin altındaki alana eşit olduğunu söylüyor', 'Alanı geometrik şekillere (dikdörtgen, üçgen, yamuk) bölme fikrini kullanıyor', 'Bir örnek ya da birim (N · m = J) veriyor'] }
   ];
 
   var cevaplanan = 0, dogru = 0, acikPuan = null;
@@ -178,7 +178,7 @@ footer b { color: var(--metin); }
     var yuzde = Math.round(dogru / S.length * 100), mesaj;
     if (yuzde >= 85) mesaj = 'Harika! İşi kuvvet–yol grafiğinden bulmayı kavramışsın.';
     else if (yuzde >= 60) mesaj = 'İyi gidiyorsun. Yanlış yaptığın soruların açıklamalarını yeniden oku.';
-    else mesaj = 'Laboratuvara dönüp 3. deneyi (yaylı araba) ve şerit yöntemini yeniden dene, sonra testi tekrar çöz.';
+    else mesaj = 'Laboratuvara dönüp 3. deneyi (yaylı araba) yeniden dene, sonra testi tekrar çöz.';
     var s = $('sonuc');
     s.innerHTML = '<div class="buyuk">' + String(dogru).replace('.', ',') + ' / ' + S.length + '</div><p><b>%' + yuzde + '</b> · ' + mesaj + '</p>' +
       '<div class="sira"><button class="dugme" id="tekrarBtn">Testi yeniden çöz</button><button class="dugme ikincil" id="yazdirBtn">Yazdır</button></div>';

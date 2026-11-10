@@ -1,0 +1,9 @@
+10. hafta (İş, Enerji ve Güç, FİZ.10.2.2) — kaynak ve telif notu
+Hazırlayan: Irmak Dinmez
+
+animasyon.mp4  Kod ile üretildi (kaynak/hafta10-animasyon/). Çizimler, müzik ve efektler kodla üretildi; dış görsel/ses yok.
+lab.html       Simülasyon, senaryo (vinç motorları, jeneratörlü motor) ve sorular özgün. Çizimler kodla (canvas) yapıldı.
+oyun.html      50 soru ve 2 okuma metni ("Tepedeki depo", "Kule yarışı") özgün. Grafikler kodla (SVG) çizildi. Doğru/yanlış sesleri tarayıcıda kodla üretilir.
+test.html      10 soru özgün. Grafikler kodla (SVG) çizildi.
+Yazı tipi      Poppins (SIL Open Font License), assets/fonts/. Animasyondaki tarih kartlarında Liberation Serif (SIL Open Font License).
+Kazanım kodu ve başlığı MEB Fizik Dersi Öğretim Programı'ndan alındı.

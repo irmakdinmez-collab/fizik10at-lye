@@ -184,7 +184,26 @@ window.HAFTALAR = [
     "baslik": "İş, enerji ve güç kavramlarına ilişkin çıkarım yapabilme"
    }
   ],
-  "icerik": {},
+  "icerik": {
+   "animasyon": {
+    "dosya": "hafta/10/animasyon.mp4",
+    "baslik": "GÜÇ nedir? — İş, enerji ve güç arasındaki bağ",
+    "sure": "3:34",
+    "kapak": "hafta/10/kapak.jpg"
+   },
+   "lab": {
+    "dosya": "hafta/10/lab.html",
+    "baslik": "Vinç motorları: iş, enerji ve güç"
+   },
+   "oyun": {
+    "dosya": "hafta/10/oyun.html",
+    "baslik": "Güç ve Enerji Oyunu: 4 bölüm"
+   },
+   "test": {
+    "dosya": "hafta/10/test.html",
+    "baslik": "10 soru: iş, enerji ve güç"
+   }
+  },
   "bas": "2026-11-23",
   "bit": "2026-11-27"
  },

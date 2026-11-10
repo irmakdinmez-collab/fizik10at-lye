@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kazanım Testi · İş, Enerji ve Güç · 10. Hafta</title>
+<style>
+@font-face { font-family: 'Poppins'; src: url('../../assets/fonts/Poppins-Regular.ttf') format('truetype'); font-weight: 400; }
+@font-face { font-family: 'Poppins'; src: url('../../assets/fonts/Poppins-Medium.ttf') format('truetype'); font-weight: 500; }
+@font-face { font-family: 'Poppins'; src: url('../../assets/fonts/Poppins-Bold.ttf') format('truetype'); font-weight: 700; }
+:root {
+  --zemin-ust: #def0fe; --zemin-alt: #b6d8f4; --kart: #fff; --kart-2: #f0f7ff;
+  --metin: #16264a; --soluk: #54688e; --cizgi: #c9ddf1;
+  --vurgu: #cd7800; --mavi: #0070c4; --yesil: #168c48; --kirmizi: #cc2048;
+  --golge: 0 6px 22px rgba(22,38,74,.10); --r: 18px;
+}
+* { box-sizing: border-box; }
+html { background: var(--zemin-alt); -webkit-text-size-adjust: 100%; }
+body { margin: 0; font-family: 'Poppins', system-ui, sans-serif; color: var(--metin); line-height: 1.5; min-height: 100vh;
+  background: var(--zemin-alt) linear-gradient(180deg, var(--zemin-ust), var(--zemin-alt) 900px) no-repeat; }
+.sar { max-width: 900px; margin: 0 auto; padding: 0 16px; }
+[hidden] { display: none !important; }
+header { padding: 20px 0 6px; }
+header h1 { margin: 0; font-size: clamp(24px, 3.6vw, 36px); line-height: 1.2; }
+header p { margin: 4px 0 0; color: var(--soluk); font-weight: 500; }
+.bilgi-kart { background: var(--kart); border-radius: var(--r); box-shadow: var(--golge); padding: 14px 20px; margin: 14px 0; border-left: 7px solid var(--yesil); font-size: 16px; }
+.puan-bant { position: sticky; top: 0; z-index: 2; background: var(--zemin-ust); padding: 10px 0; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.puan-bant span { background: var(--kart); border-radius: 999px; padding: 6px 14px; font-weight: 700; box-shadow: var(--golge); font-size: 15px; }
+.soru { background: var(--kart); border-radius: var(--r); box-shadow: var(--golge); padding: 18px 20px; margin-bottom: 16px; }
+.soru h2 { margin: 0 0 6px; font-size: 15px; color: var(--yesil); text-transform: uppercase; letter-spacing: .5px; }
+.soru .metin { font-size: 19px; font-weight: 500; margin: 0 0 12px; }
+.soru svg { display: block; width: 100%; max-width: 500px; height: auto; margin: 0 auto 12px; }
+.secenekler { display: grid; gap: 10px; }
+.secenek { text-align: left; font: 500 18px 'Poppins', sans-serif; padding: 12px 16px; border-radius: 14px; border: 3px solid var(--cizgi);
+  background: var(--kart); color: var(--metin); cursor: pointer; min-height: 56px; display: flex; gap: 12px; align-items: center; }
+.secenek b { width: 32px; height: 32px; border-radius: 50%; background: var(--kart-2); display: grid; place-items: center; flex: none; }
+.secenek:disabled { cursor: default; }
+.secenek.dogru { border-color: var(--yesil); background: #e8f7ee; }
+.secenek.yanlis { border-color: var(--kirmizi); background: #fdebf0; }
+.aciklama { margin-top: 12px; padding: 12px 16px; border-radius: 12px; font-size: 16px; }
+.aciklama.iyi { background: #dff4e7; color: #0d6233; }
+.aciklama.kotu { background: #fde2e9; color: #8f1532; }
+.aciklama.notr { background: #e6f2fc; color: var(--metin); }
+.aciklama b { display: block; font-size: 17px; }
+.giris-satir { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; font-size: 18px; }
+.giris-satir input { font: 700 20px 'Poppins', sans-serif; width: 140px; padding: 10px; border-radius: 12px; border: 2px solid var(--cizgi); color: var(--metin); }
+textarea { width: 100%; font: 17px 'Poppins', sans-serif; padding: 12px; border-radius: 12px; border: 2px solid var(--cizgi); color: var(--metin); }
+.dugme { display: inline-flex; align-items: center; justify-content: center; gap: 8px; border: 0; cursor: pointer;
+  font: 700 17px 'Poppins', sans-serif; padding: 12px 22px; border-radius: 14px; min-height: 54px; background: var(--metin); color: #fff; box-shadow: var(--golge); }
+.dugme.yesil { background: var(--yesil); } .dugme.ikincil { background: var(--kart-2); color: var(--metin); box-shadow: none; border: 2px solid var(--cizgi); }
+.dugme:disabled { opacity: .45; cursor: default; }
+.dugme:focus-visible, .secenek:focus-visible { outline: 4px solid var(--mavi); outline-offset: 3px; }
+.oz-deg { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 10px; }
+.sonuc { background: var(--kart); border-radius: var(--r); box-shadow: var(--golge); padding: 22px; text-align: center; border-top: 7px solid var(--yesil); }
+.sonuc .buyuk { font-size: 54px; font-weight: 700; line-height: 1.1; }
+.sonuc p { font-size: 17px; }
+.sira { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 10px; }
+footer { margin-top: 30px; padding: 18px 0 30px; border-top: 1px solid var(--cizgi); color: var(--soluk); font-size: 14px; }
+footer b { color: var(--metin); }
+@media print { .puan-bant, .sira, footer p + p { display: none; } body { background: #fff; } .soru { box-shadow: none; border: 1px solid #ccc; break-inside: avoid; } }
+</style>
+</head>
+<body>
+<header class="sar">
+  <h1>Kazanım Testi: İş, Enerji ve Güç</h1>
+  <p>10. Sınıf Fizik · Enerji · 10. Hafta · FİZ.10.2.2</p>
+</header>
+<main class="sar">
+  <div class="bilgi-kart">10 soru: 8 çoktan seçmeli, 1 grafik okuma (sayı yazarak), 1 açık uçlu. Her sorudan sonra doğru cevap ve kısa açıklama görünür. Açık uçlu soruyu örnek cevapla karşılaştırıp kendin değerlendirirsin.</div>
+  <div class="puan-bant"><span id="bantCevap">0 / 10 cevaplandı</span><span id="bantDogru">✓ 0 doğru</span></div>
+  <div id="sorular"></div>
+  <div class="sonuc" id="sonuc" hidden></div>
+</main>
+<footer class="sar">
+  <p><b>Hazırlayan: Irmak Dinmez</b></p>
+  <p>Sorular özgün olarak hazırlanmıştır.</p>
+</footer>
+<script>
+(function () {
+  'use strict';
+  function $(id) { return document.getElementById(id); }
+  // o: { xMax, yMax, yAdim, yAd, alan }
+  function grafik(noktalar, o) {
+    var W = 500, H = 262, L = 64, R = 32, T = 28, B = 44, gw = W - L - R, gh = H - T - B, xMax = o.xMax, yMax = o.yMax;
+    function X(x) { return L + x / xMax * gw; } function Y(f) { return T + gh - f / yMax * gh; }
+    var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + o.yAd + ' – zaman grafiği" font-family="Poppins, sans-serif">';
+    s += '<rect x="' + L + '" y="' + T + '" width="' + gw + '" height="' + gh + '" fill="#fbfdff"/>';
+    for (var x = 0; x <= xMax; x++) s += '<line x1="' + X(x) + '" y1="' + T + '" x2="' + X(x) + '" y2="' + (T + gh) + '" stroke="#c9ddf1"/><text x="' + X(x) + '" y="' + (T + gh + 19) + '" font-size="13" text-anchor="middle" fill="#16264a">' + x + '</text>';
+    for (var f = 0; f <= yMax; f += o.yAdim) s += '<line x1="' + L + '" y1="' + Y(f) + '" x2="' + (L + gw) + '" y2="' + Y(f) + '" stroke="#c9ddf1"/><text x="' + (L - 8) + '" y="' + (Y(f) + 5) + '" font-size="13" text-anchor="end" fill="#16264a">' + f + '</text>';
+    s += '<path d="M' + L + ' ' + (T - 16) + 'V' + (T + gh) + 'H' + (L + gw + 18) + '" fill="none" stroke="#16264a" stroke-width="2.5"/>' +
+      '<path d="M' + (L - 7) + ' ' + (T - 9) + 'L' + L + ' ' + (T - 22) + 'L' + (L + 7) + ' ' + (T - 9) + 'Z" fill="#16264a"/>' +
+      '<path d="M' + (L + gw + 11) + ' ' + (T + gh - 7) + 'L' + (L + gw + 24) + ' ' + (T + gh) + 'L' + (L + gw + 11) + ' ' + (T + gh + 7) + 'Z" fill="#16264a"/>';
+    var d = noktalar.map(function (n, i) { return (i ? 'L' : 'M') + X(n[0]) + ' ' + Y(n[1]); }).join('');
+    if (o.alan) s += '<path d="' + d + 'L' + X(noktalar[noktalar.length - 1][0]) + ' ' + Y(0) + 'L' + X(noktalar[0][0]) + ' ' + Y(0) + 'Z" fill="rgba(22,140,72,.18)"/>';
+    s += '<path d="' + d + '" fill="none" stroke="#168c48" stroke-width="4" stroke-linejoin="round"/>';
+    s += '<text x="' + (L + gw / 2) + '" y="' + (H - 6) + '" font-size="13" font-weight="700" text-anchor="middle" fill="#16264a">Zaman t (s)</text>';
+    s += '<text transform="translate(15 ' + (T + gh / 2) + ') rotate(-90)" font-size="13" font-weight="700" text-anchor="middle" fill="#16264a">' + o.yAd + '</text>';
+    return s + '</svg>';
+  }
+  function gucG(n, xMax, yMax, yAdim) { return grafik(n, { xMax: xMax, yMax: yMax, yAdim: yAdim, yAd: 'Güç P (W)', alan: true }); }
+  function isG(n, xMax, yMax, yAdim) { return grafik(n, { xMax: xMax, yMax: yMax, yAdim: yAdim, yAd: 'İş W (J)' }); }
+
+  // tur: 'cs' çoktan seçmeli (d = doğru seçeneğin sırası), 'sayi' sayısal, 'acik' açık uçlu
+  var S = [
+    { tur: 'cs', m: 'Aşağıdaki ifadelerden hangisi iş ile enerji arasındaki ilişkiyi doğru anlatır?',
+      c: ['İş ve enerji farklı birimlerle ölçülür.', 'Bir cisme yapılan iş, o cisme aktarılan enerjiye eşittir.', 'Enerji, birim zamanda yapılan iştir.', 'İş yapıldığında enerji yok olur.', 'Yalnızca hareket eden cisimlerin enerjisi vardır.'], d: 1,
+      a: 'İş, enerjinin bir yerden başka yere aktarılmasıdır; bu yüzden ikisi de joule ile ölçülür. "Birim zamanda yapılan iş" gücün tanımıdır.' },
+    { tur: 'cs', m: 'Güç ile ilgili şu ifadeler veriliyor:<br>I. Güç, iş yapma hızıdır.<br>II. Gücün birimi J/s\'dir ve buna watt denir.<br>III. Aynı iş daha kısa sürede yapılırsa güç azalır.<br>Hangileri doğrudur?',
+      c: ['Yalnız I', 'Yalnız II', 'I ve II', 'II ve III', 'I, II ve III'], d: 2, a: 'P = W / t. Aynı iş daha kısa sürede yapılırsa güç artar; III yanlıştır.' },
+    { tur: 'cs', m: 'K vinci ağırlığı 1200 N olan yükü 10 m yükseğe 20 saniyede, L vinci ağırlığı 800 N olan yükü 15 m yükseğe 10 saniyede çıkarıyor (yükler sabit hızla yükseliyor). Vinçlerin yaptığı işler W<sub>K</sub>, W<sub>L</sub> ve güçleri P<sub>K</sub>, P<sub>L</sub> için hangisi doğrudur?',
+      c: ['W<sub>K</sub> > W<sub>L</sub> ve P<sub>K</sub> = P<sub>L</sub>', 'W<sub>K</sub> = W<sub>L</sub> ve P<sub>K</sub> > P<sub>L</sub>', 'W<sub>K</sub> = W<sub>L</sub> ve P<sub>L</sub> = 2 P<sub>K</sub>', 'W<sub>K</sub> < W<sub>L</sub> ve P<sub>K</sub> < P<sub>L</sub>', 'W<sub>K</sub> = W<sub>L</sub> ve P<sub>K</sub> = P<sub>L</sub>'], d: 2,
+      a: 'W<sub>K</sub> = 1200 · 10 = 12 000 J, W<sub>L</sub> = 800 · 15 = 12 000 J. P<sub>K</sub> = 12 000 / 20 = 600 W, P<sub>L</sub> = 12 000 / 10 = 1200 W.' },
+    { tur: 'cs', m: 'Bir motorun yaptığı işin zamana göre değişimi grafikte verilmiştir. Motorun 0–4 s arasındaki gücü P₁, 4–10 s arasındaki gücü P₂ ise P₁ / P₂ oranı kaçtır?', g: isG([[0, 0], [4, 1200], [10, 2400]], 10, 2800, 400),
+      c: ['2/3', '1', '3/2', '2', '3'], d: 2, a: 'İş–zaman grafiğinin eğimi gücü verir. P₁ = 1200 J / 4 s = 300 W, P₂ = (2400 − 1200) J / 6 s = 200 W. Oran 300 / 200 = 3/2.' },
+    { tur: 'cs', m: 'Bir motorun gücünün zamana göre değişimi grafikte verilmiştir. 0–6 s arasında motorun aktardığı enerji kaç joule\'dür?', g: gucG([[0, 0], [3, 600], [6, 600]], 6, 800, 200),
+      c: ['1800 J', '2700 J', '3600 J', '900 J', '5400 J'], d: 1, a: 'Güç–zaman grafiğinin altındaki alan enerjiyi verir. Üçgen: ½ · 3 · 600 = 900 J. Dikdörtgen: 3 · 600 = 1800 J. Toplam 2700 J.' },
+    { tur: 'cs', m: 'Gücü 1,5 kW olan bir pompa, ağırlığı 6000 N olan suyu sabit hızla 10 m yükseğe kaç saniyede çıkarır?',
+      c: ['4 s', '40 s', '400 s', '9 s', '90 s'], d: 1, a: 'W = 6000 N · 10 m = 60 000 J. 1,5 kW = 1500 W. t = W / P = 60 000 / 1500 = 40 s.' },
+    { tur: 'cs', m: 'Selim aynı çantayı yerden aynı yükseklikteki masaya bir kez 4 saniyede, bir kez de 1 saniyede kaldırıyor. İki durum için hangisi doğrudur?',
+      c: ['İkinci durumda iş 4 kat, güç aynıdır.', 'İki durumda iş eşittir; ikinci durumda güç 4 katıdır.', 'İki durumda iş eşittir; birinci durumda güç 4 katıdır.', 'İkinci durumda hem iş hem güç 4 katıdır.', 'İş de güç de iki durumda eşittir.'], d: 1,
+      a: 'Çanta aynı ve yükseklik aynı olduğu için iş (ve çantaya aktarılan enerji) eşittir. Süre 4 kat kısaldığı için güç 4 katına çıkar.' },
+    { tur: 'cs', m: 'Gücü 1000 W olan bir saç kurutma makinesi 1 dakika çalışıyor. Gücü 50 W olan bir vantilatörün aynı miktarda enerji aktarabilmesi için kaç dakika çalışması gerekir?',
+      c: ['20 dakika', '50 dakika', '1 dakika', '2 dakika', '10 dakika'], d: 0, a: 'Saç kurutma makinesi: 1000 W · 60 s = 60 000 J. Vantilatör: 60 000 J / 50 W = 1200 s = 20 dakika.' },
+    { tur: 'sayi', m: 'Bir motorun gücünün zamana göre değişimi grafikte verilmiştir. 0–6 s arasında aktarılan enerjiyi hesapla ve joule cinsinden yaz.', g: gucG([[0, 800], [2, 800], [2, 400], [6, 400]], 6, 1000, 200),
+      etiket: 'E =', cevap: 3200, a: 'İki dikdörtgen: 800 W · 2 s = 1600 J ve 400 W · 4 s = 1600 J. Toplam 3200 J.' },
+    { tur: 'acik', m: 'Bir arkadaşın "Gücü büyük olan bir vinç, gücü küçük olan bir vinçten her zaman daha çok iş yapar." diyor. İş, enerji ve güç kavramlarını kullanarak bu düşünceyi değerlendir ve bir örnekle açıkla.',
+      ornek: 'Bu düşünce yanlıştır. Güç, iş yapma hızıdır (P = W / t); toplam iş ise W = P · t olduğundan çalışma süresine de bağlıdır. Güçlü vinç aynı işi daha kısa sürede yapar ama kısa süre çalışırsa daha az iş yapabilir. Örneğin 1000 W\'lık vinç 5 s çalışırsa 5000 J, 200 W\'lık vinç 50 s çalışırsa 10 000 J iş yapar. Yapılan iş, yüke aktarılan enerjiye eşittir.',
+      olcut: ['Gücün iş yapma hızı olduğunu (P = W / t) söylüyor', 'Toplam işin süreye de bağlı olduğunu açıklıyor', 'Sayısal bir örnek veriyor ya da işi aktarılan enerjiyle ilişkilendiriyor'] }
+  ];
+
+  var cevaplanan = 0, dogru = 0, acikPuan = null;
+  $('sorular').innerHTML = S.map(function (q, i) {
+    var h = '<section class="soru" id="s' + i + '"><h2>Soru ' + (i + 1) + (q.tur === 'sayi' ? ' · Grafik okuma' : q.tur === 'acik' ? ' · Açık uçlu' : '') + '</h2><p class="metin">' + q.m + '</p>' + (q.g || '');
+    if (q.tur === 'cs') h += '<div class="secenekler">' + q.c.map(function (c, j) { return '<button class="secenek" data-j="' + j + '"><b>' + 'ABCDE'[j] + '</b><span>' + c + '</span></button>'; }).join('') + '</div>';
+    if (q.tur === 'sayi') h += '<div class="giris-satir"><label for="g' + i + '">' + q.etiket + '</label><input type="number" inputmode="decimal" id="g' + i + '"> J <button class="dugme" data-kontrol>Cevapla</button></div>';
+    if (q.tur === 'acik') h += '<textarea rows="4" id="g' + i + '" aria-label="Cevabın"></textarea><p><button class="dugme" data-ornek>Cevabımı bitirdim, örnek cevabı göster</button></p>';
+    return h + '<div class="aciklama-yer"></div></section>';
+  }).join('');
+
+  function guncelle() {
+    $('bantCevap').textContent = cevaplanan + ' / 10 cevaplandı';
+    $('bantDogru').textContent = '✓ ' + String(dogru).replace('.', ',') + ' doğru';
+    if (cevaplanan === S.length) sonuc();
+  }
+  function aciklama(sec, tur, baslik, metin) { sec.querySelector('.aciklama-yer').innerHTML = '<div class="aciklama ' + tur + '"><b>' + baslik + '</b>' + metin + '</div>'; }
+
+  S.forEach(function (q, i) {
+    var sec = $('s' + i);
+    if (q.tur === 'cs') sec.querySelectorAll('.secenek').forEach(function (b) {
+      b.onclick = function () {
+        var j = +b.dataset.j, ok = j === q.d;
+        sec.querySelectorAll('.secenek').forEach(function (x) { x.disabled = true; if (+x.dataset.j === q.d) x.classList.add('dogru'); });
+        if (!ok) b.classList.add('yanlis');
+        cevaplanan++; if (ok) dogru++;
+        aciklama(sec, ok ? 'iyi' : 'kotu', ok ? 'Doğru!' : 'Doğru cevap: ' + 'ABCDE'[q.d] + ') ' + q.c[q.d], q.a);
+        guncelle();
+      };
+    });
+    if (q.tur === 'sayi') sec.querySelector('[data-kontrol]').onclick = function () {
+      var inp = $('g' + i), v = parseFloat(String(inp.value).replace(',', '.'));
+      if (isNaN(v)) { aciklama(sec, 'notr', 'Önce bir sayı yaz.', ''); return; }
+      var ok = Math.abs(v - q.cevap) < 0.5;
+      inp.disabled = true; this.disabled = true; cevaplanan++; if (ok) dogru++;
+      aciklama(sec, ok ? 'iyi' : 'kotu', ok ? 'Doğru! ' + q.etiket + ' ' + q.cevap + ' J' : 'Doğru cevap: ' + q.cevap + ' J', q.a);
+      guncelle();
+    };
+    if (q.tur === 'acik') sec.querySelector('[data-ornek]').onclick = function () {
+      var t = $('g' + i);
+      if (t.value.trim().length < 15) { aciklama(sec, 'notr', 'Önce kendi cevabını yaz.', 'Birkaç cümleyle açıklaman yeterli.'); return; }
+      t.readOnly = true; this.hidden = true;
+      sec.querySelector('.aciklama-yer').innerHTML = '<div class="aciklama notr"><b>Örnek cevap</b>' + q.ornek +
+        '<p style="margin:10px 0 4px"><b style="display:inline">Kendini değerlendir:</b> Cevabında bunlar var mı?</p><ul style="margin:0;padding-left:22px">' + q.olcut.map(function (o) { return '<li>' + o + '</li>'; }).join('') + '</ul>' +
+        '<div class="oz-deg"><button class="dugme yesil" data-p="1">Tamamen var</button><button class="dugme ikincil" data-p="0.5">Kısmen var</button><button class="dugme ikincil" data-p="0">Yok</button></div></div>';
+      sec.querySelectorAll('[data-p]').forEach(function (b) {
+        b.onclick = function () {
+          acikPuan = +b.dataset.p; cevaplanan++; dogru += acikPuan;
+          sec.querySelectorAll('[data-p]').forEach(function (x) { x.disabled = true; x.classList.toggle('yesil', x === b); x.classList.toggle('ikincil', x !== b); });
+          guncelle();
+        };
+      });
+    };
+  });
+
+  function sonuc() {
+    var yuzde = Math.round(dogru / S.length * 100), mesaj;
+    if (yuzde >= 85) mesaj = 'Harika! İş, enerji ve güç arasındaki ilişkiyi kavramışsın.';
+    else if (yuzde >= 60) mesaj = 'İyi gidiyorsun. Yanlış yaptığın soruların açıklamalarını yeniden oku.';
+    else mesaj = 'Laboratuvara dönüp Deney 1 ve Deney 3\'ü yeniden dene, sonra testi tekrar çöz.';
+    var s = $('sonuc');
+    s.innerHTML = '<div class="buyuk">' + String(dogru).replace('.', ',') + ' / ' + S.length + '</div><p><b>%' + yuzde + '</b> · ' + mesaj + '</p>' +
+      '<div class="sira"><button class="dugme" id="tekrarBtn">Testi yeniden çöz</button><button class="dugme ikincil" id="yazdirBtn">Yazdır</button></div>';
+    s.hidden = false; s.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    $('tekrarBtn').onclick = function () { location.reload(); };
+    $('yazdirBtn').onclick = function () { window.print(); };
+  }
+})();
+</script>
+<script>
+// Sitede iframe içinde açılınca yüksekliği hafta sayfasına bildir (kaydırma çubuğu olmasın)
+(function () {
+  if (window.parent === window) return;
+  var son = 0;
+  function bildir() { var ft = document.querySelector('footer'), h = Math.ceil(ft.getBoundingClientRect().bottom + window.scrollY + 8); if (Math.abs(h - son) > 2) { son = h; window.parent.postMessage({ tip: 'fizik-yukseklik', h: h }, '*'); } }
+  if (window.ResizeObserver) new ResizeObserver(bildir).observe(document.body);
+  window.addEventListener('load', bildir); setInterval(bildir, 1000);
+})();
+</script>
+</body>
+</html>

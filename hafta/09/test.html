@@ -81,13 +81,15 @@ footer b { color: var(--metin); }
   function $(id) { return document.getElementById(id); }
   function grafik(noktalar, xMax, fMax, adim) {
     adim = adim || 10;
-    var W = 500, H = 250, L = 58, R = 16, T = 14, B = 44, gw = W - L - R, gh = H - T - B;
+    var W = 500, H = 262, L = 58, R = 32, T = 28, B = 44, gw = W - L - R, gh = H - T - B;
     function X(x) { return L + x / xMax * gw; } function Y(f) { return T + gh - f / fMax * gh; }
     var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Kuvvet–yol grafiği" font-family="Poppins, sans-serif">';
     s += '<rect x="' + L + '" y="' + T + '" width="' + gw + '" height="' + gh + '" fill="#fbfdff"/>';
     for (var x = 0; x <= xMax; x++) s += '<line x1="' + X(x) + '" y1="' + T + '" x2="' + X(x) + '" y2="' + (T + gh) + '" stroke="#c9ddf1"/><text x="' + X(x) + '" y="' + (T + gh + 19) + '" font-size="13" text-anchor="middle" fill="#16264a">' + x + '</text>';
     for (var f = 0; f <= fMax; f += adim) s += '<line x1="' + L + '" y1="' + Y(f) + '" x2="' + (L + gw) + '" y2="' + Y(f) + '" stroke="#c9ddf1"/><text x="' + (L - 8) + '" y="' + (Y(f) + 5) + '" font-size="13" text-anchor="end" fill="#16264a">' + f + '</text>';
-    s += '<path d="M' + L + ' ' + (T - 6) + 'V' + (T + gh) + 'H' + (L + gw + 8) + '" fill="none" stroke="#16264a" stroke-width="2"/>';
+    s += '<path d="M' + L + ' ' + (T - 16) + 'V' + (T + gh) + 'H' + (L + gw + 18) + '" fill="none" stroke="#16264a" stroke-width="2.5"/>' +
+      '<path d="M' + (L - 7) + ' ' + (T - 9) + 'L' + L + ' ' + (T - 22) + 'L' + (L + 7) + ' ' + (T - 9) + 'Z" fill="#16264a"/>' +
+      '<path d="M' + (L + gw + 11) + ' ' + (T + gh - 7) + 'L' + (L + gw + 24) + ' ' + (T + gh) + 'L' + (L + gw + 11) + ' ' + (T + gh + 7) + 'Z" fill="#16264a"/>';
     var d = noktalar.map(function (n, i) { return (i ? 'L' : 'M') + X(n[0]) + ' ' + Y(n[1]); }).join('');
     s += '<path d="' + d + '" fill="none" stroke="#168c48" stroke-width="4" stroke-linejoin="round"/>';
     s += '<text x="' + (L + gw / 2) + '" y="' + (H - 6) + '" font-size="13" font-weight="700" text-anchor="middle" fill="#16264a">Yol x (m)</text>';

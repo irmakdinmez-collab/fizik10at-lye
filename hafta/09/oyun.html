@@ -149,7 +149,7 @@ footer b { color: var(--metin); }
   // Kuvvet–yol grafiği (SVG). noktalar: [[x, F], ...], xMax, fMax, adim (F ızgarası)
   function grafik(noktalar, xMax, fMax, adim) {
     adim = adim || 10;
-    var W = 520, H = 260, L = 60, R = 18, T = 16, B = 46, gw = W - L - R, gh = H - T - B;
+    var W = 520, H = 270, L = 60, R = 32, T = 28, B = 46, gw = W - L - R, gh = H - T - B;
     function X(x) { return L + x / xMax * gw; } function Y(f) { return T + gh - f / fMax * gh; }
     var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Kuvvet–yol grafiği" font-family="Poppins, sans-serif">';
     s += '<rect x="' + L + '" y="' + T + '" width="' + gw + '" height="' + gh + '" fill="#fbfdff"/>';
@@ -157,7 +157,9 @@ footer b { color: var(--metin); }
       '<text x="' + X(x) + '" y="' + (T + gh + 20) + '" font-size="14" text-anchor="middle" fill="#16264a">' + x + '</text>';
     for (var f = 0; f <= fMax; f += adim) s += '<line x1="' + L + '" y1="' + Y(f) + '" x2="' + (L + gw) + '" y2="' + Y(f) + '" stroke="#c9ddf1"/>' +
       '<text x="' + (L - 8) + '" y="' + (Y(f) + 5) + '" font-size="14" text-anchor="end" fill="#16264a">' + f + '</text>';
-    s += '<path d="M' + L + ' ' + (T - 6) + 'V' + (T + gh) + 'H' + (L + gw + 8) + '" fill="none" stroke="#16264a" stroke-width="2"/>';
+    s += '<path d="M' + L + ' ' + (T - 16) + 'V' + (T + gh) + 'H' + (L + gw + 18) + '" fill="none" stroke="#16264a" stroke-width="2.5"/>' +
+      '<path d="M' + (L - 7) + ' ' + (T - 9) + 'L' + L + ' ' + (T - 22) + 'L' + (L + 7) + ' ' + (T - 9) + 'Z" fill="#16264a"/>' +
+      '<path d="M' + (L + gw + 11) + ' ' + (T + gh - 7) + 'L' + (L + gw + 24) + ' ' + (T + gh) + 'L' + (L + gw + 11) + ' ' + (T + gh + 7) + 'Z" fill="#16264a"/>';
     var d = noktalar.map(function (n, i) { return (i ? 'L' : 'M') + X(n[0]) + ' ' + Y(n[1]); }).join('');
     s += '<path d="' + d + 'L' + X(noktalar[noktalar.length - 1][0]) + ' ' + Y(0) + 'L' + X(noktalar[0][0]) + ' ' + Y(0) + 'Z" fill="rgba(205,120,0,.16)"/>';
     s += '<path d="' + d + '" fill="none" stroke="#cd7800" stroke-width="4" stroke-linejoin="round"/>';

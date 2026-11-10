@@ -436,7 +436,7 @@ footer b { color: var(--metin); }
 
   // ---------- Grafik çizimi (ortak) ----------
   function eksenler(ctx, W, H, xMax, fMax, yazi) {
-    var p = { l: yazi ? 64 : 46, r: 16, t: 18, b: yazi ? 54 : 40 };
+    var p = { l: yazi ? 64 : 46, r: 30, t: 30, b: yazi ? 54 : 40 };
     var gw = W - p.l - p.r, gh = H - p.t - p.b;
     var o = { p: p, gw: gw, gh: gh, xMax: xMax, fMax: fMax,
       X: function (x) { return p.l + x / xMax * gw; }, Y: function (f) { return p.t + gh - f / fMax * gh; } };
@@ -446,7 +446,9 @@ footer b { color: var(--metin); }
     for (var x = 0; x <= xMax; x++) { ctx.beginPath(); ctx.moveTo(o.X(x), p.t); ctx.lineTo(o.X(x), p.t + gh); ctx.stroke(); }
     for (var f = 0; f <= fMax; f += 10) { ctx.beginPath(); ctx.moveTo(p.l, o.Y(f)); ctx.lineTo(p.l + gw, o.Y(f)); ctx.stroke(); }
     ctx.strokeStyle = RENK.metin; ctx.lineWidth = 2;
-    ctx.beginPath(); ctx.moveTo(p.l, p.t - 4); ctx.lineTo(p.l, p.t + gh); ctx.lineTo(p.l + gw + 6, p.t + gh); ctx.stroke();
+    ctx.lineWidth = 2.5; ctx.beginPath(); ctx.moveTo(p.l, p.t - 14); ctx.lineTo(p.l, p.t + gh); ctx.lineTo(p.l + gw + 16, p.t + gh); ctx.stroke();
+    ctx.fillStyle = RENK.metin; ctx.beginPath(); ctx.moveTo(p.l - 7, p.t - 8); ctx.lineTo(p.l, p.t - 22); ctx.lineTo(p.l + 7, p.t - 8); ctx.closePath(); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(p.l + gw + 10, p.t + gh - 7); ctx.lineTo(p.l + gw + 24, p.t + gh); ctx.lineTo(p.l + gw + 10, p.t + gh + 7); ctx.closePath(); ctx.fill();
     ctx.fillStyle = RENK.metin; ctx.font = (yazi ? '500 14px ' : '500 11px ') + FONT;
     ctx.textAlign = 'center';
     for (x = 0; x <= xMax; x++) ctx.fillText(x, o.X(x), p.t + gh + (yazi ? 20 : 15));

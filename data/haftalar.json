@@ -1,0 +1,641 @@
+[
+ {
+  "no": 1,
+  "ay": "Eylül",
+  "ayHafta": 1,
+  "tarih": "14–18 Eylül",
+  "unite": "Kuvvet ve Hareket",
+  "konu": "Sabit Hızlı Hareket",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.1.1",
+    "baslik": "Yatay doğrultuda sabit hızlı hareket ile ilgili tümevarımsal akıl yürütebilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2026-09-14",
+  "bit": "2026-09-18"
+ },
+ {
+  "no": 2,
+  "ay": "Eylül",
+  "ayHafta": 2,
+  "tarih": "21–25 Eylül",
+  "unite": "Kuvvet ve Hareket",
+  "konu": "Sabit Hızlı Hareket",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.1.1",
+    "baslik": "Yatay doğrultuda sabit hızlı hareket ile ilgili tümevarımsal akıl yürütebilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2026-09-21",
+  "bit": "2026-09-25"
+ },
+ {
+  "no": 3,
+  "ay": "Ekim",
+  "ayHafta": 1,
+  "tarih": "28 Eylül–2 Ekim",
+  "unite": "Kuvvet ve Hareket",
+  "konu": "Bir Boyutta Sabit İvmeli Hareket",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.1.2",
+    "baslik": "İvme ve hız değişimi arasındaki ilişkiye yönelik tümevarımsal akıl yürütebilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2026-09-28",
+  "bit": "2026-10-02"
+ },
+ {
+  "no": 4,
+  "ay": "Ekim",
+  "ayHafta": 2,
+  "tarih": "5–9 Ekim",
+  "unite": "Kuvvet ve Hareket",
+  "konu": "Bir Boyutta Sabit İvmeli Hareket",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.1.3",
+    "baslik": "Yatay doğrultuda sabit ivmeyle hareket eden cisimlerin hareket grafiklerinden elde edilen matematiksel modelleri yorumlayabilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2026-10-05",
+  "bit": "2026-10-09"
+ },
+ {
+  "no": 5,
+  "ay": "Ekim",
+  "ayHafta": 3,
+  "tarih": "12–16 Ekim",
+  "unite": "Kuvvet ve Hareket",
+  "konu": "Serbest Düşme",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.1.4",
+    "baslik": "Serbest düşme hareketi yapan cisimlerin ivmesine yönelik tümevarımsal akıl yürütebilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2026-10-12",
+  "bit": "2026-10-16"
+ },
+ {
+  "no": 6,
+  "ay": "Ekim",
+  "ayHafta": 4,
+  "tarih": "19–23 Ekim",
+  "unite": "Kuvvet ve Hareket",
+  "konu": "Serbest Düşme",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.1.5",
+    "baslik": "Serbest düşme hareketi ile ilgili kanıt kullanabilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2026-10-19",
+  "bit": "2026-10-23"
+ },
+ {
+  "no": 7,
+  "ay": "Ekim",
+  "ayHafta": 5,
+  "tarih": "26–30 Ekim",
+  "unite": "Kuvvet ve Hareket",
+  "konu": "İki Boyutta Sabit İvmeli Hareket",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.1.6",
+    "baslik": "İki boyutta sabit ivmeli hareket ile ilgili tümevarımsal akıl yürütebilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2026-10-26",
+  "bit": "2026-10-30"
+ },
+ {
+  "no": 8,
+  "ay": "Kasım",
+  "ayHafta": 1,
+  "tarih": "2–6 Kasım",
+  "unite": "Kuvvet ve Hareket",
+  "konu": "İki Boyutta Sabit İvmeli Hareket",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.1.6",
+    "baslik": "İki boyutta sabit ivmeli hareket ile ilgili tümevarımsal akıl yürütebilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2026-11-02",
+  "bit": "2026-11-06"
+ },
+ {
+  "no": 9,
+  "ay": "Kasım",
+  "ayHafta": 2,
+  "tarih": "9–13 Kasım",
+  "unite": "Enerji",
+  "konu": "İş, Enerji ve Güç",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.2.1",
+    "baslik": "Kuvvet-yer değiştirme grafiği kullanılarak iş ile ilgili tümevarımsal akıl yürütebilme"
+   }
+  ],
+  "icerik": {
+   "animasyon": {
+    "dosya": "hafta/09/animasyon.mp4",
+    "baslik": "İŞ nedir? — Bir kavram nasıl doğar?",
+    "sure": "3:33",
+    "kapak": "hafta/09/kapak.jpg"
+   }
+  },
+  "bas": "2026-11-09",
+  "bit": "2026-11-13"
+ },
+ {
+  "no": 10,
+  "ay": "Kasım",
+  "ayHafta": 3,
+  "tarih": "23–27 Kasım",
+  "unite": "Enerji",
+  "konu": "İş, Enerji ve Güç",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.2.2",
+    "baslik": "İş, enerji ve güç kavramlarına ilişkin çıkarım yapabilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2026-11-23",
+  "bit": "2026-11-27"
+ },
+ {
+  "no": 11,
+  "ay": "Aralık",
+  "ayHafta": 1,
+  "tarih": "30 Kasım–4 Aralık",
+  "unite": "Enerji",
+  "konu": "Enerji Biçimleri",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.2.3",
+    "baslik": "Enerji biçimlerini karşılaştırabilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2026-11-30",
+  "bit": "2026-12-04"
+ },
+ {
+  "no": 12,
+  "ay": "Aralık",
+  "ayHafta": 2,
+  "tarih": "7–11 Aralık",
+  "unite": "Enerji",
+  "konu": "Enerji Biçimleri",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.2.3",
+    "baslik": "Enerji biçimlerini karşılaştırabilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2026-12-07",
+  "bit": "2026-12-11"
+ },
+ {
+  "no": 13,
+  "ay": "Aralık",
+  "ayHafta": 3,
+  "tarih": "14–18 Aralık",
+  "unite": "Enerji",
+  "konu": "Mekanik Enerji",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.2.4",
+    "baslik": "Mekanik enerjiyi çözümleyebilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2026-12-14",
+  "bit": "2026-12-18"
+ },
+ {
+  "no": 14,
+  "ay": "Aralık",
+  "ayHafta": 4,
+  "tarih": "21–25 Aralık",
+  "unite": "Enerji",
+  "konu": "Mekanik Enerji",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.2.4",
+    "baslik": "Mekanik enerjiyi çözümleyebilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2026-12-21",
+  "bit": "2026-12-25"
+ },
+ {
+  "no": 15,
+  "ay": "Aralık",
+  "ayHafta": 5,
+  "tarih": "28 Aralık–1 Ocak",
+  "unite": "Enerji",
+  "konu": "Enerji Kaynakları",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.2.5",
+    "baslik": "Yenilenebilen ve yenilenemeyen enerji kaynaklarını karşılaştırabilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2026-12-28",
+  "bit": "2027-01-01"
+ },
+ {
+  "no": 16,
+  "ay": "Ocak",
+  "ayHafta": 1,
+  "tarih": "4–8 Ocak",
+  "unite": "Elektrik",
+  "konu": "Basit Elektrik Devreleri",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.3.1",
+    "baslik": "Basit elektrik devresinde potansiyel fark, elektrik akımı ve direnç kavramlarının tanımına ilişkin analojik akıl yürütebilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2027-01-04",
+  "bit": "2027-01-08"
+ },
+ {
+  "no": 17,
+  "ay": "Ocak",
+  "ayHafta": 2,
+  "tarih": "11–15 Ocak",
+  "unite": "Elektrik",
+  "konu": "Basit Elektrik Devreleri",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.3.1",
+    "baslik": "Basit elektrik devresinde potansiyel fark, elektrik akımı ve direnç kavramlarının tanımına ilişkin analojik akıl yürütebilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2027-01-11",
+  "bit": "2027-01-15"
+ },
+ {
+  "no": 18,
+  "ay": "Ocak",
+  "ayHafta": 3,
+  "tarih": "18–22 Ocak",
+  "unite": "Elektrik",
+  "konu": "Basit Elektrik Devreleri",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.3.1",
+    "baslik": "Basit elektrik devresinde potansiyel fark, elektrik akımı ve direnç kavramlarının tanımına ilişkin analojik akıl yürütebilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2027-01-18",
+  "bit": "2027-01-22"
+ },
+ {
+  "no": 19,
+  "ay": "Şubat",
+  "ayHafta": 1,
+  "tarih": "8–12 Şubat",
+  "unite": "Elektrik",
+  "konu": "Elektrik Akımı",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.3.2",
+    "baslik": "Elektrik yükünün hareketi üzerinden elektrik akımı kavramını çözümleyebilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2027-02-08",
+  "bit": "2027-02-12"
+ },
+ {
+  "no": 20,
+  "ay": "Şubat",
+  "ayHafta": 2,
+  "tarih": "15–19 Şubat",
+  "unite": "Elektrik",
+  "konu": "Ohm Yasası",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.3.3",
+    "baslik": "Ohm Yasası ile ilgili tümevarımsal akıl yürütebilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2027-02-15",
+  "bit": "2027-02-19"
+ },
+ {
+  "no": 21,
+  "ay": "Şubat",
+  "ayHafta": 3,
+  "tarih": "22–26 Şubat",
+  "unite": "Elektrik",
+  "konu": "Dirençlerin Bağlanması",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.3.4",
+    "baslik": "Dirençlerin bağlanma türüne göre eşdeğer direncin büyüklüğüne ilişkin bilimsel çıkarım yapabilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2027-02-22",
+  "bit": "2027-02-26"
+ },
+ {
+  "no": 22,
+  "ay": "Mart",
+  "ayHafta": 1,
+  "tarih": "1–5 Mart",
+  "unite": "Elektrik",
+  "konu": "Dirençlerin Bağlanması",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.3.4",
+    "baslik": "Dirençlerin bağlanma türüne göre eşdeğer direncin büyüklüğüne ilişkin bilimsel çıkarım yapabilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2027-03-01",
+  "bit": "2027-03-05"
+ },
+ {
+  "no": 23,
+  "ay": "Mart",
+  "ayHafta": 2,
+  "tarih": "15–19 Mart",
+  "unite": "Elektrik",
+  "konu": "Üreteçlerin Bağlanması",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.3.5",
+    "baslik": "Üreteçlerin bağlanma türüne göre devreye sağladıkları potansiyel farka ilişkin bilimsel çıkarım yapabilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2027-03-15",
+  "bit": "2027-03-19"
+ },
+ {
+  "no": 24,
+  "ay": "Mart",
+  "ayHafta": 3,
+  "tarih": "22–26 Mart",
+  "unite": "Elektrik",
+  "konu": "Üreteçlerin Bağlanması",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.3.5",
+    "baslik": "Üreteçlerin bağlanma türüne göre devreye sağladıkları potansiyel farka ilişkin bilimsel çıkarım yapabilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2027-03-22",
+  "bit": "2027-03-26"
+ },
+ {
+  "no": 25,
+  "ay": "Mart",
+  "ayHafta": 4,
+  "tarih": "29 Mart–2 Nisan",
+  "unite": "Elektrik",
+  "konu": "Elektrik Akımının Oluşturabileceği Tehlikelere Karşı Alınması Gereken Önlemler",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.3.6",
+    "baslik": "Elektrik akımının oluşturabileceği tehlikelere karşı alınması gereken önlemlerle ilgili bilgi toplayabilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2027-03-29",
+  "bit": "2027-04-02"
+ },
+ {
+  "no": 26,
+  "ay": "Nisan",
+  "ayHafta": 1,
+  "tarih": "5–9 Nisan",
+  "unite": "Elektrik",
+  "konu": "Elektrik Akımının Oluşturabileceği Tehlikelere Karşı Alınması Gereken Önlemler",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.3.6",
+    "baslik": "Elektrik akımının oluşturabileceği tehlikelere karşı alınması gereken önlemlerle ilgili bilgi toplayabilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2027-04-05",
+  "bit": "2027-04-09"
+ },
+ {
+  "no": 27,
+  "ay": "Nisan",
+  "ayHafta": 2,
+  "tarih": "12–16 Nisan",
+  "unite": "Elektrik",
+  "konu": "Topraklamanın Önemi",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.3.7",
+    "baslik": "Topraklama olayının önemini sorgulayabilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2027-04-12",
+  "bit": "2027-04-16"
+ },
+ {
+  "no": 28,
+  "ay": "Nisan",
+  "ayHafta": 3,
+  "tarih": "19–23 Nisan",
+  "unite": "Dalgalar",
+  "konu": "Dalgaların Temel Kavramları",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.4.1",
+    "baslik": "Dalgaların temel kavramlarına ilişkin operasyonel tanımlama yapabilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2027-04-19",
+  "bit": "2027-04-23"
+ },
+ {
+  "no": 29,
+  "ay": "Nisan",
+  "ayHafta": 4,
+  "tarih": "26–30 Nisan",
+  "unite": "Dalgalar",
+  "konu": "Dalgaların Sınıflandırılması · Dalgaların Yayılma Süratini Etkileyen Etmenler",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.4.2",
+    "baslik": "Dalgaları özelliklerine göre sınıflandırabilme"
+   },
+   {
+    "kod": "FİZ.10.4.3",
+    "baslik": "Dalgaların yayılma süratini etkileyen etmenlere ilişkin bilimsel gözleme dayalı tahmin yapabilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2027-04-26",
+  "bit": "2027-04-30"
+ },
+ {
+  "no": 30,
+  "ay": "Mayıs",
+  "ayHafta": 1,
+  "tarih": "3–7 Mayıs",
+  "unite": "Dalgalar",
+  "konu": "Dalgaların Yayılma Süratini Etkileyen Etmenler",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.4.3",
+    "baslik": "Dalgaların yayılma süratini etkileyen etmenlere ilişkin bilimsel gözleme dayalı tahmin yapabilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2027-05-03",
+  "bit": "2027-05-07"
+ },
+ {
+  "no": 31,
+  "ay": "Mayıs",
+  "ayHafta": 2,
+  "tarih": "10–14 Mayıs",
+  "unite": "Dalgalar",
+  "konu": "Dalgaların Yayılma Süratini Etkileyen Etmenler · Periyodik Hareketler",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.4.3",
+    "baslik": "Dalgaların yayılma süratini etkileyen etmenlere ilişkin bilimsel gözleme dayalı tahmin yapabilme"
+   },
+   {
+    "kod": "FİZ.10.4.4",
+    "baslik": "Periyodik hareketlere ilişkin deneyimlerini yansıtabilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2027-05-10",
+  "bit": "2027-05-14"
+ },
+ {
+  "no": 32,
+  "ay": "Mayıs",
+  "ayHafta": 3,
+  "tarih": "17–21 Mayıs",
+  "unite": "Dalgalar",
+  "konu": "Su Dalgalarında Yansıma ve Kırılma",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.4.5",
+    "baslik": "Su dalgalarında yansıma ve kırılma ile ilgili tümevarımsal akıl yürütebilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2027-05-17",
+  "bit": "2027-05-21"
+ },
+ {
+  "no": 33,
+  "ay": "Mayıs",
+  "ayHafta": 4,
+  "tarih": "24–28 Mayıs",
+  "unite": "Dalgalar",
+  "konu": "Su Dalgalarında Yansıma ve Kırılma",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.4.5",
+    "baslik": "Su dalgalarında yansıma ve kırılma ile ilgili tümevarımsal akıl yürütebilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2027-05-24",
+  "bit": "2027-05-28"
+ },
+ {
+  "no": 34,
+  "ay": "Haziran",
+  "ayHafta": 1,
+  "tarih": "28 Mayıs–4 Haziran",
+  "unite": "Dalgalar",
+  "konu": "Su Dalgalarında Yansıma ve Kırılma",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.4.5",
+    "baslik": "Su dalgalarında yansıma ve kırılma ile ilgili tümevarımsal akıl yürütebilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2027-05-28",
+  "bit": "2027-06-04"
+ },
+ {
+  "no": 35,
+  "ay": "Haziran",
+  "ayHafta": 2,
+  "tarih": "7–11 Haziran",
+  "unite": "Dalgalar",
+  "konu": "Rezonans ve Deprem",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.4.6",
+    "baslik": "Rezonans ve depreme ilişkin kavramlar üzerinden depremi sorgulayabilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2027-06-07",
+  "bit": "2027-06-11"
+ },
+ {
+  "no": 36,
+  "ay": "Haziran",
+  "ayHafta": 3,
+  "tarih": "14–18 Haziran",
+  "unite": "Dalgalar",
+  "konu": "Rezonans ve Deprem",
+  "kazanim": [
+   {
+    "kod": "FİZ.10.4.7",
+    "baslik": "Depremle ilgili bilimsel model oluşturabilme"
+   }
+  ],
+  "icerik": {},
+  "bas": "2027-06-14",
+  "bit": "2027-06-18"
+ },
+ {
+  "no": 37,
+  "ay": "Haziran",
+  "ayHafta": 4,
+  "tarih": "21–25 Haziran",
+  "unite": "Yıl Sonu",
+  "konu": "Yıl sonu etkinlikleri",
+  "kazanim": [],
+  "icerik": {},
+  "bas": "2027-06-21",
+  "bit": "2027-06-25"
+ }
+]

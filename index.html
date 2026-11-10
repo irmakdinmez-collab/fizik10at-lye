@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fizik Dijital Atölyesi · 10. Sınıf</title>
+<meta name="description" content="10. sınıf fizik yıllık planına göre her hafta için animasyon, dijital laboratuvar, oyun ve kavrama testi.">
+<link rel="stylesheet" href="assets/stil.css">
+</head>
+<body>
+<header class="ust">
+  <div class="sar">
+    <a class="logo" href="index.html">
+      <span class="logo-isaret"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffc94a" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="2.2" fill="#ffc94a"/><ellipse cx="12" cy="12" rx="10" ry="4"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)"/></svg></span>
+      <span><b>Fizik Dijital Atölyesi</b><span>10. Sınıf · 2026–2027</span></span>
+    </a>
+    <a class="dugme" id="buHaftaDugme" href="#">Bu haftaya git →</a>
+  </div>
+</header>
+
+<main class="sar">
+  <section class="giris">
+    <h1>Her hafta, <em>dört kapı</em>.</h1>
+    <p>Yıllık plandaki haftayı seçin; o haftanın kazanımına göre hazırlanmış animasyona, dijital laboratuvara, oyuna ve kavrama testine tek tıkla ulaşın. Akıllı tahtada açıp doğrudan derste kullanabilirsiniz.</p>
+    <ul class="dortlu" id="dortlu"></ul>
+    <div class="lejant" id="lejant"></div>
+  </section>
+  <div id="aylar"></div>
+</main>
+
+<footer class="alt">
+  <div class="sar">
+    <p><b>Hazırlayan: Irmak Dinmez</b></p>
+    <p>Animasyon, laboratuvar, oyun ve test içerikleri özgün olarak hazırlanmıştır. Kazanım kodları MEB Fizik Dersi Öğretim Programı'na göre verilmiştir.</p>
+    <p>Yazı tipi: Poppins (SIL Open Font License).</p>
+  </div>
+</footer>
+
+<script src="data/haftalar.js"></script>
+<script src="assets/ortak.js"></script>
+<script>
+(function () {
+  var H = window.HAFTALAR, bh = buHafta();
+  document.getElementById('buHaftaDugme').href = 'hafta.html?no=' + bh.no;
+
+  document.getElementById('dortlu').innerHTML = BOLUMLER.map(function (b) {
+    return '<li><span style="color:' + b.renk + '">' + IKON[b.anahtar] + '</span>' + b.ad + '</li>';
+  }).join('');
+
+  document.getElementById('lejant').innerHTML = ['Kuvvet ve Hareket', 'Enerji', 'Elektrik', 'Dalgalar'].map(function (u) {
+    return '<span><i style="background:' + UNITE_RENK[u] + '"></i>' + u + '</span>';
+  }).join('');
+
+  var aylar = [], grup = {};
+  H.forEach(function (h) { if (!grup[h.ay]) { grup[h.ay] = []; aylar.push(h.ay); } grup[h.ay].push(h); });
+
+  document.getElementById('aylar').innerHTML = aylar.map(function (ay) {
+    var hs = grup[ay];
+    var hazir = hs.reduce(function (s, h) { return s + kac(h); }, 0);
+    return '<section class="ay" id="ay-' + esc(ay) + '"><h2>' + ay + ' <small>' + hs.length + ' hafta' +
+      (hazir ? ' · ' + hazir + ' içerik hazır' : '') + '</small></h2><div class="izgara">' +
+      hs.map(function (h) {
+        var bu = h.no === bh.no;
+        return '<a class="hafta-kart' + (bu ? ' bu-hafta' : '') + '" style="--u:' + UNITE_RENK[h.unite] + '" href="hafta.html?no=' + h.no + '">' +
+          '<div class="ust-satir"><span class="no">' + h.ayHafta + '. Hafta</span>' + (bu ? '<span class="rozet">Bu hafta</span>' : '<span class="tarih">' + esc(h.tarih) + '</span>') + '</div>' +
+          (bu ? '<span class="tarih">' + esc(h.tarih) + '</span>' : '') +
+          '<div class="konu">' + esc(h.konu) + '</div>' +
+          '<div class="alt-satir"><span class="plan-no">Plan: ' + h.no + '. hafta</span><span class="durum">' +
+          BOLUMLER.map(function (b) { return '<i class="' + (h.icerik[b.anahtar] ? 'var' : '') + '" title="' + b.ad + (h.icerik[b.anahtar] ? '' : ' (hazırlanıyor)') + '">' + IKON[b.anahtar] + '</i>'; }).join('') +
+          '</span></div></a>';
+      }).join('') + '</div></section>';
+  }).join('');
+})();
+</script>
+</body>
+</html>

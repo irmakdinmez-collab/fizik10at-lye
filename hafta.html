@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="tr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hafta · Fizik Dijital Atölyesi</title>
+<link rel="stylesheet" href="assets/stil.css">
+</head>
+<body>
+<header class="ust">
+  <div class="sar">
+    <a class="logo" href="index.html">
+      <span class="logo-isaret"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#ffc94a" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="2.2" fill="#ffc94a"/><ellipse cx="12" cy="12" rx="10" ry="4"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(60 12 12)"/><ellipse cx="12" cy="12" rx="10" ry="4" transform="rotate(120 12 12)"/></svg></span>
+      <span><b>Fizik Dijital Atölyesi</b><span>10. Sınıf · 2026–2027</span></span>
+    </a>
+    <a class="dugme ikincil" href="index.html">← Tüm haftalar</a>
+  </div>
+</header>
+
+<main class="sar" id="icerik"></main>
+
+<footer class="alt">
+  <div class="sar">
+    <p><b>Hazırlayan: Irmak Dinmez</b></p>
+    <p>Animasyon, laboratuvar, oyun ve test içerikleri özgün olarak hazırlanmıştır. Kazanım kodları MEB Fizik Dersi Öğretim Programı'na göre verilmiştir.</p>
+  </div>
+</footer>
+
+<script src="data/haftalar.js"></script>
+<script src="assets/ortak.js"></script>
+<script>
+(function () {
+  var H = window.HAFTALAR;
+  var no = parseInt(new URLSearchParams(location.search).get('no'), 10) || buHafta().no;
+  var i = H.findIndex(function (h) { return h.no === no; });
+  if (i < 0) i = 0;
+  var h = H[i], kok = document.getElementById('icerik');
+  document.title = haftaAdi(h) + ' · ' + h.konu + ' · Fizik Dijital Atölyesi';
+  document.body.style.setProperty('--u', UNITE_RENK[h.unite]);
+
+  kok.innerHTML =
+    '<p class="yol"><a href="index.html#ay-' + esc(h.ay) + '">' + esc(h.ay) + '</a> · ' + h.ayHafta + '. Hafta</p>' +
+    '<div class="baslik-blok"><h1>' + esc(h.konu) + '</h1></div>' +
+    '<div class="etiketler"><span class="cip">' + esc(h.unite) + '</span><span class="cip acik">' + esc(h.tarih) + '</span><span class="cip acik">Plan: ' + h.no + '. hafta</span></div>' +
+    (h.kazanim.length ? '<div class="kazanim">' + h.kazanim.map(function (k) { return '<p><b>' + k.kod + '</b> ' + esc(k.baslik) + '</p>'; }).join('') + '</div>' : '') +
+    '<div class="kutucuklar">' + BOLUMLER.map(function (b) {
+      var v = h.icerik[b.anahtar];
+      return '<button class="kutucuk' + (v ? '' : ' yok') + '" style="--k:' + b.renk + '" data-b="' + b.anahtar + '"' + (v ? '' : ' aria-disabled="true"') + '>' +
+        '<span class="ikon">' + IKON[b.anahtar] + '</span><b>' + b.ad + '</b><span>' + (v ? (v.baslik ? esc(v.baslik) : b.aciklama) + (v.sure ? ' · ' + v.sure : '') : 'Hazırlanıyor') + '</span></button>';
+    }).join('') + '</div>' +
+    '<section class="sahne" id="sahne" hidden></section>' +
+    '<nav class="gezinti">' +
+      (i > 0 ? '<a class="dugme ikincil" href="hafta.html?no=' + H[i - 1].no + '">← ' + haftaAdi(H[i - 1]) + '</a>' : '<span></span>') +
+      (i < H.length - 1 ? '<a class="dugme ikincil" href="hafta.html?no=' + H[i + 1].no + '">' + haftaAdi(H[i + 1]) + ' →</a>' : '') +
+    '</nav>';
+
+  var sahne = document.getElementById('sahne');
+  function ac(anahtar) {
+    var b = BOLUMLER.filter(function (x) { return x.anahtar === anahtar; })[0], v = h.icerik[anahtar];
+    if (!v) return;
+    document.querySelectorAll('.kutucuk').forEach(function (k) { k.classList.toggle('secili', k.dataset.b === anahtar); });
+    var govde = anahtar === 'animasyon'
+      ? '<video controls preload="metadata" playsinline' + (v.kapak ? ' poster="' + v.kapak + '"' : '') + ' src="' + v.dosya + '"></video>'
+      : '<iframe src="' + v.dosya + '" title="' + esc(b.ad) + '" allowfullscreen></iframe>';
+    sahne.innerHTML = '<div class="sahne-ust"><h2>' + b.ad + (v.baslik ? ': ' + esc(v.baslik) : '') + '</h2>' +
+      '<button class="dugme ikincil" id="tamEkran">⛶ Tam ekran</button></div>' + govde;
+    sahne.hidden = false;
+    document.getElementById('tamEkran').onclick = function () {
+      var el = sahne.querySelector('video, iframe');
+      (el.requestFullscreen || el.webkitRequestFullscreen || function () {}).call(el);
+    };
+    sahne.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+  document.querySelectorAll('.kutucuk').forEach(function (k) { k.onclick = function () { ac(k.dataset.b); }; });
+})();
+</script>
+</body>
+</html>
